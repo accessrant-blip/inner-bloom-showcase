@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 import heroImage from "@/assets/hero-wellness.jpg";
+import DemoModal from "./DemoModal";
+import { useState } from "react";
 
 const HeroSection = () => {
+  const [isDemoOpen, setIsDemoOpen] = useState(false);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -45,6 +49,7 @@ const HeroSection = () => {
               size="lg" 
               variant="outline"
               className="text-lg px-8 py-6"
+              onClick={() => setIsDemoOpen(true)}
             >
               <Play className="mr-2 h-5 w-5" />
               Watch Demo
@@ -72,6 +77,9 @@ const HeroSection = () => {
       <div className="absolute top-20 right-20 w-20 h-20 bg-primary/10 rounded-full animate-float"></div>
       <div className="absolute bottom-32 left-16 w-12 h-12 bg-accent/20 rounded-full animate-float" style={{animationDelay: '2s'}}></div>
       <div className="absolute top-1/2 left-8 w-8 h-8 bg-secondary-accent/30 rounded-full animate-float" style={{animationDelay: '4s'}}></div>
+      
+      {/* Demo Modal */}
+      <DemoModal open={isDemoOpen} onOpenChange={setIsDemoOpen} />
     </section>
   );
 };
