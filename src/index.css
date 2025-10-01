@@ -8,72 +8,67 @@ All colors MUST be HSL format for consistent theming.
 
 @layer base {
   :root {
-    /* Base Colors - Modern & Clean */
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    /* Base Colors - Calming and Professional */
+    --background: 180 20% 98%;
+    --foreground: 220 15% 25%;
 
     /* Card and Surface Colors */
-    --card: 240 10% 5%;
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 25%;
 
-    --popover: 240 10% 6%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 25%;
 
-    /* Primary - Vibrant Purple */
-    --primary: 280 85% 65%;
+    /* Primary - Calming Sage Green */
+    --primary: 150 25% 45%;
     --primary-foreground: 0 0% 100%;
-    --primary-soft: 280 60% 95%;
-    --primary-glow: 280 90% 70%;
+    --primary-soft: 150 30% 85%;
+    --primary-glow: 150 40% 65%;
 
-    /* Secondary - Modern Cyan */
-    --secondary: 195 95% 50%;
-    --secondary-foreground: 0 0% 100%;
-    --secondary-accent: 195 85% 60%;
+    /* Secondary - Soft Lavender */
+    --secondary: 260 20% 85%;
+    --secondary-foreground: 220 15% 25%;
+    --secondary-accent: 260 35% 65%;
 
-    /* Accent - Electric Pink */
-    --accent: 330 85% 60%;
+    /* Accent - Calming Blue */
+    --accent: 200 50% 70%;
     --accent-foreground: 0 0% 100%;
-    --accent-soft: 330 60% 95%;
+    --accent-soft: 200 30% 90%;
 
     /* Muted Tones */
-    --muted: 240 10% 15%;
-    --muted-foreground: 240 5% 65%;
+    --muted: 180 10% 95%;
+    --muted-foreground: 220 10% 55%;
 
     /* Status Colors */
-    --success: 142 76% 36%;
+    --success: 140 50% 55%;
     --success-foreground: 0 0% 100%;
     
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 100%;
+    --warning: 45 90% 65%;
+    --warning-foreground: 220 15% 25%;
     
-    --destructive: 0 84% 60%;
+    --destructive: 0 70% 60%;
     --destructive-foreground: 0 0% 100%;
 
     /* UI Elements */
-    --border: 240 10% 20%;
-    --input: 240 10% 15%;
-    --ring: 280 85% 65%;
+    --border: 180 15% 88%;
+    --input: 180 15% 92%;
+    --ring: 150 25% 45%;
 
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(280 85% 65%) 0%, hsl(195 95% 50%) 50%, hsl(330 85% 60%) 100%);
-    --gradient-soft: linear-gradient(180deg, hsl(240 10% 3.9%) 0%, hsl(240 10% 8%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(240 10% 6%) 0%, hsl(240 10% 9%) 100%);
-    --gradient-mesh: radial-gradient(at 0% 0%, hsl(280 85% 65% / 0.15) 0px, transparent 50%),
-                     radial-gradient(at 100% 0%, hsl(195 95% 50% / 0.15) 0px, transparent 50%),
-                     radial-gradient(at 100% 100%, hsl(330 85% 60% / 0.15) 0px, transparent 50%),
-                     radial-gradient(at 0% 100%, hsl(280 85% 65% / 0.15) 0px, transparent 50%);
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    --gradient-soft: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--primary-soft)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--accent-soft)) 100%);
 
     /* Shadows */
-    --shadow-soft: 0 8px 32px -8px hsl(280 85% 65% / 0.3);
-    --shadow-glow: 0 0 80px -20px hsl(280 85% 65% / 0.6);
-    --shadow-card: 0 4px 24px -4px hsl(0 0% 0% / 0.5);
-    --shadow-neon: 0 0 20px hsl(280 85% 65% / 0.5), 0 0 40px hsl(280 85% 65% / 0.3);
+    --shadow-soft: 0 4px 20px -2px hsl(var(--primary) / 0.1);
+    --shadow-glow: 0 8px 32px -8px hsl(var(--primary-glow) / 0.3);
+    --shadow-card: 0 2px 10px -2px hsl(var(--foreground) / 0.1);
 
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
-    --radius: 1rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -142,7 +137,7 @@ All colors MUST be HSL format for consistent theming.
 }
 
 @layer components {
-  /* Modern App Specific Styles */
+  /* Wellness App Specific Styles */
   .gradient-hero {
     background: var(--gradient-hero);
   }
@@ -153,10 +148,6 @@ All colors MUST be HSL format for consistent theming.
   
   .gradient-card {
     background: var(--gradient-card);
-  }
-
-  .gradient-mesh {
-    background: var(--gradient-mesh);
   }
   
   .shadow-soft {
@@ -171,23 +162,12 @@ All colors MUST be HSL format for consistent theming.
     box-shadow: var(--shadow-card);
   }
 
-  .shadow-neon {
-    box-shadow: var(--shadow-neon);
-  }
-
-  /* Glassmorphism effect */
-  .glass {
-    background: hsl(var(--card) / 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid hsl(var(--border) / 0.3);
-  }
-
   /* Smooth scroll behavior */
   html {
     scroll-behavior: smooth;
   }
 
-  /* Modern animations */
+  /* Wellness-themed animations */
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
@@ -198,15 +178,6 @@ All colors MUST be HSL format for consistent theming.
   
   .animate-scale-in {
     animation: scale-in 0.6s ease-out forwards;
-  }
-
-  .animate-gradient {
-    animation: gradient-shift 8s ease infinite;
-    background-size: 200% 200%;
-  }
-
-  .animate-glow {
-    animation: glow 3s ease-in-out infinite;
   }
 }
 
@@ -240,23 +211,5 @@ All colors MUST be HSL format for consistent theming.
   to {
     opacity: 1;
     transform: scale(1);
-  }
-}
-
-@keyframes gradient-shift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-@keyframes glow {
-  0%, 100% {
-    filter: drop-shadow(0 0 20px hsl(var(--primary) / 0.5));
-  }
-  50% {
-    filter: drop-shadow(0 0 40px hsl(var(--primary) / 0.8));
   }
 }
