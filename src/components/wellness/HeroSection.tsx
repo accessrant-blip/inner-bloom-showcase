@@ -3,9 +3,11 @@ import { ArrowRight, Play } from "lucide-react";
 import heroImage from "@/assets/hero-wellness.jpg";
 import DemoModal from "./DemoModal";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
   const [isDemoOpen, setIsDemoOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -40,6 +42,7 @@ const HeroSection = () => {
               size="lg" 
               variant="wellness"
               className="text-lg px-8 py-6"
+              onClick={() => navigate('/dashboard')}
             >
               Start Your Journey
               <ArrowRight className="ml-2 h-5 w-5" />
