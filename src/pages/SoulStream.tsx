@@ -37,19 +37,19 @@ const SoulStream = () => {
           id: "79kpoGF8KWU",
           title: "Instant Relief from Stress and Anxiety",
           description: "Find relief from stress with soothing sounds of a forest river and calming music.",
-          thumbnail: "https://img.youtube.com/vi/79kpoGF8KWU/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/79kpoGF8KWU/hqdefault.jpg"
         },
         {
           id: "1ZYbU82GVz4",
           title: "Relaxing Sleep Music",
           description: "Deep sleep music for peaceful rest and rejuvenation.",
-          thumbnail: "https://img.youtube.com/vi/1ZYbU82GVz4/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/1ZYbU82GVz4/hqdefault.jpg"
         },
         {
           id: "7Zw9qUC4a3k",
           title: "Sound Bath Music",
           description: "Deeply relaxing sound bath music for meditation and healing.",
-          thumbnail: "https://img.youtube.com/vi/7Zw9qUC4a3k/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/7Zw9qUC4a3k/hqdefault.jpg"
         }
       ]
     },
@@ -60,19 +60,19 @@ const SoulStream = () => {
           id: "0y0586ffZWQ",
           title: "Just Be - Guided Meditation",
           description: "A gentle guided meditation to help you simply be present.",
-          thumbnail: "https://img.youtube.com/vi/0y0586ffZWQ/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/0y0586ffZWQ/hqdefault.jpg"
         },
         {
           id: "aIIEI33EUqI",
           title: "Deep Meditation Music",
           description: "15 minutes of peaceful meditation music for deep relaxation.",
-          thumbnail: "https://img.youtube.com/vi/aIIEI33EUqI/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/aIIEI33EUqI/hqdefault.jpg"
         },
         {
           id: "qTJ2Z-geCW8",
           title: "Meditation for Positive Energy",
           description: "Cultivate positive energy and inner peace with this meditation.",
-          thumbnail: "https://img.youtube.com/vi/qTJ2Z-geCW8/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/qTJ2Z-geCW8/hqdefault.jpg"
         }
       ]
     },
@@ -83,19 +83,19 @@ const SoulStream = () => {
           id: "WPni755-Krg",
           title: "Study Music Alpha Waves",
           description: "Alpha waves music to enhance concentration and studying.",
-          thumbnail: "https://img.youtube.com/vi/WPni755-Krg/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/WPni755-Krg/hqdefault.jpg"
         },
         {
           id: "pQI64hD2sJw",
           title: "FOCUS & CONCENTRATION",
           description: "Music designed to boost focus and productivity.",
-          thumbnail: "https://img.youtube.com/vi/pQI64hD2sJw/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/pQI64hD2sJw/hqdefault.jpg"
         },
         {
           id: "OoSzt2Ga8Oc",
           title: "Playlist for Focus Time",
           description: "Curated playlist to help you stay focused and productive.",
-          thumbnail: "https://img.youtube.com/vi/OoSzt2Ga8Oc/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/OoSzt2Ga8Oc/hqdefault.jpg"
         }
       ]
     },
@@ -106,19 +106,19 @@ const SoulStream = () => {
           id: "ww6N-jyjsbw",
           title: "Gentleman Songs",
           description: "Energetic workout playlist to keep you motivated.",
-          thumbnail: "https://img.youtube.com/vi/ww6N-jyjsbw/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/ww6N-jyjsbw/hqdefault.jpg"
         },
         {
           id: "spHkzkRSDTs",
           title: "Girl Summer Playlist",
           description: "Upbeat summer vibes for your workout sessions.",
-          thumbnail: "https://img.youtube.com/vi/spHkzkRSDTs/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/spHkzkRSDTs/hqdefault.jpg"
         },
         {
           id: "8MG-mDI7Sns",
           title: "Hip Hop Gym Workout Music",
           description: "High-energy hip hop to power through your gym session.",
-          thumbnail: "https://img.youtube.com/vi/8MG-mDI7Sns/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/8MG-mDI7Sns/hqdefault.jpg"
         }
       ]
     },
@@ -129,19 +129,19 @@ const SoulStream = () => {
           id: "0Ni00XDSd6E",
           title: "Tibetan Healing Relaxation Music",
           description: "Tibetan healing sounds for deep relaxation and yoga practice.",
-          thumbnail: "https://img.youtube.com/vi/0Ni00XDSd6E/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/0Ni00XDSd6E/hqdefault.jpg"
         },
         {
           id: "c8n3dqJW4y0",
           title: "45 min of Modern Yoga Music",
           description: "Contemporary yoga music for your complete practice.",
-          thumbnail: "https://img.youtube.com/vi/c8n3dqJW4y0/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/c8n3dqJW4y0/hqdefault.jpg"
         },
         {
           id: "2RTZNLL0wss",
           title: "Yoga Music",
           description: "Peaceful music to enhance your yoga flow.",
-          thumbnail: "https://img.youtube.com/vi/2RTZNLL0wss/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/2RTZNLL0wss/hqdefault.jpg"
         }
       ]
     },
@@ -152,19 +152,19 @@ const SoulStream = () => {
           id: "Nn6-uMinE_o",
           title: "Hiking the Mount Marcy",
           description: "Experience the beauty of hiking Mount Marcy.",
-          thumbnail: "https://img.youtube.com/vi/Nn6-uMinE_o/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/Nn6-uMinE_o/hqdefault.jpg"
         },
         {
           id: "I2I4EySGYEU",
           title: "Discovering Tibetan Nepal",
           description: "Journey through the stunning landscapes of Tibetan Nepal.",
-          thumbnail: "https://img.youtube.com/vi/I2I4EySGYEU/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/I2I4EySGYEU/hqdefault.jpg"
         },
         {
           id: "TLZOWDF8lqQ",
           title: "Silent Hiking the John Muir Trail",
           description: "Peaceful silent hike through the John Muir Trail.",
-          thumbnail: "https://img.youtube.com/vi/TLZOWDF8lqQ/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/TLZOWDF8lqQ/hqdefault.jpg"
         }
       ]
     },
@@ -175,19 +175,19 @@ const SoulStream = () => {
           id: "K110MtP_Mis",
           title: "Vintage Jazz",
           description: "Classic vintage jazz for a sophisticated atmosphere.",
-          thumbnail: "https://img.youtube.com/vi/K110MtP_Mis/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/K110MtP_Mis/hqdefault.jpg"
         },
         {
           id: "ZHV_Hc2Wbrw",
           title: "Just Business, Darling",
           description: "Smooth jazz for work or relaxation.",
-          thumbnail: "https://img.youtube.com/vi/ZHV_Hc2Wbrw/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/ZHV_Hc2Wbrw/hqdefault.jpg"
         },
         {
           id: "OgU_UDYd9lY",
           title: "Jazzy But Not Too Jazzy",
           description: "The perfect balance of jazz vibes.",
-          thumbnail: "https://img.youtube.com/vi/OgU_UDYd9lY/maxresdefault.jpg"
+          thumbnail: "https://img.youtube.com/vi/OgU_UDYd9lY/hqdefault.jpg"
         }
       ]
     }
