@@ -17,8 +17,10 @@ import {
   ChevronDown,
   ChevronUp
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [postType, setPostType] = useState("public");
   const [showEmergencyHelp, setShowEmergencyHelp] = useState(true);
 
@@ -32,14 +34,14 @@ const Dashboard = () => {
   ];
 
   const sidebarItems = [
-    { icon: Home, label: "Home", active: true },
-    { icon: Users, label: "Rantbuddity" },
-    { icon: MessageSquare, label: "Rant" },
-    { icon: Search, label: "Find Better" },
-    { icon: Radio, label: "Soul Stream" },
-    { icon: Heart, label: "Community" },
-    { icon: GraduationCap, label: "Learn & Grow" },
-    { icon: Calendar, label: "Book Help" },
+    { icon: Home, label: "Home", active: true, path: "/dashboard" },
+    { icon: Users, label: "Rantbuddity", active: false, path: "/dashboard" },
+    { icon: MessageSquare, label: "Rant", active: false, path: "/dashboard" },
+    { icon: Search, label: "Find Better", active: false, path: "/dashboard" },
+    { icon: Radio, label: "Soul Stream", active: false, path: "/soul-stream" },
+    { icon: Heart, label: "Community", active: false, path: "/dashboard" },
+    { icon: GraduationCap, label: "Learn & Grow", active: false, path: "/dashboard" },
+    { icon: Calendar, label: "Book Help", active: false, path: "/dashboard" },
   ];
 
   return (
@@ -57,6 +59,7 @@ const Dashboard = () => {
           {sidebarItems.map((item) => (
             <button
               key={item.label}
+              onClick={() => navigate(item.path)}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                 item.active
                   ? "bg-[#FF6B35] text-white"
