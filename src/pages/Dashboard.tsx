@@ -40,7 +40,7 @@ const Dashboard = () => {
     { icon: Search, label: "Find Better", active: false, path: "/dashboard" },
     { icon: Radio, label: "Soul Stream", active: false, path: "/soul-stream" },
     { icon: Heart, label: "Community", active: false, path: "/dashboard" },
-    { icon: GraduationCap, label: "Learn & Grow", active: false, path: "/dashboard" },
+    { icon: GraduationCap, label: "Learn & Grow", active: false, path: "/learn-grow" },
     { icon: Calendar, label: "Book Help", active: false, path: "/dashboard" },
   ];
 
