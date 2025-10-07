@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -23,6 +23,23 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [postType, setPostType] = useState("public");
   const [showEmergencyHelp, setShowEmergencyHelp] = useState(true);
+  const [currentReminderIndex, setCurrentReminderIndex] = useState(0);
+
+  const wellnessReminders = [
+    "Get sunlight every day, it boosts mood & sleep.",
+    "Take your vitamins seriously.",
+    "Talk & hug — human connection heals.",
+    "It's okay to be bored for 15 min — creativity grows there.",
+    "Eat colorful fruits and veggies daily for energy."
+  ];
+
+  // Change reminder every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentReminderIndex((prev) => (prev + 1) % wellnessReminders.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const moods = [
     { emoji: "😊", label: "Happy" },
@@ -180,11 +197,11 @@ const Dashboard = () => {
             </div>
 
             {/* Wellness Tip */}
-            <div className="bg-[#FFF9E6] rounded-2xl p-6 border border-[#FFE082]">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-yellow-600">💪</span>
-                <p className="text-sm text-[#6B6B6B]">
-                  Move your body — even a 10 min walk counts.
+            <div className="bg-[#FFF9E6] rounded-2xl p-6 border border-[#FFE082] flex items-center justify-center min-h-[120px]">
+              <div className="flex flex-col items-center gap-3 text-center">
+                <span className="text-yellow-600 text-3xl">💪</span>
+                <p className="text-sm text-[#6B6B6B] font-medium">
+                  {wellnessReminders[currentReminderIndex]}
                 </p>
               </div>
             </div>
