@@ -35,6 +35,13 @@ All colors MUST be HSL format for consistent theming.
     --accent-foreground: 0 0% 100%;
     --accent-soft: 200 30% 90%;
 
+    /* Warm Book Help Theme */
+    --warm-brown: 0 37% 27%;
+    --warm-cream: 30 100% 97%;
+    --warm-orange: 33 97% 55%;
+    --warm-salmon: 0 83% 65%;
+    --warm-peach: 20 100% 95%;
+
     /* Muted Tones */
     --muted: 180 10% 95%;
     --muted-foreground: 220 10% 55%;
@@ -58,6 +65,7 @@ All colors MUST be HSL format for consistent theming.
     --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
     --gradient-soft: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--primary-soft)) 100%);
     --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--accent-soft)) 100%);
+    --gradient-warm: linear-gradient(135deg, hsl(var(--warm-cream)) 0%, hsl(var(--warm-peach)) 100%);
 
     /* Shadows */
     --shadow-soft: 0 4px 20px -2px hsl(var(--primary) / 0.1);

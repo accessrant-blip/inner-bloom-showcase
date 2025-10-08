@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import SoulStream from "./pages/SoulStream";
 import LearnAndGrow from "./pages/LearnAndGrow";
+import BookHelp from "./pages/BookHelp";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/soul-stream" element={<SoulStream />} />
         <Route path="/learn-grow" element={<LearnAndGrow />} />
+        <Route path="/book-help" element={<BookHelp />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
