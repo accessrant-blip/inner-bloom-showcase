@@ -58,7 +58,7 @@ const Dashboard = () => {
     { icon: Radio, label: "Soul Stream", active: false, path: "/soul-stream" },
     { icon: Heart, label: "Community", active: false, path: "/dashboard" },
     { icon: GraduationCap, label: "Learn & Grow", active: false, path: "/learn-grow" },
-    { icon: Calendar, label: "Book Help", active: false, path: "/dashboard" },
+    { icon: Calendar, label: "Book Help", active: false, path: "/book-help" },
   ];
 
   return (
