@@ -59,6 +59,144 @@ export type Database = {
         }
         Relationships: []
       }
+      habits: {
+        Row: {
+          completed_dates: Json | null
+          created_at: string
+          current_streak: number | null
+          habit_name: string
+          id: string
+          target_days: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_dates?: Json | null
+          created_at?: string
+          current_streak?: number | null
+          habit_name: string
+          id?: string
+          target_days?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_dates?: Json | null
+          created_at?: string
+          current_streak?: number | null
+          habit_name?: string
+          id?: string
+          target_days?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      private_info: {
+        Row: {
+          age: number | null
+          created_at: string
+          daily_routine: string | null
+          drinking: boolean | null
+          id: string
+          late_sleep: boolean | null
+          medications: string | null
+          smoking: boolean | null
+          updated_at: string
+          user_id: string
+          weight: number | null
+        }
+        Insert: {
+          age?: number | null
+          created_at?: string
+          daily_routine?: string | null
+          drinking?: boolean | null
+          id?: string
+          late_sleep?: boolean | null
+          medications?: string | null
+          smoking?: boolean | null
+          updated_at?: string
+          user_id: string
+          weight?: number | null
+        }
+        Update: {
+          age?: number | null
+          created_at?: string
+          daily_routine?: string | null
+          drinking?: boolean | null
+          id?: string
+          late_sleep?: boolean | null
+          medications?: string | null
+          smoking?: boolean | null
+          updated_at?: string
+          user_id?: string
+          weight?: number | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+          username: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      rants: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          mood: string | null
+          privacy: string | null
+          title: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          mood?: string | null
+          privacy?: string | null
+          title?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          mood?: string | null
+          privacy?: string | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

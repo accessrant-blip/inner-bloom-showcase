@@ -15,7 +15,8 @@ import {
   Video,
   Mic,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  User
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -59,6 +60,7 @@ const Dashboard = () => {
     { icon: Heart, label: "Community", active: false, path: "/dashboard" },
     { icon: GraduationCap, label: "Learn & Grow", active: false, path: "/learn-grow" },
     { icon: Calendar, label: "Book Help", active: false, path: "/book-help" },
+    { icon: User, label: "Profile", active: false, path: "/profile" },
   ];
 
   return (
