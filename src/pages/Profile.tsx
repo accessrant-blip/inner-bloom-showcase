@@ -153,12 +153,21 @@ export default function Profile() {
                   You're not alone — help is just one click away ❤️
                 </p>
               </div>
-              <Button
-                onClick={() => setShowEmergencyModal(true)}
-                className="rounded-xl bg-warm-salmon hover:bg-warm-salmon/90 text-white shadow-glow"
-              >
-                Get Help Now
-              </Button>
+              <div className="flex flex-col gap-2">
+                <Button
+                  onClick={() => setShowEmergencyModal(true)}
+                  className="rounded-xl bg-warm-salmon hover:bg-warm-salmon/90 text-white shadow-glow"
+                >
+                  Get Help Now
+                </Button>
+                <Button
+                  onClick={() => setShowEmergencyModal(true)}
+                  variant="outline"
+                  className="rounded-xl border-warm-salmon/30 hover:bg-warm-salmon/10"
+                >
+                  Access Emergency Support
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>
