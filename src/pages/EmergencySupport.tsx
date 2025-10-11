@@ -365,7 +365,7 @@ export default function EmergencySupport() {
               onClick={handleAddContact}
               className="w-full rounded-xl bg-warm-orange hover:bg-warm-orange/90 text-white"
             >
-              Add Contact
+              Save
             </Button>
           </div>
         </DialogContent>
