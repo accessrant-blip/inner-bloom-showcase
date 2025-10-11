@@ -10,6 +10,7 @@ import LearnAndGrow from "./pages/LearnAndGrow";
 import BookHelp from "./pages/BookHelp";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
+import EmergencySupport from "./pages/EmergencySupport";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/emergency-support" element={<EmergencySupport />} />
           <Route path="/soul-stream" element={<SoulStream />} />
           <Route path="/learn-grow" element={<LearnAndGrow />} />
           <Route path="/book-help" element={<BookHelp />} />

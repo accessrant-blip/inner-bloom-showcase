@@ -161,7 +161,7 @@ export default function Profile() {
                   Get Help Now
                 </Button>
                 <Button
-                  onClick={() => setShowEmergencyModal(true)}
+                  onClick={() => navigate("/emergency-support")}
                   variant="outline"
                   className="rounded-xl border-warm-salmon/30 hover:bg-warm-salmon/10"
                 >
