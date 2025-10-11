@@ -305,7 +305,7 @@ export default function EmergencySupport() {
               <Button
                 onClick={handleSendAlert}
                 disabled={!selectedContact && !phoneNumber}
-                className="w-full rounded-xl bg-warm-orange hover:bg-warm-orange/90 text-white shadow-glow"
+                className="w-full rounded-xl bg-warm-salmon hover:bg-warm-salmon/90 text-white shadow-glow"
               >
                 Send Emergency Alert via WhatsApp
               </Button>
