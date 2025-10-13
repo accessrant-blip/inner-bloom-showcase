@@ -12,6 +12,13 @@ import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import EmergencySupport from "./pages/EmergencySupport";
 import NotFound from "./pages/NotFound";
+import WellnessToolkit from "./pages/WellnessToolkit";
+import BreatheWithMe from "./pages/toolkit/BreatheWithMe";
+import GroundYourself from "./pages/toolkit/GroundYourself";
+import JournalSpace from "./pages/toolkit/JournalSpace";
+import SelfCareReminder from "./pages/toolkit/SelfCareReminder";
+import TrackMyHabit from "./pages/toolkit/TrackMyHabit";
+import MiniGames from "./pages/toolkit/MiniGames";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +37,13 @@ const App = () => (
           <Route path="/soul-stream" element={<SoulStream />} />
           <Route path="/learn-grow" element={<LearnAndGrow />} />
           <Route path="/book-help" element={<BookHelp />} />
+          <Route path="/wellness-toolkit" element={<WellnessToolkit />} />
+          <Route path="/wellness-toolkit/breathe" element={<BreatheWithMe />} />
+          <Route path="/wellness-toolkit/ground" element={<GroundYourself />} />
+          <Route path="/wellness-toolkit/journal" element={<JournalSpace />} />
+          <Route path="/wellness-toolkit/reminder" element={<SelfCareReminder />} />
+          <Route path="/wellness-toolkit/habit" element={<TrackMyHabit />} />
+          <Route path="/wellness-toolkit/games" element={<MiniGames />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

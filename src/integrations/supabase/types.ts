@@ -89,6 +89,33 @@ export type Database = {
         }
         Relationships: []
       }
+      grounding_progress: {
+        Row: {
+          completed_count: number | null
+          created_at: string
+          id: string
+          last_completed_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_count?: number | null
+          created_at?: string
+          id?: string
+          last_completed_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_count?: number | null
+          created_at?: string
+          id?: string
+          last_completed_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       habits: {
         Row: {
           completed_dates: Json | null
@@ -222,6 +249,36 @@ export type Database = {
           mood?: string | null
           privacy?: string | null
           title?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      reminders: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean | null
+          message: string
+          time: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          message: string
+          time: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          message?: string
+          time?: string
           updated_at?: string
           user_id?: string
         }
