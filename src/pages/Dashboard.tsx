@@ -220,7 +220,7 @@ const Dashboard = () => {
     { icon: Users, label: "Rantbuddity", active: false, path: "/dashboard" },
     { icon: MessageSquare, label: "Rant", active: false, path: "/rant" },
     { icon: Radio, label: "Soul Stream", active: false, path: "/soul-stream" },
-    { icon: Heart, label: "Community", active: false, path: "/dashboard" },
+    { icon: Heart, label: "Connect", active: false, path: "/connect" },
     { icon: GraduationCap, label: "Learn & Grow", active: false, path: "/learn-grow" },
     { icon: Calendar, label: "Book Help", active: false, path: "/book-help" },
     { icon: User, label: "Profile", active: false, path: "/profile" },

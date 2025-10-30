@@ -21,6 +21,7 @@ import TrackMyHabit from "./pages/toolkit/TrackMyHabit";
 import MiniGames from "./pages/toolkit/MiniGames";
 import Rant from "./pages/Rant";
 import InstantRelief from "./pages/InstantRelief";
+import Connect from "./pages/Connect";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/book-help" element={<BookHelp />} />
           <Route path="/rant" element={<Rant />} />
           <Route path="/instant-relief" element={<InstantRelief />} />
+          <Route path="/connect" element={<Connect />} />
           <Route path="/wellness-toolkit" element={<WellnessToolkit />} />
           <Route path="/wellness-toolkit/breathe" element={<BreatheWithMe />} />
           <Route path="/wellness-toolkit/ground" element={<GroundYourself />} />
