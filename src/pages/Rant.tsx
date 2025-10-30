@@ -19,7 +19,7 @@ interface Rant {
   mood?: string;
   profiles?: {
     username: string;
-  };
+  } | null;
 }
 
 const Rant = () => {
@@ -46,19 +46,30 @@ const Rant = () => {
   const fetchPublicRants = async () => {
     const { data, error } = await supabase
       .from("rants")
-      .select(`
-        *,
-        profiles (
-          username
-        )
-      `)
-      .eq("privacy", "public")
+      .select("*")
+      .in("privacy", ["public", "anonymous"])
       .order("created_at", { ascending: false });
 
     if (error) {
       console.error("Error fetching rants:", error);
+      setPublicRants([]);
     } else {
-      setPublicRants(data || []);
+      // Fetch usernames separately for public posts
+      const rantsWithProfiles = await Promise.all(
+        (data || []).map(async (rant) => {
+          if (rant.user_id && rant.privacy === "public") {
+            const { data: profile } = await supabase
+              .from("profiles")
+              .select("username")
+              .eq("user_id", rant.user_id)
+              .single();
+            
+            return { ...rant, profiles: profile };
+          }
+          return { ...rant, profiles: null };
+        })
+      );
+      setPublicRants(rantsWithProfiles);
     }
   };
 
@@ -113,21 +124,25 @@ const Rant = () => {
       description: "Converting speech to text...",
     });
 
-    const { data, error } = await supabase.functions.invoke("transcribe-audio", {
-      body: { audio: base64Audio },
-    });
-
-    if (error || !data?.text) {
-      toast({
-        title: "Error",
-        description: "Failed to transcribe audio.",
-        variant: "destructive",
+    try {
+      const { data, error } = await supabase.functions.invoke("transcribe-audio", {
+        body: { audio: base64Audio },
       });
-    } else {
-      setRantText((prev) => prev + " " + data.text);
+
+      if (error || !data?.text) {
+        throw new Error("Transcription failed");
+      }
+      
+      setRantText((prev) => (prev ? prev + " " + data.text : data.text));
       toast({
         title: "Done!",
         description: "Voice converted to text.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to transcribe audio. Voice-to-text is not set up yet.",
+        variant: "destructive",
       });
     }
   };
@@ -161,11 +176,10 @@ const Rant = () => {
 
     setIsLoading(true);
 
-    const privacyValue = privacy === "anonymous" ? "public" : privacy;
-
+    // Store actual privacy value - don't convert anonymous to public
     const { error } = await supabase.from("rants").insert({
       content: rantText,
-      privacy: privacyValue,
+      privacy: privacy,
       user_id: currentUserId,
     });
 
@@ -180,10 +194,10 @@ const Rant = () => {
     } else {
       toast({
         title: "Posted!",
-        description: privacyValue === "public" ? "Your rant is now live in the community." : "Your private rant has been saved to your journal.",
+        description: privacy === "private" ? "Your private rant has been saved to your journal." : "Your rant is now live in the community.",
       });
       setRantText("");
-      if (privacyValue === "public") {
+      if (privacy !== "private") {
         fetchPublicRants();
       }
     }
@@ -304,7 +318,7 @@ const Rant = () => {
                 <Card key={rant.id} className="p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex justify-between items-start mb-3">
                     <p className="text-sm text-[#FF6B35] font-medium">
-                      Posted by {privacy === "anonymous" || !rant.profiles?.username ? "Anonymous" : rant.profiles.username}
+                      Posted by {rant.profiles?.username || "Anonymous"}
                     </p>
                     <span className="text-xs text-[#6B6B6B]">{formatTimestamp(rant.created_at)}</span>
                   </div>

@@ -33,6 +33,8 @@ const Dashboard = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [isPosting, setIsPosting] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
 
   useEffect(() => {
     getCurrentUser();
@@ -41,6 +43,95 @@ const Dashboard = () => {
   const getCurrentUser = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     setCurrentUserId(user?.id || null);
+  };
+
+  const startVoiceRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
+      const chunks: Blob[] = [];
+
+      recorder.ondataavailable = (e) => chunks.push(e.data);
+      recorder.onstop = async () => {
+        const blob = new Blob(chunks, { type: "audio/webm" });
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = async () => {
+          const base64Audio = reader.result?.toString().split(",")[1];
+          if (base64Audio) {
+            await transcribeAudio(base64Audio);
+          }
+        };
+        stream.getTracks().forEach((track) => track.stop());
+      };
+
+      recorder.start();
+      setMediaRecorder(recorder);
+      setIsRecording(true);
+      
+      toast({
+        title: "Recording...",
+        description: "Speak now. Click again to stop.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Could not access microphone.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const stopVoiceRecording = () => {
+    if (mediaRecorder && isRecording) {
+      mediaRecorder.stop();
+      setIsRecording(false);
+      setMediaRecorder(null);
+    }
+  };
+
+  const transcribeAudio = async (base64Audio: string) => {
+    toast({
+      title: "Processing...",
+      description: "Converting speech to text...",
+    });
+
+    try {
+      const { data, error } = await supabase.functions.invoke("transcribe-audio", {
+        body: { audio: base64Audio },
+      });
+
+      if (error || !data?.text) {
+        throw new Error("Transcription failed");
+      }
+      
+      setPostContent((prev) => (prev ? prev + " " + data.text : data.text));
+      toast({
+        title: "Done!",
+        description: "Voice converted to text.",
+      });
+    } catch (error) {
+      toast({
+        title: "Note",
+        description: "Voice-to-text requires OpenAI API key setup.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleVoiceClick = () => {
+    if (isRecording) {
+      stopVoiceRecording();
+    } else {
+      startVoiceRecording();
+    }
+  };
+
+  const handleVideoRecord = () => {
+    toast({
+      title: "Coming Soon",
+      description: "Video recording feature will be available soon!",
+    });
   };
 
   const wellnessReminders = [
@@ -81,11 +172,10 @@ const Dashboard = () => {
 
     setIsPosting(true);
 
-    const privacyValue = postType === "anonymous" ? "public" : postType;
-
+    // Store actual privacy value
     const { error } = await supabase.from("rants").insert({
       content: postContent,
-      privacy: privacyValue,
+      privacy: postType,
       user_id: currentUserId,
     });
 
@@ -100,9 +190,9 @@ const Dashboard = () => {
     } else {
       toast({
         title: "Posted!",
-        description: privacyValue === "public" 
-          ? "Your post is now live in the community feed." 
-          : "Your private post has been saved to your journal.",
+        description: postType === "private"
+          ? "Your private post has been saved to your journal."
+          : "Your post is now live in the community feed.",
       });
       setPostContent("");
     }
@@ -237,11 +327,24 @@ const Dashboard = () => {
               </RadioGroup>
 
               <div className="flex items-center gap-3">
-                <Button variant="outline" size="sm" className="border-[#E8DED0] text-[#6B6B6B] hover:bg-[#F5EFE6]">
+                <Button 
+                  onClick={handleVideoRecord}
+                  variant="outline" 
+                  size="sm" 
+                  className="border-[#E8DED0] text-[#6B6B6B] hover:bg-[#F5EFE6]"
+                >
                   <Video className="h-4 w-4 mr-2" />
                   Record Video
                 </Button>
-                <Button variant="outline" size="sm" className="border-[#E8DED0] text-[#6B6B6B] hover:bg-[#F5EFE6]">
+                <Button 
+                  onClick={handleVoiceClick}
+                  variant="outline" 
+                  size="sm" 
+                  className={`border-[#E8DED0] hover:bg-[#F5EFE6] ${
+                    isRecording ? "text-red-500 animate-pulse" : "text-[#6B6B6B]"
+                  }`}
+                  title={isRecording ? "Stop recording" : "Voice input"}
+                >
                   <Mic className="h-4 w-4" />
                 </Button>
                 <Button 
