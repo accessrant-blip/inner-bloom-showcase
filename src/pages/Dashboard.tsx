@@ -20,13 +20,28 @@ import {
   User
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [postType, setPostType] = useState("public");
+  const [postContent, setPostContent] = useState("");
   const [showEmergencyHelp, setShowEmergencyHelp] = useState(true);
   const [currentReminderIndex, setCurrentReminderIndex] = useState(0);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [isPosting, setIsPosting] = useState(false);
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+
+  const getCurrentUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    setCurrentUserId(user?.id || null);
+  };
 
   const wellnessReminders = [
     "Get sunlight every day, it boosts mood & sleep.",
@@ -43,6 +58,55 @@ const Dashboard = () => {
     }, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  const handlePostRant = async () => {
+    if (!postContent.trim()) {
+      toast({
+        title: "Empty post",
+        description: "Please write something before posting.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!currentUserId) {
+      toast({
+        title: "Not authenticated",
+        description: "Please log in to post.",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
+    setIsPosting(true);
+
+    const privacyValue = postType === "anonymous" ? "public" : postType;
+
+    const { error } = await supabase.from("rants").insert({
+      content: postContent,
+      privacy: privacyValue,
+      user_id: currentUserId,
+    });
+
+    setIsPosting(false);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to post. Please try again.",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Posted!",
+        description: privacyValue === "public" 
+          ? "Your post is now live in the community feed." 
+          : "Your private post has been saved to your journal.",
+      });
+      setPostContent("");
+    }
+  };
 
   const moods = [
     { emoji: "😊", label: "Happy" },
@@ -150,6 +214,8 @@ const Dashboard = () => {
             </div>
 
             <Textarea 
+              value={postContent}
+              onChange={(e) => setPostContent(e.target.value)}
               className="min-h-[120px] mb-4 border-[#E8DED0] focus:border-[#FF6B35] bg-[#FDFBF7]"
               placeholder="Start typing..."
             />
@@ -178,8 +244,12 @@ const Dashboard = () => {
                 <Button variant="outline" size="sm" className="border-[#E8DED0] text-[#6B6B6B] hover:bg-[#F5EFE6]">
                   <Mic className="h-4 w-4" />
                 </Button>
-                <Button className="bg-[#FF6B35] hover:bg-[#FF5722] text-white">
-                  Post
+                <Button 
+                  onClick={handlePostRant}
+                  disabled={!postContent.trim() || isPosting}
+                  className="bg-[#FF6B35] hover:bg-[#FF5722] text-white"
+                >
+                  {isPosting ? "Posting..." : "Post"}
                 </Button>
               </div>
             </div>
