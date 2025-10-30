@@ -16,7 +16,8 @@ import {
   Mic,
   ChevronDown,
   ChevronUp,
-  User
+  User,
+  MessageCircle
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -229,6 +230,7 @@ const Dashboard = () => {
 
   const sidebarItems = [
     { icon: Home, label: "Home", active: true, path: "/dashboard" },
+    { icon: MessageCircle, label: "Rant", active: false, path: "/rant" },
     { icon: Users, label: "Connect", active: false, path: "/connect" },
     { icon: MessageSquare, label: "Kai", active: false, path: "/kai" },
     { icon: Radio, label: "Soul Stream", active: false, path: "/soul-stream" },
