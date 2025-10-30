@@ -19,6 +19,7 @@ import JournalSpace from "./pages/toolkit/JournalSpace";
 import SelfCareReminder from "./pages/toolkit/SelfCareReminder";
 import TrackMyHabit from "./pages/toolkit/TrackMyHabit";
 import MiniGames from "./pages/toolkit/MiniGames";
+import Rant from "./pages/Rant";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/soul-stream" element={<SoulStream />} />
           <Route path="/learn-grow" element={<LearnAndGrow />} />
           <Route path="/book-help" element={<BookHelp />} />
+          <Route path="/rant" element={<Rant />} />
           <Route path="/wellness-toolkit" element={<WellnessToolkit />} />
           <Route path="/wellness-toolkit/breathe" element={<BreatheWithMe />} />
           <Route path="/wellness-toolkit/ground" element={<GroundYourself />} />
