@@ -31,7 +31,6 @@ const Dashboard = () => {
   const [postContent, setPostContent] = useState("");
   const [showEmergencyHelp, setShowEmergencyHelp] = useState(true);
   const [currentReminderIndex, setCurrentReminderIndex] = useState(0);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [isPosting, setIsPosting] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -234,7 +233,6 @@ const Dashboard = () => {
     { icon: Users, label: "Connect", active: false, path: "/connect" },
     { icon: MessageSquare, label: "Kai", active: false, path: "/kai" },
     { icon: Radio, label: "Soul Stream", active: false, path: "/soul-stream" },
-    { icon: Heart, label: "Connect", active: false, path: "/connect" },
     { icon: GraduationCap, label: "Learn & Grow", active: false, path: "/learn-grow" },
     { icon: Calendar, label: "Book Help", active: false, path: "/book-help" },
     { icon: User, label: "Profile", active: false, path: "/profile" },
@@ -243,21 +241,12 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-[#F5EFE6] flex">
       {/* Sidebar */}
-      <aside className={`${sidebarCollapsed ? 'w-20' : 'w-64'} bg-[#E8DED0] border-r border-[#D4C4B0] p-6 transition-all duration-300 relative`}>
-        {/* Toggle Button */}
-        <button
-          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          className="absolute -right-3 top-8 bg-[#FF6B35] hover:bg-[#FF5722] text-white rounded-full p-1.5 shadow-md transition-all duration-300 z-10"
-          aria-label="Toggle sidebar"
-        >
-          <ChevronRight className={`h-4 w-4 transition-transform duration-300 ${sidebarCollapsed ? '' : 'rotate-180'}`} />
-        </button>
-
-        <div className={`flex items-center gap-2 mb-8 ${sidebarCollapsed ? 'justify-center' : ''}`}>
+      <aside className="w-64 bg-[#E8DED0] border-r border-[#D4C4B0] p-6">
+        <div className="flex items-center gap-2 mb-8">
           <div className="w-8 h-8 bg-[#FF6B35] rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-sm">R</span>
           </div>
-          {!sidebarCollapsed && <span className="font-bold text-xl text-[#4A4A4A]">RANT</span>}
+          <span className="font-bold text-xl text-[#4A4A4A]">RANT</span>
         </div>
         
         <nav className="space-y-2">
@@ -265,15 +254,14 @@ const Dashboard = () => {
             <button
               key={item.label}
               onClick={() => navigate(item.path)}
-              className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-3'} px-4 py-3 rounded-lg transition-colors ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                 item.active
                   ? "bg-[#FF6B35] text-white"
                   : "text-[#6B6B6B] hover:bg-[#D4C4B0]"
               }`}
-              title={sidebarCollapsed ? item.label : undefined}
             >
               <item.icon className="h-5 w-5" />
-              {!sidebarCollapsed && <span className="text-sm font-medium">{item.label}</span>}
+              <span className="text-sm font-medium">{item.label}</span>
             </button>
           ))}
         </nav>

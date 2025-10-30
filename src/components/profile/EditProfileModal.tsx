@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { Loader2, Upload } from "lucide-react";
 
 interface EditProfileModalProps {
   open: boolean;
@@ -19,14 +20,62 @@ export function EditProfileModal({ open, onClose, profile, onUpdate }: EditProfi
   const [username, setUsername] = useState(profile?.username || "");
   const [bio, setBio] = useState(profile?.bio || "");
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState(profile?.avatar_url || "");
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      setUploading(true);
+      
+      if (!event.target.files || event.target.files.length === 0) {
+        return;
+      }
+
+      const file = event.target.files[0];
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${profile.user_id}/${Math.random()}.${fileExt}`;
+
+      // Upload to storage
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(fileName);
+
+      setAvatarUrl(publicUrl);
+
+      toast({
+        title: "Avatar uploaded! 📸",
+        description: "Your profile picture has been updated.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSave = async () => {
     setLoading(true);
     try {
       const { error } = await supabase
         .from('profiles')
-        .update({ username, bio })
+        .update({ 
+          username, 
+          bio,
+          avatar_url: avatarUrl 
+        })
         .eq('user_id', profile.user_id);
 
       if (error) throw error;
@@ -57,6 +106,42 @@ export function EditProfileModal({ open, onClose, profile, onUpdate }: EditProfi
         </DialogHeader>
         
         <div className="space-y-4 py-4">
+          {/* Avatar Upload */}
+          <div className="flex flex-col items-center gap-4">
+            <Avatar className="h-24 w-24 border-4 border-warm-orange/20">
+              <AvatarImage src={avatarUrl} />
+              <AvatarFallback className="bg-warm-peach text-warm-brown text-2xl">
+                {username?.[0]?.toUpperCase() || "U"}
+              </AvatarFallback>
+            </Avatar>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarUpload}
+              className="hidden"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="rounded-xl border-warm-orange/30"
+            >
+              {uploading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Uploading...
+                </>
+              ) : (
+                <>
+                  <Upload className="mr-2 h-4 w-4" />
+                  Upload Photo
+                </>
+              )}
+            </Button>
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="username">Username</Label>
             <Input
