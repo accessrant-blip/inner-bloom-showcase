@@ -26,7 +26,7 @@ const Rant = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [rantText, setRantText] = useState("");
-  const [privacy, setPrivacy] = useState("anonymous");
+  const [privacy, setPrivacy] = useState("public");
   const [publicRants, setPublicRants] = useState<Rant[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -176,10 +176,12 @@ const Rant = () => {
 
     setIsLoading(true);
 
-    // Store actual privacy value - don't convert anonymous to public
+    // Convert "public" to "anonymous" for anonymity
+    const privacyValue = privacy === "public" ? "anonymous" : "private";
+    
     const { error } = await supabase.from("rants").insert({
       content: rantText,
-      privacy: privacy,
+      privacy: privacyValue,
       user_id: currentUserId,
     });
 
@@ -271,28 +273,27 @@ const Rant = () => {
           <div className="mt-4 flex items-center justify-between">
             <div>
               <Label className="text-sm font-medium text-[#4A4A4A] mb-2 block">
-                Visibility:
+                Share as:
               </Label>
-              <RadioGroup value={privacy} onValueChange={setPrivacy} className="flex gap-4">
+              <RadioGroup value={privacy} onValueChange={setPrivacy} className="flex gap-6">
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="anonymous" id="anonymous" />
-                  <Label htmlFor="anonymous" className="cursor-pointer text-sm">
-                    Anonymous
+                  <RadioGroupItem value="public" id="public" className="border-[#FF6B35] text-[#FF6B35]" />
+                  <Label htmlFor="public" className="cursor-pointer text-sm text-[#4A4A4A]">
+                    Public (Anonymous)
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="private" id="private" />
-                  <Label htmlFor="private" className="cursor-pointer text-sm">
-                    Private
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="public" id="public" />
-                  <Label htmlFor="public" className="cursor-pointer text-sm">
-                    Public
+                  <RadioGroupItem value="private" id="private" className="border-[#FF6B35] text-[#FF6B35]" />
+                  <Label htmlFor="private" className="cursor-pointer text-sm text-[#4A4A4A]">
+                    Private (Journal Only)
                   </Label>
                 </div>
               </RadioGroup>
+              <p className="text-xs text-[#8B7355] mt-2">
+                {privacy === "public" 
+                  ? "Your post will appear in the community feed anonymously" 
+                  : "Only you can see this in your journal"}
+              </p>
             </div>
 
             <Button
@@ -300,7 +301,7 @@ const Rant = () => {
               disabled={!rantText.trim() || isLoading}
               className="bg-[#FF6B35] hover:bg-[#FF5722] text-white px-8"
             >
-              {isLoading ? "Posting..." : "Post Rant"}
+              {isLoading ? "Posting..." : "Post"}
             </Button>
           </div>
         </Card>
@@ -318,7 +319,7 @@ const Rant = () => {
                 <Card key={rant.id} className="p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex justify-between items-start mb-3">
                     <p className="text-sm text-[#FF6B35] font-medium">
-                      Posted by {rant.profiles?.username || "Anonymous"}
+                      Anonymous
                     </p>
                     <span className="text-xs text-[#6B6B6B]">{formatTimestamp(rant.created_at)}</span>
                   </div>
