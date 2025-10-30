@@ -15,15 +15,6 @@ interface MoodTrackerModalProps {
   } | null;
 }
 
-const moodGradients: Record<string, string> = {
-  Happy: "from-yellow-100 to-orange-100",
-  Good: "from-green-100 to-teal-100",
-  Okay: "from-gray-100 to-slate-100",
-  Sad: "from-blue-100 to-indigo-100",
-  Anxious: "from-purple-100 to-pink-100",
-  Angry: "from-red-100 to-orange-100",
-};
-
 const moodSuggestions: Record<string, { title: string; description: string; action: string; path: string }> = {
   Angry: {
     title: "Try Instant Relief Breathing",
@@ -119,7 +110,7 @@ export default function MoodTrackerModal({ isOpen, onClose, selectedMood }: Mood
 
   if (!selectedMood) return null;
 
-  const gradient = moodGradients[selectedMood.label] || "from-gray-100 to-slate-100";
+  const gradient = "from-pink-50 to-rose-50";
   const suggestion = moodSuggestions[selectedMood.label];
 
   return (
