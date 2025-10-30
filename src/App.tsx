@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import SoulStream from "./pages/SoulStream";
 import LearnAndGrow from "./pages/LearnAndGrow";
 import BookHelp from "./pages/BookHelp";
+import ProfessionalProfile from "./pages/ProfessionalProfile";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import EmergencySupport from "./pages/EmergencySupport";
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/soul-stream" element={<SoulStream />} />
           <Route path="/learn-grow" element={<LearnAndGrow />} />
           <Route path="/book-help" element={<BookHelp />} />
+          <Route path="/book-help/professional/:id" element={<ProfessionalProfile />} />
           <Route path="/kai" element={<Kai />} />
           <Route path="/instant-relief" element={<InstantRelief />} />
           <Route path="/connect" element={<Connect />} />

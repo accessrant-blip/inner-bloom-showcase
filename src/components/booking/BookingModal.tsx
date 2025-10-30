@@ -13,9 +13,21 @@ interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
   bookingType: "listener" | "therapist";
+  professionalId?: string;
+  professionalName?: string;
+  duration?: number;
+  amount?: number;
 }
 
-const BookingModal = ({ isOpen, onClose, bookingType }: BookingModalProps) => {
+const BookingModal = ({ 
+  isOpen, 
+  onClose, 
+  bookingType, 
+  professionalId,
+  professionalName,
+  duration = 30,
+  amount 
+}: BookingModalProps) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -33,36 +45,81 @@ const BookingModal = ({ isOpen, onClose, bookingType }: BookingModalProps) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
-      const { error } = await supabase.from("bookings").insert({
-        user_id: user?.id || null,
-        name: formData.name,
-        email: formData.email,
-        booking_type: bookingType,
-        booking_date: formData.date,
-        booking_time: formData.time,
-        mode: formData.mode,
-        notes: formData.notes,
-        status: "pending",
-      });
+      if (!user) {
+        toast({
+          title: "Error",
+          description: "You must be logged in to book a session",
+          variant: "destructive",
+        });
+        return;
+      }
 
-      if (error) throw error;
+      if (!professionalId) {
+        toast({
+          title: "Error",
+          description: "Professional not selected",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const calculatedAmount = amount || (bookingType === "listener" ? 250 : 1000);
+
+      const { data: booking, error: bookingError } = await supabase
+        .from("bookings")
+        .insert({
+          user_id: user.id,
+          professional_id: professionalId,
+          name: formData.name,
+          email: formData.email,
+          booking_date: formData.date,
+          booking_time: formData.time,
+          booking_type: bookingType,
+          mode: formData.mode,
+          notes: formData.notes,
+          duration: duration,
+          amount: calculatedAmount,
+          status: 'pending'
+        })
+        .select()
+        .single();
+
+      if (bookingError) throw bookingError;
+
+      // Create payment record
+      const { error: paymentError } = await supabase
+        .from("payments")
+        .insert({
+          booking_id: booking.id,
+          user_id: user.id,
+          professional_id: professionalId,
+          amount: calculatedAmount,
+          currency: 'INR',
+          payment_method: 'pending',
+          payment_status: 'pending',
+        });
+
+      if (paymentError) throw paymentError;
 
       toast({
-        title: "You're all set 💛",
-        description: "Someone will reach out soon.",
-        className: "bg-gradient-to-r from-[#fb971c] to-[#f05b5b] text-white border-none",
+        title: "Success!",
+        description: "Your booking has been confirmed. Proceeding to payment...",
       });
 
-      setFormData({
-        name: "",
-        email: "",
-        date: "",
-        time: "",
-        mode: "",
-        notes: "",
-      });
-      
-      onClose();
+      // Here you would normally redirect to payment gateway
+      // For now, we'll just show success
+      setTimeout(() => {
+        setFormData({
+          name: "",
+          email: "",
+          date: "",
+          time: "",
+          mode: "",
+          notes: "",
+        });
+        onClose();
+      }, 1500);
+
     } catch (error) {
       console.error("Error creating booking:", error);
       toast({
@@ -80,8 +137,13 @@ const BookingModal = ({ isOpen, onClose, bookingType }: BookingModalProps) => {
       <DialogContent className="max-w-md bg-[#fff8f2] border-2 border-[#5c2c2c]/20 rounded-3xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-[#5c2c2c] text-center">
-            Book a {bookingType === "listener" ? "Listener" : "Therapist"}
+            Book Session{professionalName ? ` with ${professionalName}` : ''}
           </DialogTitle>
+          {(duration || amount) && (
+            <p className="text-[#7d5a5a] text-center mt-2">
+              {duration} minutes • ₹{amount || (bookingType === "listener" ? 250 : 1000)}
+            </p>
+          )}
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">

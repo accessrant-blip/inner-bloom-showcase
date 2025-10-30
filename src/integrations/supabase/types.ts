@@ -16,48 +16,65 @@ export type Database = {
     Tables: {
       bookings: {
         Row: {
+          amount: number | null
           booking_date: string
           booking_time: string
           booking_type: string
           created_at: string
+          duration: number | null
           email: string
           id: string
           mode: string
           name: string
           notes: string | null
+          professional_id: string | null
           status: string | null
           updated_at: string
           user_id: string | null
         }
         Insert: {
+          amount?: number | null
           booking_date: string
           booking_time: string
           booking_type: string
           created_at?: string
+          duration?: number | null
           email: string
           id?: string
           mode: string
           name: string
           notes?: string | null
+          professional_id?: string | null
           status?: string | null
           updated_at?: string
           user_id?: string | null
         }
         Update: {
+          amount?: number | null
           booking_date?: string
           booking_time?: string
           booking_type?: string
           created_at?: string
+          duration?: number | null
           email?: string
           id?: string
           mode?: string
           name?: string
           notes?: string | null
+          professional_id?: string | null
           status?: string | null
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "bookings_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       circles: {
         Row: {
@@ -308,6 +325,66 @@ export type Database = {
         }
         Relationships: []
       }
+      payments: {
+        Row: {
+          amount: number
+          booking_id: string
+          created_at: string | null
+          currency: string
+          id: string
+          payment_gateway: string | null
+          payment_method: string
+          payment_status: string | null
+          professional_id: string
+          transaction_id: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          booking_id: string
+          created_at?: string | null
+          currency: string
+          id?: string
+          payment_gateway?: string | null
+          payment_method: string
+          payment_status?: string | null
+          professional_id: string
+          transaction_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          booking_id?: string
+          created_at?: string | null
+          currency?: string
+          id?: string
+          payment_gateway?: string | null
+          payment_method?: string
+          payment_status?: string | null
+          professional_id?: string
+          transaction_id?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       private_info: {
         Row: {
           age: number | null
@@ -347,6 +424,101 @@ export type Database = {
           updated_at?: string
           user_id?: string
           weight?: number | null
+        }
+        Relationships: []
+      }
+      professional_availability: {
+        Row: {
+          created_at: string | null
+          day_of_week: number
+          end_time: string
+          id: string
+          professional_id: string
+          start_time: string
+        }
+        Insert: {
+          created_at?: string | null
+          day_of_week: number
+          end_time: string
+          id?: string
+          professional_id: string
+          start_time: string
+        }
+        Update: {
+          created_at?: string | null
+          day_of_week?: number
+          end_time?: string
+          id?: string
+          professional_id?: string
+          start_time?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_availability_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      professionals: {
+        Row: {
+          alias: string | null
+          availability_status:
+            | Database["public"]["Enums"]["availability_status"]
+            | null
+          bio: string
+          created_at: string | null
+          currency: string | null
+          id: string
+          is_active: boolean | null
+          is_verified: boolean | null
+          name: string
+          profile_image_url: string | null
+          rate_per_session: number
+          role: Database["public"]["Enums"]["professional_role"]
+          specialties: string[] | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          alias?: string | null
+          availability_status?:
+            | Database["public"]["Enums"]["availability_status"]
+            | null
+          bio: string
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_verified?: boolean | null
+          name: string
+          profile_image_url?: string | null
+          rate_per_session: number
+          role: Database["public"]["Enums"]["professional_role"]
+          specialties?: string[] | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          alias?: string | null
+          availability_status?:
+            | Database["public"]["Enums"]["availability_status"]
+            | null
+          bio?: string
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_verified?: boolean | null
+          name?: string
+          profile_image_url?: string | null
+          rate_per_session?: number
+          role?: Database["public"]["Enums"]["professional_role"]
+          specialties?: string[] | null
+          updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -443,6 +615,60 @@ export type Database = {
         }
         Relationships: []
       }
+      sessions: {
+        Row: {
+          booking_id: string
+          created_at: string | null
+          ended_at: string | null
+          id: string
+          professional_id: string
+          session_type: string
+          session_url: string | null
+          started_at: string | null
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          booking_id: string
+          created_at?: string | null
+          ended_at?: string | null
+          id?: string
+          professional_id: string
+          session_type: string
+          session_url?: string | null
+          started_at?: string | null
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          booking_id?: string
+          created_at?: string | null
+          ended_at?: string | null
+          id?: string
+          professional_id?: string
+          session_type?: string
+          session_url?: string | null
+          started_at?: string | null
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sessions_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sessions_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_circles: {
         Row: {
           circle_id: string
@@ -480,7 +706,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      availability_status: "online" | "offline" | "busy"
+      professional_role: "listener" | "therapist"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -607,6 +834,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      availability_status: ["online", "offline", "busy"],
+      professional_role: ["listener", "therapist"],
+    },
   },
 } as const
