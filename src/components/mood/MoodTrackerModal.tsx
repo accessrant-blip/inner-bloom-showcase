@@ -145,7 +145,7 @@ export default function MoodTrackerModal({ isOpen, onClose, selectedMood }: Mood
                 </Button>
                 <Button
                   onClick={() => saveMood(false)}
-                  className="bg-warm-orange hover:bg-warm-orange/90"
+                  className="bg-[#FF8C42] hover:bg-[#FF8C42]/90 text-white font-semibold"
                 >
                   Save Note
                 </Button>
@@ -187,7 +187,7 @@ export default function MoodTrackerModal({ isOpen, onClose, selectedMood }: Mood
               </Button>
               <Button
                 onClick={handleSuggestionAction}
-                className="bg-warm-orange hover:bg-warm-orange/90"
+                className="bg-[#FF8C42] hover:bg-[#FF8C42]/90 text-white font-semibold"
               >
                 {suggestion.action}
               </Button>
