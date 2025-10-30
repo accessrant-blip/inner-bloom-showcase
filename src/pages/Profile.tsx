@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 import { 
   User, Edit, AlertCircle, Lock, Wind, Sprout, 
-  BookOpen, Bell, TrendingUp, Gamepad2, RefreshCw, LogOut, Heart
+  BookOpen, Bell, TrendingUp, Gamepad2, RefreshCw, LogOut, Heart, ArrowLeft
 } from "lucide-react";
 import { EditProfileModal } from "@/components/profile/EditProfileModal";
 import { EmergencyModal } from "@/components/profile/EmergencyModal";
@@ -85,7 +85,16 @@ export default function Profile() {
       {/* Header */}
       <div className="bg-white/50 backdrop-blur-sm border-b border-warm-brown/10 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-warm-brown">Your Profile 💫</h1>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              onClick={() => navigate("/dashboard")}
+              className="rounded-xl hover:bg-warm-brown/10"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <h1 className="text-2xl font-bold text-warm-brown">Your Profile 💫</h1>
+          </div>
           <Button
             variant="ghost"
             onClick={handleSignOut}
