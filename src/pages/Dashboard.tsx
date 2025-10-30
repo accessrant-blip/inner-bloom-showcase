@@ -377,7 +377,10 @@ const Dashboard = () => {
                   5-4-3-2-1: Name 5 things you see, 4 you feel, 3 you hear, 2 you smell, 1 you taste.
                 </p>
               </div>
-              <Button className="w-full bg-[#1976D2] hover:bg-[#1565C0] text-white">
+              <Button 
+                onClick={() => navigate("/instant-relief")}
+                className="w-full bg-[#1976D2] hover:bg-[#1565C0] text-white"
+              >
                 Do it now
               </Button>
             </div>
