@@ -4,12 +4,11 @@ import {
   Home, 
   Users, 
   MessageSquare, 
-  Search, 
   Radio, 
-  Heart, 
   GraduationCap, 
   Calendar,
-  Play
+  Play,
+  User
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -197,11 +196,10 @@ const SoulStream = () => {
     { icon: Home, label: "Home", active: false, path: "/dashboard" },
     { icon: Users, label: "Connect", active: false, path: "/connect" },
     { icon: MessageSquare, label: "Kai", active: false, path: "/kai" },
-    { icon: Search, label: "Find Better", active: false, path: "/dashboard" },
     { icon: Radio, label: "Soul Stream", active: true, path: "/soul-stream" },
-    { icon: Heart, label: "Connect", active: false, path: "/connect" },
-    { icon: GraduationCap, label: "Learn & Grow", active: false, path: "/dashboard" },
-    { icon: Calendar, label: "Book Help", active: false, path: "/dashboard" },
+    { icon: GraduationCap, label: "Learn & Grow", active: false, path: "/learn-grow" },
+    { icon: Calendar, label: "Book Help", active: false, path: "/book-help" },
+    { icon: User, label: "Profile", active: false, path: "/profile" },
   ];
 
   return (
