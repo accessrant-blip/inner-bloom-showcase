@@ -17,6 +17,9 @@ interface Rant {
   user_id: string;
   created_at: string;
   mood?: string;
+  profiles?: {
+    username: string;
+  };
 }
 
 const Rant = () => {
@@ -27,6 +30,8 @@ const Rant = () => {
   const [publicRants, setPublicRants] = useState<Rant[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
 
   useEffect(() => {
     getCurrentUser();
@@ -41,7 +46,12 @@ const Rant = () => {
   const fetchPublicRants = async () => {
     const { data, error } = await supabase
       .from("rants")
-      .select("*")
+      .select(`
+        *,
+        profiles (
+          username
+        )
+      `)
       .eq("privacy", "public")
       .order("created_at", { ascending: false });
 
@@ -49,6 +59,84 @@ const Rant = () => {
       console.error("Error fetching rants:", error);
     } else {
       setPublicRants(data || []);
+    }
+  };
+
+  const startVoiceRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
+      const chunks: Blob[] = [];
+
+      recorder.ondataavailable = (e) => chunks.push(e.data);
+      recorder.onstop = async () => {
+        const blob = new Blob(chunks, { type: "audio/webm" });
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = async () => {
+          const base64Audio = reader.result?.toString().split(",")[1];
+          if (base64Audio) {
+            await transcribeAudio(base64Audio);
+          }
+        };
+        stream.getTracks().forEach((track) => track.stop());
+      };
+
+      recorder.start();
+      setMediaRecorder(recorder);
+      setIsRecording(true);
+      
+      toast({
+        title: "Recording...",
+        description: "Speak now. Click again to stop.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Could not access microphone.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const stopVoiceRecording = () => {
+    if (mediaRecorder && isRecording) {
+      mediaRecorder.stop();
+      setIsRecording(false);
+      setMediaRecorder(null);
+    }
+  };
+
+  const transcribeAudio = async (base64Audio: string) => {
+    toast({
+      title: "Processing...",
+      description: "Converting speech to text...",
+    });
+
+    const { data, error } = await supabase.functions.invoke("transcribe-audio", {
+      body: { audio: base64Audio },
+    });
+
+    if (error || !data?.text) {
+      toast({
+        title: "Error",
+        description: "Failed to transcribe audio.",
+        variant: "destructive",
+      });
+    } else {
+      setRantText((prev) => prev + " " + data.text);
+      toast({
+        title: "Done!",
+        description: "Voice converted to text.",
+      });
+    }
+  };
+
+  const handleVoiceClick = () => {
+    if (isRecording) {
+      stopVoiceRecording();
+    } else {
+      startVoiceRecording();
     }
   };
 
@@ -156,8 +244,11 @@ const Rant = () => {
               className="min-h-[120px] resize-none border-[#D4C4B0] focus:border-[#FF6B35]"
             />
             <button
-              className="absolute bottom-3 right-3 text-[#6B6B6B] hover:text-[#FF6B35] transition-colors"
-              title="Voice input"
+              onClick={handleVoiceClick}
+              className={`absolute bottom-3 right-3 transition-colors ${
+                isRecording ? "text-red-500 animate-pulse" : "text-[#6B6B6B] hover:text-[#FF6B35]"
+              }`}
+              title={isRecording ? "Stop recording" : "Voice input"}
             >
               <Mic className="h-5 w-5" />
             </button>
@@ -212,7 +303,9 @@ const Rant = () => {
               publicRants.map((rant) => (
                 <Card key={rant.id} className="p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex justify-between items-start mb-3">
-                    <p className="text-sm text-[#FF6B35] font-medium">Posted by Anonymous</p>
+                    <p className="text-sm text-[#FF6B35] font-medium">
+                      Posted by {privacy === "anonymous" || !rant.profiles?.username ? "Anonymous" : rant.profiles.username}
+                    </p>
                     <span className="text-xs text-[#6B6B6B]">{formatTimestamp(rant.created_at)}</span>
                   </div>
                   
