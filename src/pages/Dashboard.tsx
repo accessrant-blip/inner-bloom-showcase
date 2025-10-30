@@ -447,6 +447,35 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
+
+                <div>
+                  <h4 className="font-semibold text-[#4A4A4A] mb-2">International</h4>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center p-3 bg-[#FDFBF7] rounded-lg">
+                      <div>
+                        <p className="font-medium text-[#4A4A4A]">Crisis Text Line</p>
+                        <p className="text-sm text-[#6B6B6B]">24/7 Crisis Support (US, UK, Canada, Ireland)</p>
+                      </div>
+                      <span className="text-[#FF6B35] font-semibold text-sm">
+                        Text HOME to 741741
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center p-3 bg-[#FDFBF7] rounded-lg">
+                      <div className="flex-1">
+                        <p className="font-medium text-[#4A4A4A]">International Suicide Hotlines</p>
+                        <p className="text-sm text-[#6B6B6B]">List of hotlines by country (via Befrienders Worldwide)</p>
+                      </div>
+                      <a 
+                        href="https://befrienders.org" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-[#FF6B35] font-semibold text-sm hover:underline whitespace-nowrap ml-2"
+                      >
+                        Visit Website
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
