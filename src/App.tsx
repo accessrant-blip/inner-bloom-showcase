@@ -23,6 +23,7 @@ import MiniGames from "./pages/toolkit/MiniGames";
 import Kai from "./pages/Kai";
 import InstantRelief from "./pages/InstantRelief";
 import Connect from "./pages/Connect";
+import Rant from "./pages/Rant";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ const App = () => (
           <Route path="/kai" element={<Kai />} />
           <Route path="/instant-relief" element={<InstantRelief />} />
           <Route path="/connect" element={<Connect />} />
+          <Route path="/rant" element={<Rant />} />
           <Route path="/wellness-toolkit" element={<WellnessToolkit />} />
           <Route path="/wellness-toolkit/breathe" element={<BreatheWithMe />} />
           <Route path="/wellness-toolkit/ground" element={<GroundYourself />} />
