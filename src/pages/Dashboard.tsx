@@ -289,13 +289,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Inspirational Quote */}
-          <div className="bg-gradient-to-r from-[#FFF4E6] to-[#FFE8CC] rounded-2xl p-6 border-l-4 border-[#FF6B35]">
-            <p className="text-[#D4933D] italic text-center">
-              "You are a child of the universe, no less than the trees and the stars; you have a right to be here."
-            </p>
-          </div>
-
           {/* Post Rant Section */}
           <div className="bg-white rounded-2xl p-8 shadow-sm border border-[#E8DED0]">
             <div className="flex items-center gap-3 mb-4">
@@ -394,6 +387,13 @@ const Dashboard = () => {
                 </p>
               </div>
             </div>
+          </div>
+
+          {/* Wellness Reminder - Inspirational Quote */}
+          <div className="bg-gradient-to-r from-[#FFF4E6] to-[#FFE8CC] rounded-2xl p-6 border-l-4 border-[#FF6B35]">
+            <p className="text-[#D4933D] italic text-center">
+              "You are a child of the universe, no less than the trees and the stars; you have a right to be here."
+            </p>
           </div>
 
           {/* Emergency Helplines */}
