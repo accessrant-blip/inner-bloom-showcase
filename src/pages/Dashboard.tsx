@@ -38,6 +38,7 @@ const Dashboard = () => {
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [selectedMood, setSelectedMood] = useState<{ emoji: string; label: string } | null>(null);
   const [isMoodModalOpen, setIsMoodModalOpen] = useState(false);
+  const [username, setUsername] = useState<string>("friend");
 
   useEffect(() => {
     getCurrentUser();
@@ -46,6 +47,19 @@ const Dashboard = () => {
   const getCurrentUser = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     setCurrentUserId(user?.id || null);
+    
+    if (user) {
+      // Fetch username from profile
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('username')
+        .eq('user_id', user.id)
+        .single();
+      
+      if (profile?.username) {
+        setUsername(profile.username);
+      }
+    }
   };
 
   const startVoiceRecording = async () => {
@@ -271,7 +285,7 @@ const Dashboard = () => {
           {/* Welcome Message */}
           <div>
             <h1 className="text-2xl font-medium text-[#4A4A4A] italic">
-              Hi, welcome back venting_ soul!
+              Hi, welcome back {username}!
             </h1>
           </div>
 
