@@ -134,7 +134,7 @@ export default function EmergencySupport() {
   const handleSendAlert = () => {
     const phone = selectedContact || phoneNumber;
     
-    if (!phone) {
+    if (!phone || phone.trim() === '') {
       toast({
         title: "No contact selected",
         description: "Please select or add a contact first",
@@ -152,8 +152,19 @@ export default function EmergencySupport() {
       return;
     }
 
-    // Format WhatsApp URL
-    const cleanPhone = phone.replace(/[^0-9]/g, '');
+    // Format WhatsApp URL - remove all non-numeric characters
+    const cleanPhone = phone.replace(/[^0-9+]/g, '');
+    
+    // Validate phone has digits
+    if (cleanPhone.replace(/\+/g, '').length < 10) {
+      toast({
+        title: "Invalid phone number",
+        description: "Please enter a valid phone number with country code",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
     
     window.open(whatsappUrl, '_blank');
@@ -305,7 +316,7 @@ export default function EmergencySupport() {
               <Button
                 onClick={handleSendAlert}
                 disabled={!selectedContact && !phoneNumber}
-                className="w-full rounded-xl bg-warm-orange hover:bg-warm-orange/90 text-white shadow-glow disabled:opacity-50 disabled:bg-warm-orange"
+                className="w-full rounded-xl bg-[#FF8C42] hover:bg-[#FF8C42]/90 text-white font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Send Message via WhatsApp
               </Button>
@@ -363,9 +374,9 @@ export default function EmergencySupport() {
             </div>
             <Button
               onClick={handleAddContact}
-              className="w-full rounded-xl bg-warm-orange hover:bg-warm-orange/90 text-white"
+              className="w-full rounded-xl bg-[#FF8C42] hover:bg-[#FF8C42]/90 text-white font-semibold"
             >
-              Save
+              Save Contact
             </Button>
           </div>
         </DialogContent>
