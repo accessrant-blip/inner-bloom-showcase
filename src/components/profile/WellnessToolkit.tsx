@@ -55,32 +55,11 @@ export function WellnessToolkit() {
       <CardContent>
         <Button
           onClick={() => navigate("/wellness-toolkit")}
-          className="w-full mb-6 rounded-xl gradient-hero text-primary-foreground hover:shadow-glow"
+          className="w-full rounded-xl gradient-hero text-primary-foreground hover:shadow-glow"
           size="lg"
         >
           Open Wellness Toolkit
         </Button>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {tools.slice(0, 3).map((tool) => (
-            <div
-              key={tool.title}
-              className="p-6 rounded-2xl border border-warm-brown/20 bg-gradient-to-br from-white to-warm-cream/30"
-            >
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${tool.gradient} flex items-center justify-center mb-4`}>
-                <tool.icon className="h-6 w-6 text-warm-brown" />
-              </div>
-              <h3 className="font-semibold text-warm-brown mb-1">{tool.title}</h3>
-              <p className="text-sm text-muted-foreground">{tool.description}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-6 p-4 rounded-2xl bg-warm-peach/20 border border-warm-orange/20">
-          <p className="text-sm text-warm-brown text-center">
-            Click "Open Wellness Toolkit" to access all tools 💛
-          </p>
-        </div>
       </CardContent>
     </Card>
   );
