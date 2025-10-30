@@ -200,7 +200,7 @@ export default function EmergencySupport() {
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
           <Button
             variant="ghost"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/dashboard")}
             className="rounded-xl hover:bg-warm-brown/10"
           >
             <ArrowLeft className="h-4 w-4" />
