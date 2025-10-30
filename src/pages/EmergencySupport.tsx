@@ -251,13 +251,13 @@ export default function EmergencySupport() {
                         variant="ghost"
                         size="sm"
                         onClick={() => {
+                          setPhoneNumber(contact.phone);
                           setSelectedContact(contact.phone);
-                          setPhoneNumber("");
                         }}
                         className={`rounded-xl ${
-                          selectedContact === contact.phone
-                            ? "bg-warm-orange/20 text-warm-orange"
-                            : "hover:bg-warm-orange/10"
+                          phoneNumber === contact.phone
+                            ? "bg-[#FF8C42]/20 text-[#FF8C42]"
+                            : "hover:bg-[#FF8C42]/10"
                         }`}
                       >
                         Select
