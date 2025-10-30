@@ -484,7 +484,11 @@ const Dashboard = () => {
 
       {/* Profile Avatar - Top Right */}
       <div className="absolute top-4 right-4">
-        <div className="w-10 h-10 bg-[#8B7355] rounded-full"></div>
+        <button
+          onClick={() => navigate("/profile")}
+          className="w-10 h-10 bg-[#8B7355] rounded-full hover:bg-[#6B5345] transition-colors cursor-pointer"
+          title="Go to Profile"
+        />
       </div>
 
       {/* Mood Tracker Modal */}
