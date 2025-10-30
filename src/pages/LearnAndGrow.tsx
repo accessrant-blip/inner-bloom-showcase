@@ -217,7 +217,10 @@ const LearnAndGrow = () => {
                   Mindfulness is about being fully present in the moment without judgment. Even 5 minutes daily can 
                   significantly reduce stress and improve emotional regulation.
                 </p>
-                <Button className="bg-[#1976D2] hover:bg-[#1565C0] text-white">
+                <Button 
+                  className="bg-[#1976D2] hover:bg-[#1565C0] text-white"
+                  onClick={() => navigate('/wellness-toolkit/breathe')}
+                >
                   Breathe With Me
                 </Button>
               </AccordionContent>
