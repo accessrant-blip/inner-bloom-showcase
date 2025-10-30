@@ -22,6 +22,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import MoodTrackerModal from "@/components/mood/MoodTrackerModal";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -35,6 +36,8 @@ const Dashboard = () => {
   const [isPosting, setIsPosting] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+  const [selectedMood, setSelectedMood] = useState<{ emoji: string; label: string } | null>(null);
+  const [isMoodModalOpen, setIsMoodModalOpen] = useState(false);
 
   useEffect(() => {
     getCurrentUser();
@@ -207,6 +210,11 @@ const Dashboard = () => {
     { emoji: "😠", label: "Angry" },
   ];
 
+  const handleMoodClick = (mood: { emoji: string; label: string }) => {
+    setSelectedMood(mood);
+    setIsMoodModalOpen(true);
+  };
+
   const sidebarItems = [
     { icon: Home, label: "Home", active: true, path: "/dashboard" },
     { icon: Users, label: "Rantbuddity", active: false, path: "/dashboard" },
@@ -280,7 +288,8 @@ const Dashboard = () => {
               {moods.map((mood) => (
                 <button
                   key={mood.label}
-                  className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-[#F5EFE6] transition-colors"
+                  onClick={() => handleMoodClick(mood)}
+                  className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-[#F5EFE6] transition-all hover:scale-105 active:scale-95"
                 >
                   <span className="text-4xl">{mood.emoji}</span>
                   <span className="text-sm text-[#6B6B6B]">{mood.label}</span>
@@ -448,6 +457,13 @@ const Dashboard = () => {
       <div className="absolute top-4 right-4">
         <div className="w-10 h-10 bg-[#8B7355] rounded-full"></div>
       </div>
+
+      {/* Mood Tracker Modal */}
+      <MoodTrackerModal
+        isOpen={isMoodModalOpen}
+        onClose={() => setIsMoodModalOpen(false)}
+        selectedMood={selectedMood}
+      />
     </div>
   );
 };

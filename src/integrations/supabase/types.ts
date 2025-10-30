@@ -149,6 +149,33 @@ export type Database = {
         }
         Relationships: []
       }
+      mood_journal: {
+        Row: {
+          created_at: string
+          id: string
+          mood: string
+          note: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mood: string
+          note?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mood?: string
+          note?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       private_info: {
         Row: {
           age: number | null
