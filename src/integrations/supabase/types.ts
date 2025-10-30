@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_chat: {
+        Row: {
+          created_at: string
+          id: string
+          messages: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          messages?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          messages?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           amount: number | null
@@ -195,6 +219,44 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      journal: {
+        Row: {
+          content: string
+          created_at: string
+          from_ai_chat: boolean | null
+          id: string
+          mood_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          from_ai_chat?: boolean | null
+          id?: string
+          mood_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          from_ai_chat?: boolean | null
+          id?: string
+          mood_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journal_mood_id_fkey"
+            columns: ["mood_id"]
+            isOneToOne: false
+            referencedRelation: "mood_journal"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       message_reactions: {
         Row: {
@@ -697,6 +759,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      wellness_sessions: {
+        Row: {
+          completed_at: string
+          created_at: string
+          duration: number | null
+          id: string
+          tool: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          created_at?: string
+          duration?: number | null
+          id?: string
+          tool: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          created_at?: string
+          duration?: number | null
+          id?: string
+          tool?: string
+          user_id?: string
+        }
+        Relationships: []
       }
     }
     Views: {
