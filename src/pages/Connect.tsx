@@ -25,8 +25,8 @@ const Connect = () => {
 
   const sidebarItems = [
     { icon: Home, label: "Home", active: false, path: "/dashboard" },
-    { icon: Users, label: "Rantbuddity", active: false, path: "/dashboard" },
-    { icon: MessageSquare, label: "Rant", active: false, path: "/rant" },
+    { icon: Users, label: "Connect", active: true, path: "/connect" },
+    { icon: MessageSquare, label: "Kai", active: false, path: "/kai" },
     { icon: Radio, label: "Soul Stream", active: false, path: "/soul-stream" },
     { icon: Heart, label: "Connect", active: true, path: "/connect" },
     { icon: GraduationCap, label: "Learn & Grow", active: false, path: "/learn-grow" },

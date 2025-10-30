@@ -19,7 +19,7 @@ import JournalSpace from "./pages/toolkit/JournalSpace";
 import SelfCareReminder from "./pages/toolkit/SelfCareReminder";
 import TrackMyHabit from "./pages/toolkit/TrackMyHabit";
 import MiniGames from "./pages/toolkit/MiniGames";
-import Rant from "./pages/Rant";
+import Kai from "./pages/Kai";
 import InstantRelief from "./pages/InstantRelief";
 import Connect from "./pages/Connect";
 
@@ -40,7 +40,7 @@ const App = () => (
           <Route path="/soul-stream" element={<SoulStream />} />
           <Route path="/learn-grow" element={<LearnAndGrow />} />
           <Route path="/book-help" element={<BookHelp />} />
-          <Route path="/rant" element={<Rant />} />
+          <Route path="/kai" element={<Kai />} />
           <Route path="/instant-relief" element={<InstantRelief />} />
           <Route path="/connect" element={<Connect />} />
           <Route path="/wellness-toolkit" element={<WellnessToolkit />} />
