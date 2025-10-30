@@ -152,14 +152,17 @@ export default function EmergencySupport() {
       return;
     }
 
-    // Format WhatsApp URL - remove all non-numeric characters
-    const cleanPhone = phone.replace(/[^0-9+]/g, '');
+    // Format WhatsApp URL - keep only numbers and +
+    let cleanPhone = phone.replace(/[^0-9+]/g, '');
     
-    // Validate phone has digits
-    if (cleanPhone.replace(/\+/g, '').length < 10) {
+    // Remove + from the number for the URL
+    cleanPhone = cleanPhone.replace(/\+/g, '');
+    
+    // Validate phone has enough digits
+    if (cleanPhone.length < 10) {
       toast({
         title: "Invalid phone number",
-        description: "Please enter a valid phone number with country code",
+        description: "Please enter a valid phone number with country code (e.g., +1234567890)",
         variant: "destructive",
       });
       return;
@@ -167,12 +170,19 @@ export default function EmergencySupport() {
     
     const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
     
-    window.open(whatsappUrl, '_blank');
-    
-    toast({
-      title: "Opening WhatsApp 💚",
-      description: "Your emergency alert is ready to send",
-    });
+    try {
+      window.open(whatsappUrl, '_blank');
+      toast({
+        title: "Opening WhatsApp 💚",
+        description: "Your emergency alert is ready to send",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Could not open WhatsApp. Make sure you have WhatsApp installed.",
+        variant: "destructive",
+      });
+    }
   };
 
   if (loading) {
@@ -289,19 +299,22 @@ export default function EmergencySupport() {
             </div>
 
             <div className="space-y-4">
-              <div>
-                <Label className="text-warm-brown mb-2 block">Or enter a phone number directly</Label>
-                <Input
-                  type="tel"
-                  placeholder="Phone number with country code"
-                  value={phoneNumber}
-                  onChange={(e) => {
-                    setPhoneNumber(e.target.value);
-                    setSelectedContact("");
-                  }}
-                  className="rounded-xl border-warm-brown/20 bg-warm-cream/30"
-                />
-              </div>
+            <div>
+              <Label className="text-warm-brown mb-2 block">Or enter a phone number directly</Label>
+              <Input
+                type="tel"
+                placeholder="+1234567890 (include country code)"
+                value={phoneNumber}
+                onChange={(e) => {
+                  setPhoneNumber(e.target.value);
+                  setSelectedContact("");
+                }}
+                className="rounded-xl border-warm-brown/20 bg-warm-cream/30"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Include country code (e.g., +1 for US, +91 for India)
+              </p>
+            </div>
 
               <div>
                 <Label className="text-warm-brown mb-2 block">Emergency Message</Label>
@@ -352,15 +365,18 @@ export default function EmergencySupport() {
               />
             </div>
             <div>
-              <Label htmlFor="phone" className="text-warm-brown">Phone Number *</Label>
+              <Label htmlFor="phone" className="text-warm-brown">Phone Number * (with country code)</Label>
               <Input
                 id="phone"
                 type="tel"
                 value={newContact.phone}
                 onChange={(e) => setNewContact({ ...newContact, phone: e.target.value })}
-                placeholder="+1234567890"
+                placeholder="+1234567890 (include country code)"
                 className="rounded-xl border-warm-brown/20 mt-1"
               />
+              <p className="text-xs text-muted-foreground mt-1">
+                Include country code (e.g., +1 for US, +91 for India)
+              </p>
             </div>
             <div>
               <Label htmlFor="relationship" className="text-warm-brown">Relationship</Label>
