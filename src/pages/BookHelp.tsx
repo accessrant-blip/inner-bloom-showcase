@@ -57,11 +57,11 @@ const BookHelp = () => {
   const therapists = professionals.filter(p => p.role === 'therapist');
 
   return (
-    <div className="min-h-screen bg-background/50">
-      {/* Header */}
-      <header className="bg-card/30 backdrop-blur-sm border-b border-border px-6 py-8">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold mb-3 text-foreground">
+    <div className="min-h-screen bg-background/50 p-6">
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-3 text-foreground">
             Find Support You Deserve 💛
           </h1>
           <p className="text-lg text-muted-foreground mb-1">
@@ -71,10 +71,6 @@ const BookHelp = () => {
             Your feelings deserve to be heard. Safe. Private. Compassionate.
           </p>
         </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8 bg-card/80 backdrop-blur-sm p-1 rounded-2xl shadow-soft">
             <TabsTrigger 

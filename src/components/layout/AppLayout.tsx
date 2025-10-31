@@ -52,7 +52,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           {/* Header */}
           <div className="p-4 border-b border-border flex items-center justify-between">
             {sidebarOpen && (
-              <h2 className="font-semibold text-lg text-foreground">Inner Bloom</h2>
+              <h2 className="font-semibold text-lg text-foreground">RANT</h2>
             )}
             <Button
               variant="ghost"
