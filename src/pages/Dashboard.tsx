@@ -4,20 +4,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { 
-  Home, 
-  Users, 
-  MessageSquare, 
-  Search, 
-  Radio, 
-  Heart, 
-  GraduationCap, 
-  Calendar,
   Video,
   Mic,
   ChevronDown,
-  ChevronUp,
-  User,
-  MessageCircle
+  ChevronUp
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -228,49 +218,10 @@ const Dashboard = () => {
     setIsMoodModalOpen(true);
   };
 
-  const sidebarItems = [
-    { icon: Home, label: "Home", active: true, path: "/dashboard" },
-    { icon: MessageCircle, label: "Rant", active: false, path: "/rant" },
-    { icon: Users, label: "Connect", active: false, path: "/connect" },
-    { icon: MessageSquare, label: "Kai", active: false, path: "/kai" },
-    { icon: Radio, label: "Soul Stream", active: false, path: "/soul-stream" },
-    { icon: GraduationCap, label: "Learn & Grow", active: false, path: "/learn-grow" },
-    { icon: Calendar, label: "Book Help", active: false, path: "/book-help" },
-    { icon: User, label: "Profile", active: false, path: "/profile" },
-  ];
-
   return (
-    <div className="min-h-screen gradient-soft flex page-transition">
-      {/* Sidebar */}
-      <aside className="w-64 bg-card border-r border-border p-6 shadow-soft">
-        <div className="flex items-center gap-2 mb-8">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-glow">
-            <span className="text-primary-foreground font-bold text-sm">R</span>
-          </div>
-          <span className="font-bold text-xl text-foreground">RANT</span>
-        </div>
-        
-        <nav className="space-y-2">
-          {sidebarItems.map((item) => (
-            <button
-              key={item.label}
-              onClick={() => navigate(item.path)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-                item.active
-                  ? "bg-primary text-primary-foreground shadow-glow"
-                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-              }`}
-            >
-              <item.icon className="h-5 w-5" />
-              <span className="text-sm font-medium">{item.label}</span>
-            </button>
-          ))}
-        </nav>
-      </aside>
-
+    <div className="min-h-screen bg-background/50 p-8">
       {/* Main Content */}
-      <main className="flex-1 p-8">
-        <div className="max-w-5xl mx-auto space-y-6">
+      <div className="max-w-5xl mx-auto space-y-6">
           {/* Welcome Message */}
           <div className="animate-fade-up">
             <h1 className="text-3xl font-medium text-foreground">
@@ -483,19 +434,17 @@ const Dashboard = () => {
               </div>
             )}
           </div>
+
+          {/* Profile Avatar - Top Right */}
+          <div className="absolute top-4 right-4">
+            <button
+              onClick={() => navigate("/profile")}
+              className="w-10 h-10 bg-primary/20 rounded-full hover:bg-primary/30 transition-all duration-300 cursor-pointer shadow-soft"
+              title="Go to Profile"
+            />
+          </div>
         </div>
-      </main>
 
-      {/* Profile Avatar - Top Right */}
-      <div className="absolute top-4 right-4">
-        <button
-          onClick={() => navigate("/profile")}
-          className="w-10 h-10 bg-primary/20 rounded-full hover:bg-primary/30 transition-all duration-300 cursor-pointer shadow-soft"
-          title="Go to Profile"
-        />
-      </div>
-
-      {/* Mood Tracker Modal */}
       <MoodTrackerModal
         isOpen={isMoodModalOpen}
         onClose={() => setIsMoodModalOpen(false)}
