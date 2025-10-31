@@ -35,20 +35,20 @@ const ProfessionalCard = ({ professional }: ProfessionalCardProps) => {
   };
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-[#5c2c2c]/10">
+    <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-soft hover:shadow-glow transition-all duration-300 border border-border animate-fade-in">
       <div className="flex items-start gap-4 mb-4">
-        <Avatar className="w-16 h-16 border-2 border-[#fb971c]">
+        <Avatar className="w-16 h-16 border-2 border-primary">
           <AvatarImage src={professional.profile_image_url || ""} alt={displayName} />
-          <AvatarFallback className="bg-gradient-to-br from-[#fb971c] to-[#f05b5b] text-white font-semibold">
+          <AvatarFallback className="bg-gradient-to-br from-primary to-primary-hover text-primary-foreground font-semibold">
             {initials}
           </AvatarFallback>
         </Avatar>
         
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-xl font-bold text-[#5c2c2c]">{displayName}</h3>
+            <h3 className="text-xl font-bold text-foreground">{displayName}</h3>
             {professional.is_verified && (
-              <Badge className="bg-[#fb971c] text-white border-none">
+              <Badge className="bg-primary text-primary-foreground border-none">
                 <Check className="w-3 h-3 mr-1" />
                 Verified
               </Badge>
@@ -57,36 +57,37 @@ const ProfessionalCard = ({ professional }: ProfessionalCardProps) => {
           
           <div className="flex items-center gap-2 text-sm">
             <span className={`inline-block w-2 h-2 rounded-full ${statusColors[professional.availability_status as keyof typeof statusColors]} ${professional.availability_status === 'online' ? 'animate-pulse' : ''}`}></span>
-            <span className="text-[#7d5a5a] capitalize">{professional.availability_status}</span>
+            <span className="text-muted-foreground capitalize">{professional.availability_status}</span>
           </div>
         </div>
       </div>
 
-      <p className="text-[#7d5a5a] text-sm mb-4 line-clamp-2 leading-relaxed">
+      <p className="text-muted-foreground text-sm mb-4 line-clamp-2 leading-relaxed">
         {professional.bio}
       </p>
 
       {professional.specialties && professional.specialties.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-4">
           {professional.specialties.slice(0, 3).map((specialty, index) => (
-            <Badge key={index} variant="outline" className="text-xs border-[#5c2c2c]/20 text-[#7d5a5a]">
+            <Badge key={index} variant="outline" className="text-xs border-border text-foreground">
               {specialty}
             </Badge>
           ))}
         </div>
       )}
 
-      <div className="flex items-center justify-between pt-4 border-t border-[#5c2c2c]/10">
+      <div className="flex items-center justify-between pt-4 border-t border-border">
         <div>
-          <div className="text-2xl font-bold text-[#5c2c2c]">
+          <div className="text-2xl font-bold text-foreground">
             ₹{professional.rate_per_session}
           </div>
-          <div className="text-xs text-[#7d5a5a]">per session</div>
+          <div className="text-xs text-muted-foreground">per session</div>
         </div>
 
         <Button
           onClick={() => navigate(`/book-help/professional/${professional.id}`)}
-          className="bg-gradient-to-r from-[#fb971c] to-[#f05b5b] hover:from-[#f05b5b] hover:to-[#fb971c] text-white font-semibold px-6 py-2 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+          variant="wellness"
+          className="px-6 py-2 rounded-xl shadow-soft hover:shadow-glow transition-all duration-300"
         >
           View Profile
         </Button>

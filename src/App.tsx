@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AppLayout from "./components/layout/AppLayout";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import SoulStream from "./pages/SoulStream";
@@ -34,27 +35,31 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
           <Route path="/emergency-support" element={<EmergencySupport />} />
-          <Route path="/soul-stream" element={<SoulStream />} />
-          <Route path="/learn-grow" element={<LearnAndGrow />} />
-          <Route path="/book-help" element={<BookHelp />} />
-          <Route path="/book-help/professional/:id" element={<ProfessionalProfile />} />
-          <Route path="/kai" element={<Kai />} />
-          <Route path="/instant-relief" element={<InstantRelief />} />
-          <Route path="/connect" element={<Connect />} />
-          <Route path="/rant" element={<Rant />} />
-          <Route path="/wellness-toolkit" element={<WellnessToolkit />} />
-          <Route path="/wellness-toolkit/breathe" element={<BreatheWithMe />} />
-          <Route path="/wellness-toolkit/ground" element={<GroundYourself />} />
-          <Route path="/wellness-toolkit/journal" element={<JournalSpace />} />
-          <Route path="/wellness-toolkit/reminder" element={<SelfCareReminder />} />
-          <Route path="/wellness-toolkit/habit" element={<TrackMyHabit />} />
-          <Route path="/wellness-toolkit/games" element={<MiniGames />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          
+          {/* App routes with persistent layout */}
+          <Route path="/dashboard" element={<AppLayout><Dashboard /></AppLayout>} />
+          <Route path="/profile" element={<AppLayout><Profile /></AppLayout>} />
+          <Route path="/soul-stream" element={<AppLayout><SoulStream /></AppLayout>} />
+          <Route path="/learn-grow" element={<AppLayout><LearnAndGrow /></AppLayout>} />
+          <Route path="/book-help" element={<AppLayout><BookHelp /></AppLayout>} />
+          <Route path="/book-help/professional/:id" element={<AppLayout><ProfessionalProfile /></AppLayout>} />
+          <Route path="/kai" element={<AppLayout><Kai /></AppLayout>} />
+          <Route path="/instant-relief" element={<AppLayout><InstantRelief /></AppLayout>} />
+          <Route path="/connect" element={<AppLayout><Connect /></AppLayout>} />
+          <Route path="/rant" element={<AppLayout><Rant /></AppLayout>} />
+          <Route path="/wellness-toolkit" element={<AppLayout><WellnessToolkit /></AppLayout>} />
+          <Route path="/wellness-toolkit/breathe" element={<AppLayout><BreatheWithMe /></AppLayout>} />
+          <Route path="/wellness-toolkit/ground" element={<AppLayout><GroundYourself /></AppLayout>} />
+          <Route path="/wellness-toolkit/journal" element={<AppLayout><JournalSpace /></AppLayout>} />
+          <Route path="/wellness-toolkit/reminder" element={<AppLayout><SelfCareReminder /></AppLayout>} />
+          <Route path="/wellness-toolkit/habit" element={<AppLayout><TrackMyHabit /></AppLayout>} />
+          <Route path="/wellness-toolkit/games" element={<AppLayout><MiniGames /></AppLayout>} />
+          
+          {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

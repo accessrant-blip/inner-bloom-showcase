@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import ProfessionalCard from "@/components/booking/ProfessionalCard";
 import { useToast } from "@/hooks/use-toast";
@@ -25,7 +23,6 @@ const BookHelp = () => {
   const [professionals, setProfessionals] = useState<Professional[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("listener");
-  const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -60,22 +57,24 @@ const BookHelp = () => {
   const therapists = professionals.filter(p => p.role === 'therapist');
 
   return (
-    <div className="min-h-screen gradient-misty font-['Poppins',_sans-serif] pb-24 page-transition">
+    <div className="min-h-screen bg-background/50">
       {/* Header */}
-      <header className="text-center pt-16 pb-8 px-6 animate-fade-up">
-        <h1 className="text-5xl md:text-6xl font-bold mb-4 text-foreground">
-          Find Support You Deserve 💛
-        </h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-2">
-          Connect with compassionate listeners or licensed therapists
-        </p>
-        <p className="text-sm text-muted-foreground italic">
-          Your feelings deserve to be heard. Safe. Private. Compassionate.
-        </p>
+      <header className="bg-card/30 backdrop-blur-sm border-b border-border px-6 py-8">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-bold mb-3 text-foreground">
+            Find Support You Deserve 💛
+          </h1>
+          <p className="text-lg text-muted-foreground mb-1">
+            Connect with compassionate listeners or licensed therapists
+          </p>
+          <p className="text-sm text-muted-foreground italic">
+            Your feelings deserve to be heard. Safe. Private. Compassionate.
+          </p>
+        </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6">
+      <main className="max-w-7xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8 bg-card/80 backdrop-blur-sm p-1 rounded-2xl shadow-soft">
             <TabsTrigger 
@@ -98,7 +97,7 @@ const BookHelp = () => {
             </div>
           ) : (
             <>
-              <TabsContent value="listener" className="mt-0">
+              <TabsContent value="listener" className="mt-0 animate-fade-in">
                 <div className="mb-6 text-center">
                   <p className="text-muted-foreground text-lg">
                     ₹250 for 10 minutes • They listen with empathy, not judgment
@@ -118,7 +117,7 @@ const BookHelp = () => {
                 )}
               </TabsContent>
 
-              <TabsContent value="therapist" className="mt-0">
+              <TabsContent value="therapist" className="mt-0 animate-fade-in">
                 <div className="mb-6 text-center">
                   <p className="text-muted-foreground text-lg">
                     ₹1000 per session • Licensed professionals with verified credentials
@@ -142,23 +141,12 @@ const BookHelp = () => {
         </Tabs>
 
         {/* Safety Disclaimer */}
-        <div className="mt-12 max-w-3xl mx-auto bg-warning-soft border-2 border-warning/30 rounded-2xl p-6 shadow-soft">
-          <p className="text-sm text-foreground text-center leading-relaxed">
+        <div className="mt-12 max-w-3xl mx-auto bg-warning/10 border border-warning/30 rounded-2xl p-6 shadow-soft">
+          <p className="text-sm text-foreground leading-relaxed text-left">
             <strong>Important Safety Notice:</strong> This is not an emergency service. If you're in crisis or experiencing thoughts of self-harm, please contact emergency helplines immediately: <strong>AASRA: 91-22-27546669</strong> or <strong>Vandrevala Foundation: 1860-2662-345</strong>
           </p>
         </div>
       </main>
-
-      {/* Floating Back Button */}
-      <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-10">
-        <Button
-          onClick={() => navigate("/dashboard")}
-          className="bg-card/90 backdrop-blur-sm text-foreground hover:bg-card shadow-glow rounded-full px-8 py-6 font-semibold text-lg flex items-center gap-3 border-2 border-border hover:border-primary transition-all duration-300 hover:scale-105"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          Back to Dashboard
-        </Button>
-      </div>
     </div>
   );
 };

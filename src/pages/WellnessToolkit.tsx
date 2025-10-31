@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Wind, Sprout, BookOpen, Bell, TrendingUp, Gamepad2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Wind, Sprout, BookOpen, Bell, TrendingUp, Gamepad2 } from "lucide-react";
 
 export default function WellnessToolkit() {
   const navigate = useNavigate();
@@ -13,42 +12,42 @@ export default function WellnessToolkit() {
       icon: Wind,
       title: "Breathe With Me",
       description: "Guided breathing exercises",
-      gradient: "from-blue-100 to-blue-50"
+      gradient: "from-primary/20 to-primary/10"
     },
     {
       id: "ground",
       icon: Sprout,
       title: "Ground Yourself",
       description: "Grounding techniques",
-      gradient: "from-green-100 to-green-50"
+      gradient: "from-primary/30 to-primary/15"
     },
     {
       id: "journal",
       icon: BookOpen,
       title: "Journal",
       description: "Your private thoughts",
-      gradient: "from-purple-100 to-purple-50"
+      gradient: "from-primary/25 to-primary/10"
     },
     {
       id: "reminder",
       icon: Bell,
       title: "Self Care Reminder",
       description: "Set wellness reminders",
-      gradient: "from-pink-100 to-pink-50"
+      gradient: "from-primary/20 to-primary/10"
     },
     {
       id: "habit",
       icon: TrendingUp,
       title: "Track My Habit",
       description: "Monitor your progress",
-      gradient: "from-amber-100 to-amber-50"
+      gradient: "from-primary/25 to-primary/15"
     },
     {
       id: "games",
       icon: Gamepad2,
       title: "Mini Games",
       description: "Relax and play",
-      gradient: "from-indigo-100 to-indigo-50"
+      gradient: "from-primary/30 to-primary/10"
     }
   ];
 
@@ -57,19 +56,10 @@ export default function WellnessToolkit() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-warm-cream via-white to-warm-peach/20">
-      <div className="container max-w-6xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-background/50">
+      <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="mb-8">
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/profile")}
-            className="mb-4 text-warm-brown hover:bg-warm-cream"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Profile
-          </Button>
-          
-          <h1 className="text-4xl font-bold text-warm-brown mb-2">
+          <h1 className="text-4xl font-bold text-foreground mb-2">
             Wellness Toolkit 🌿
           </h1>
           <p className="text-lg text-muted-foreground">
@@ -82,19 +72,19 @@ export default function WellnessToolkit() {
             <button
               key={tool.id}
               onClick={() => handleToolClick(tool.id)}
-              className="group p-8 rounded-3xl border border-warm-brown/20 hover:border-warm-orange/40 transition-all hover:shadow-soft bg-gradient-to-br from-white to-warm-cream/30 hover:scale-105 animate-fade-in"
+              className="group p-8 rounded-3xl border border-border hover:border-primary/40 transition-all hover:shadow-soft bg-card hover:scale-105 animate-fade-in"
             >
               <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${tool.gradient} flex items-center justify-center mb-6 group-hover:shadow-glow transition-shadow mx-auto`}>
-                <tool.icon className="h-8 w-8 text-warm-brown" />
+                <tool.icon className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="font-semibold text-xl text-warm-brown mb-2">{tool.title}</h3>
+              <h3 className="font-semibold text-xl text-foreground mb-2">{tool.title}</h3>
               <p className="text-sm text-muted-foreground">{tool.description}</p>
             </button>
           ))}
         </div>
 
-        <div className="mt-8 p-6 rounded-3xl bg-warm-peach/20 border border-warm-orange/20 animate-fade-in">
-          <p className="text-center text-warm-brown">
+        <div className="mt-8 p-6 rounded-3xl bg-primary/5 border border-primary/20 animate-fade-in">
+          <p className="text-center text-foreground">
             Each tool is designed with care to support your mental wellbeing 💛
           </p>
         </div>

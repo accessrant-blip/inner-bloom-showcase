@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Send, Loader2, Heart, Wind, BookOpen, Users, AlertCircle } from "lucide-react";
+import { Send, Loader2, Heart, Wind, BookOpen, Users, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -197,7 +197,7 @@ const Kai = () => {
             variant="outline"
             size="sm"
             onClick={() => navigate("/wellness-toolkit/breathe")}
-            className="gap-2"
+            className="gap-2 rounded-xl border-border hover:bg-muted"
           >
             <Wind className="h-4 w-4" />
             Try Breathing Tool
@@ -209,7 +209,7 @@ const Kai = () => {
             variant="outline"
             size="sm"
             onClick={() => navigate("/wellness-toolkit/journal")}
-            className="gap-2"
+            className="gap-2 rounded-xl border-border hover:bg-muted"
           >
             <BookOpen className="h-4 w-4" />
             Journal This
@@ -221,7 +221,7 @@ const Kai = () => {
             variant="outline"
             size="sm"
             onClick={() => navigate("/wellness-toolkit/ground")}
-            className="gap-2"
+            className="gap-2 rounded-xl border-border hover:bg-muted"
           >
             <Heart className="h-4 w-4" />
             Ground Yourself
@@ -233,7 +233,7 @@ const Kai = () => {
             variant="outline"
             size="sm"
             onClick={() => navigate("/connect")}
-            className="gap-2"
+            className="gap-2 rounded-xl border-border hover:bg-muted"
           >
             <Users className="h-4 w-4" />
             Join Circle
@@ -245,20 +245,12 @@ const Kai = () => {
   };
 
   return (
-    <div className="min-h-screen gradient-misty flex flex-col page-transition">
+    <div className="min-h-screen bg-background/50 flex flex-col">
       {/* Header */}
-      <header className="bg-card/80 backdrop-blur-sm border-b border-border px-6 py-4 sticky top-0 z-10 shadow-soft">
-        <div className="max-w-4xl mx-auto flex items-center gap-4">
-          <button
-            onClick={() => navigate("/dashboard")}
-            className="text-muted-foreground hover:text-primary transition-colors duration-300"
-          >
-            <ArrowLeft className="h-6 w-6" />
-          </button>
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Chat with Kai</h1>
-            <p className="text-sm text-muted-foreground">Your compassionate AI companion</p>
-          </div>
+      <header className="bg-card/30 backdrop-blur-sm border-b border-border px-6 py-6">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-3xl font-bold text-foreground mb-2">Chat with Kai 💬</h1>
+          <p className="text-muted-foreground">Your compassionate AI companion</p>
         </div>
       </header>
 
@@ -275,7 +267,7 @@ const Kai = () => {
                   message.role === "user"
                     ? "bg-primary text-primary-foreground"
                     : "bg-card text-foreground"
-                } shadow-soft animate-fade-in border-border`}
+                } shadow-soft animate-fade-in border-border rounded-2xl`}
               >
                 <p className="whitespace-pre-wrap">{message.content}</p>
                 {message.content && (
@@ -296,8 +288,8 @@ const Kai = () => {
           
           {/* Mood-based suggestions */}
           {detectedMood && !isLoading && (
-            <div className="flex justify-center">
-              <div className="bg-card/50 backdrop-blur-sm rounded-lg p-4 flex items-center gap-3">
+            <div className="flex justify-center animate-fade-in">
+              <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-3 shadow-soft border border-border">
                 <p className="text-sm text-muted-foreground">Need extra support?</p>
                 {getSuggestionButton()}
               </div>
@@ -309,14 +301,14 @@ const Kai = () => {
       </div>
 
       {/* Input Area */}
-      <div className="bg-card border-t border-border px-6 py-4 sticky bottom-0 shadow-soft">
+      <div className="bg-card/80 backdrop-blur-sm border-t border-border px-6 py-4 sticky bottom-0 shadow-soft">
         <div className="max-w-4xl mx-auto flex gap-3">
           <Textarea
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Share what's on your mind..."
-            className="min-h-[60px] max-h-[120px] resize-none border-border rounded-xl"
+            className="min-h-[60px] max-h-[120px] resize-none border-border rounded-xl bg-background"
             disabled={isLoading}
           />
           <Button
@@ -371,7 +363,7 @@ const Kai = () => {
           <AlertDialogFooter>
             <AlertDialogAction
               onClick={() => setShowSafetyDialog(false)}
-              className="bg-primary hover:bg-primary-hover rounded-xl"
+              className="bg-primary hover:bg-primary/90 rounded-xl"
             >
               I Understand
             </AlertDialogAction>
