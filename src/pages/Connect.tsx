@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Home, Users, MessageSquare, Radio, Heart, GraduationCap, Calendar, User } from "lucide-react";
+import { Users } from "lucide-react";
 import CircleChat from "@/components/connect/CircleChat";
 
 interface Circle {
@@ -21,18 +20,6 @@ const Connect = () => {
   const [userCircles, setUserCircles] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
-  const navigate = useNavigate();
-
-  const sidebarItems = [
-    { icon: Home, label: "Home", active: false, path: "/dashboard" },
-    { icon: Users, label: "Connect", active: true, path: "/connect" },
-    { icon: MessageSquare, label: "Kai", active: false, path: "/kai" },
-    { icon: Radio, label: "Soul Stream", active: false, path: "/soul-stream" },
-    { icon: Heart, label: "Connect", active: true, path: "/connect" },
-    { icon: GraduationCap, label: "Learn & Grow", active: false, path: "/learn-grow" },
-    { icon: Calendar, label: "Book Help", active: false, path: "/book-help" },
-    { icon: User, label: "Profile", active: false, path: "/profile" },
-  ];
 
   useEffect(() => {
     fetchCircles();
@@ -115,40 +102,12 @@ const Connect = () => {
   }
 
   return (
-    <div className="min-h-screen gradient-soft flex page-transition">
-      {/* Sidebar */}
-      <aside className="hidden md:flex md:w-64 lg:w-72 bg-card border-r border-border flex-col shadow-soft">
-        <div className="p-6 border-b border-border">
-          <h1 className="text-2xl font-bold text-foreground">Rant</h1>
+    <div className="min-h-screen bg-background/50 p-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-8 animate-fade-up">
+          <h1 className="text-4xl font-bold text-foreground mb-2">Join the Conversation</h1>
+          <p className="text-primary text-lg">Find a group that resonates with you.</p>
         </div>
-        <nav className="flex-1 p-4">
-          <ul className="space-y-2">
-            {sidebarItems.map((item) => (
-              <li key={item.label}>
-                <button
-                  onClick={() => navigate(item.path)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-                    item.active
-                      ? "bg-primary text-primary-foreground shadow-glow"
-                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                  }`}
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span className="font-medium">{item.label}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </aside>
-
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto">
-        <div className="container mx-auto p-6 max-w-6xl">
-          <div className="mb-8 animate-fade-up">
-            <h1 className="text-4xl font-bold text-foreground mb-2">Join the Conversation</h1>
-            <p className="text-primary text-lg">Find a group that resonates with you.</p>
-          </div>
 
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -208,7 +167,6 @@ const Connect = () => {
               })}
             </div>
           )}
-        </div>
       </div>
     </div>
   );

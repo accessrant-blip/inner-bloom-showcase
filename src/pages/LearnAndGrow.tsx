@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -7,63 +6,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Home,
-  Users,
-  MessageSquare,
-  Search,
-  Radio,
-  Heart,
-  GraduationCap,
-  Calendar,
-} from "lucide-react";
 
 const LearnAndGrow = () => {
-  const navigate = useNavigate();
-
-  const sidebarItems = [
-    { icon: Home, label: "Home", active: false, path: "/dashboard" },
-    { icon: Users, label: "Connect", active: false, path: "/connect" },
-    { icon: MessageSquare, label: "Kai", active: false, path: "/kai" },
-    { icon: Search, label: "Find Better", active: false, path: "/dashboard" },
-    { icon: Radio, label: "Soul Stream", active: false, path: "/soul-stream" },
-    { icon: Heart, label: "Connect", active: false, path: "/connect" },
-    { icon: GraduationCap, label: "Learn & Grow", active: true, path: "/learn-grow" },
-    { icon: Calendar, label: "Book Help", active: false, path: "/dashboard" },
-  ];
-
   return (
-    <div className="min-h-screen gradient-soft flex page-transition">
-      {/* Sidebar */}
-      <aside className="w-64 bg-card border-r border-border p-6 shadow-soft">
-        <div className="flex items-center gap-2 mb-8">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-glow">
-            <span className="text-primary-foreground font-bold text-sm">R</span>
-          </div>
-          <span className="font-bold text-xl text-foreground">RANT</span>
-        </div>
-
-        <nav className="space-y-2">
-          {sidebarItems.map((item) => (
-            <button
-              key={item.label}
-              onClick={() => navigate(item.path)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-                item.active
-                  ? "bg-primary text-primary-foreground shadow-glow"
-                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-              }`}
-            >
-              <item.icon className="h-5 w-5" />
-              <span className="text-sm font-medium">{item.label}</span>
-            </button>
-          ))}
-        </nav>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 p-8 overflow-y-auto">
-        <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-background/50 p-8">
+      <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8 animate-fade-up">
             <h1 className="text-4xl font-bold text-foreground mb-3">Learn & Grow</h1>
@@ -375,14 +322,14 @@ const LearnAndGrow = () => {
                   Substances might provide temporary relief, but they often worsen mental health over time. 
                   If you're using substances to cope, please reach out for professional support.
                 </p>
-                <Button variant="wellness" className="rounded-xl" onClick={() => navigate('/book-help')}>
+                <Button variant="wellness" className="rounded-xl" onClick={() => {window.location.href = '/book-help'}}>
                   Find Professional Support
                 </Button>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
         </div>
-      </main>
+      </div>
     </div>
   );
 };

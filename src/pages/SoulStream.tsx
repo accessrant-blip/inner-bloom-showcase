@@ -1,16 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { 
-  Home, 
-  Users, 
-  MessageSquare, 
-  Radio, 
-  GraduationCap, 
-  Calendar,
-  Play,
-  User
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Play } from "lucide-react";
 
 interface Video {
   id: string;
@@ -25,7 +15,6 @@ interface Category {
 }
 
 const SoulStream = () => {
-  const navigate = useNavigate();
   const [playingVideo, setPlayingVideo] = useState<string | null>(null);
 
   const categories: Category[] = [
@@ -192,48 +181,9 @@ const SoulStream = () => {
     }
   ];
 
-  const sidebarItems = [
-    { icon: Home, label: "Home", active: false, path: "/dashboard" },
-    { icon: Users, label: "Connect", active: false, path: "/connect" },
-    { icon: MessageSquare, label: "Kai", active: false, path: "/kai" },
-    { icon: Radio, label: "Soul Stream", active: true, path: "/soul-stream" },
-    { icon: GraduationCap, label: "Learn & Grow", active: false, path: "/learn-grow" },
-    { icon: Calendar, label: "Book Help", active: false, path: "/book-help" },
-    { icon: User, label: "Profile", active: false, path: "/profile" },
-  ];
-
   return (
-    <div className="min-h-screen gradient-soft flex page-transition">
-      {/* Sidebar */}
-      <aside className="w-64 bg-card border-r border-border p-6 fixed h-full overflow-y-auto shadow-soft">
-        <div className="flex items-center gap-2 mb-8">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-glow">
-            <span className="text-primary-foreground font-bold text-sm">R</span>
-          </div>
-          <span className="font-bold text-xl text-foreground">RANT</span>
-        </div>
-        
-        <nav className="space-y-2">
-          {sidebarItems.map((item) => (
-            <button
-              key={item.label}
-              onClick={() => navigate(item.path)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-                item.active
-                  ? "bg-primary text-primary-foreground shadow-glow"
-                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-              }`}
-            >
-              <item.icon className="h-5 w-5" />
-              <span className="text-sm font-medium">{item.label}</span>
-            </button>
-          ))}
-        </nav>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 ml-64 p-8">
-        <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-background/50 p-8">
+      <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8 animate-fade-up">
             <h1 className="text-4xl font-bold text-foreground mb-2">Soul Stream</h1>
@@ -302,11 +252,6 @@ const SoulStream = () => {
             ))}
           </div>
         </div>
-      </main>
-
-      {/* Profile Avatar - Top Right */}
-      <div className="fixed top-4 right-4">
-        <div className="w-10 h-10 bg-primary/20 rounded-full cursor-pointer"></div>
       </div>
     </div>
   );
