@@ -9,68 +9,64 @@ All colors MUST be HSL format for consistent theming.
 @layer base {
   :root {
     /* Base Colors - Calming and Professional */
-    --background: 180 20% 98%;
-    --foreground: 220 15% 25%;
+    --background: 150 25% 98%;
+    --foreground: 150 15% 20%;
 
     /* Card and Surface Colors */
     --card: 0 0% 100%;
-    --card-foreground: 220 15% 25%;
+    --card-foreground: 150 15% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 25%;
+    --popover-foreground: 150 15% 20%;
 
     /* Primary - Calming Sage Green */
-    --primary: 150 25% 45%;
+    --primary: 150 35% 48%;
     --primary-foreground: 0 0% 100%;
-    --primary-soft: 150 30% 85%;
-    --primary-glow: 150 40% 65%;
+    --primary-soft: 150 30% 92%;
+    --primary-glow: 150 40% 70%;
+    --primary-hover: 150 35% 42%;
 
-    /* Secondary - Soft Lavender */
-    --secondary: 260 20% 85%;
-    --secondary-foreground: 220 15% 25%;
-    --secondary-accent: 260 35% 65%;
+    /* Secondary - Soft Mint */
+    --secondary: 150 20% 92%;
+    --secondary-foreground: 150 15% 20%;
+    --secondary-accent: 150 30% 75%;
 
-    /* Accent - Calming Blue */
-    --accent: 200 50% 70%;
-    --accent-foreground: 0 0% 100%;
-    --accent-soft: 200 30% 90%;
-
-    /* Warm Book Help Theme */
-    --warm-brown: 0 37% 27%;
-    --warm-cream: 30 100% 97%;
-    --warm-orange: 33 97% 55%;
-    --warm-salmon: 0 83% 65%;
-    --warm-peach: 20 100% 95%;
+    /* Accent - Soft Teal */
+    --accent: 170 35% 90%;
+    --accent-foreground: 150 15% 20%;
+    --accent-soft: 170 25% 95%;
 
     /* Muted Tones */
-    --muted: 180 10% 95%;
-    --muted-foreground: 220 10% 55%;
+    --muted: 150 15% 95%;
+    --muted-foreground: 150 10% 45%;
 
     /* Status Colors */
-    --success: 140 50% 55%;
+    --success: 140 45% 50%;
     --success-foreground: 0 0% 100%;
+    --success-soft: 140 35% 92%;
     
-    --warning: 45 90% 65%;
-    --warning-foreground: 220 15% 25%;
+    --warning: 48 85% 60%;
+    --warning-foreground: 150 15% 20%;
+    --warning-soft: 48 75% 92%;
     
-    --destructive: 0 70% 60%;
+    --destructive: 0 65% 55%;
     --destructive-foreground: 0 0% 100%;
 
     /* UI Elements */
-    --border: 180 15% 88%;
-    --input: 180 15% 92%;
-    --ring: 150 25% 45%;
+    --border: 150 15% 90%;
+    --input: 150 15% 96%;
+    --ring: 150 35% 48%;
 
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
-    --gradient-soft: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--primary-soft)) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--accent-soft)) 100%);
-    --gradient-warm: linear-gradient(135deg, hsl(var(--warm-cream)) 0%, hsl(var(--warm-peach)) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(150 40% 55%) 0%, hsl(170 40% 60%) 100%);
+    --gradient-soft: linear-gradient(180deg, hsl(150 25% 98%) 0%, hsl(150 30% 95%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(150 25% 98%) 100%);
+    --gradient-misty: linear-gradient(to bottom, hsl(150 30% 96%), hsl(170 25% 98%));
 
     /* Shadows */
-    --shadow-soft: 0 4px 20px -2px hsl(var(--primary) / 0.1);
-    --shadow-glow: 0 8px 32px -8px hsl(var(--primary-glow) / 0.3);
-    --shadow-card: 0 2px 10px -2px hsl(var(--foreground) / 0.1);
+    --shadow-soft: 0 2px 20px -4px hsl(150 30% 30% / 0.08);
+    --shadow-glow: 0 4px 32px -8px hsl(150 35% 48% / 0.2);
+    --shadow-card: 0 1px 8px -2px hsl(150 20% 30% / 0.06);
 
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -158,6 +154,10 @@ All colors MUST be HSL format for consistent theming.
     background: var(--gradient-card);
   }
   
+  .gradient-misty {
+    background: var(--gradient-misty);
+  }
+  
   .shadow-soft {
     box-shadow: var(--shadow-soft);
   }
@@ -186,6 +186,15 @@ All colors MUST be HSL format for consistent theming.
   
   .animate-scale-in {
     animation: scale-in 0.6s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out forwards;
+  }
+
+  /* Smooth page transitions */
+  .page-transition {
+    animation: fade-in 0.3s ease-out;
   }
 }
 
@@ -219,5 +228,14 @@ All colors MUST be HSL format for consistent theming.
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

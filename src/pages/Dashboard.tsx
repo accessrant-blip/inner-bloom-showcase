@@ -240,14 +240,14 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F5EFE6] flex">
+    <div className="min-h-screen gradient-soft flex page-transition">
       {/* Sidebar */}
-      <aside className="w-64 bg-[#E8DED0] border-r border-[#D4C4B0] p-6">
+      <aside className="w-64 bg-card border-r border-border p-6 shadow-soft">
         <div className="flex items-center gap-2 mb-8">
-          <div className="w-8 h-8 bg-[#FF6B35] rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">R</span>
+          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-glow">
+            <span className="text-primary-foreground font-bold text-sm">R</span>
           </div>
-          <span className="font-bold text-xl text-[#4A4A4A]">RANT</span>
+          <span className="font-bold text-xl text-foreground">RANT</span>
         </div>
         
         <nav className="space-y-2">
@@ -255,10 +255,10 @@ const Dashboard = () => {
             <button
               key={item.label}
               onClick={() => navigate(item.path)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
                 item.active
-                  ? "bg-[#FF6B35] text-white"
-                  : "text-[#6B6B6B] hover:bg-[#D4C4B0]"
+                  ? "bg-primary text-primary-foreground shadow-glow"
+                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
               }`}
             >
               <item.icon className="h-5 w-5" />
@@ -272,18 +272,18 @@ const Dashboard = () => {
       <main className="flex-1 p-8">
         <div className="max-w-5xl mx-auto space-y-6">
           {/* Welcome Message */}
-          <div>
-            <h1 className="text-2xl font-medium text-[#4A4A4A] italic">
-              Hi, welcome back {username}!
+          <div className="animate-fade-up">
+            <h1 className="text-3xl font-medium text-foreground">
+              Hi, welcome back {username}! 🌸
             </h1>
           </div>
 
           {/* Mood Selector */}
-          <div className="bg-white rounded-2xl p-8 shadow-sm border border-[#E8DED0]">
-            <h2 className="text-lg font-semibold text-[#4A4A4A] mb-2">
+          <div className="bg-card rounded-2xl p-8 shadow-soft border border-border animate-fade-in">
+            <h2 className="text-xl font-semibold text-foreground mb-2">
               How are you feeling today?
             </h2>
-            <p className="text-sm text-[#8B7355] mb-6">
+            <p className="text-sm text-muted-foreground mb-6">
               Check in with yourself. Your feelings are valid and this is not judged.
             </p>
             
@@ -292,42 +292,42 @@ const Dashboard = () => {
                 <button
                   key={mood.label}
                   onClick={() => handleMoodClick(mood)}
-                  className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-[#F5EFE6] transition-all hover:scale-105 active:scale-95"
+                  className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-accent transition-all duration-300 hover:scale-105 active:scale-95"
                 >
                   <span className="text-4xl">{mood.emoji}</span>
-                  <span className="text-sm text-[#6B6B6B]">{mood.label}</span>
+                  <span className="text-sm text-muted-foreground">{mood.label}</span>
                 </button>
               ))}
             </div>
           </div>
 
           {/* Post Rant Section */}
-          <div className="bg-white rounded-2xl p-8 shadow-sm border border-[#E8DED0]">
+          <div className="bg-card rounded-2xl p-8 shadow-soft border border-border animate-fade-in">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-[#8B7355] rounded-full"></div>
-              <p className="text-[#6B6B6B]">What's on your mind? Share your thoughts...</p>
+              <div className="w-10 h-10 bg-primary/20 rounded-full"></div>
+              <p className="text-muted-foreground">What's on your mind? Share your thoughts...</p>
             </div>
 
             <Textarea 
               value={postContent}
               onChange={(e) => setPostContent(e.target.value)}
-              className="min-h-[120px] mb-4 border-[#E8DED0] focus:border-[#FF6B35] bg-[#FDFBF7]"
+              className="min-h-[120px] mb-4 border-border focus:border-primary bg-input rounded-xl"
               placeholder="Start typing..."
             />
 
             <div className="flex items-center justify-between">
               <RadioGroup value={postType} onValueChange={setPostType} className="flex gap-6">
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="public" id="public" className="border-[#FF6B35] text-[#FF6B35]" />
-                  <Label htmlFor="public" className="text-sm text-[#6B6B6B] cursor-pointer">Public</Label>
+                  <RadioGroupItem value="public" id="public" className="border-primary text-primary" />
+                  <Label htmlFor="public" className="text-sm text-foreground cursor-pointer">Public</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="anonymous" id="anonymous" className="border-[#FF6B35] text-[#FF6B35]" />
-                  <Label htmlFor="anonymous" className="text-sm text-[#6B6B6B] cursor-pointer">Anonymous</Label>
+                  <RadioGroupItem value="anonymous" id="anonymous" className="border-primary text-primary" />
+                  <Label htmlFor="anonymous" className="text-sm text-foreground cursor-pointer">Anonymous</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="private" id="private" className="border-[#FF6B35] text-[#FF6B35]" />
-                  <Label htmlFor="private" className="text-sm text-[#6B6B6B] cursor-pointer">Private</Label>
+                  <RadioGroupItem value="private" id="private" className="border-primary text-primary" />
+                  <Label htmlFor="private" className="text-sm text-foreground cursor-pointer">Private</Label>
                 </div>
               </RadioGroup>
 
@@ -336,7 +336,7 @@ const Dashboard = () => {
                   onClick={handleVideoRecord}
                   variant="outline" 
                   size="sm" 
-                  className="border-[#E8DED0] text-[#6B6B6B] hover:bg-[#F5EFE6]"
+                  className="border-border text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-xl transition-all duration-300"
                 >
                   <Video className="h-4 w-4 mr-2" />
                   Record Video
@@ -345,8 +345,8 @@ const Dashboard = () => {
                   onClick={handleVoiceClick}
                   variant="outline" 
                   size="sm" 
-                  className={`border-[#E8DED0] hover:bg-[#F5EFE6] ${
-                    isRecording ? "text-red-500 animate-pulse" : "text-[#6B6B6B]"
+                  className={`border-border hover:bg-accent rounded-xl transition-all duration-300 ${
+                    isRecording ? "text-destructive animate-pulse" : "text-muted-foreground"
                   }`}
                   title={isRecording ? "Stop recording" : "Voice input"}
                 >
@@ -355,7 +355,8 @@ const Dashboard = () => {
                 <Button 
                   onClick={handlePostRant}
                   disabled={!postContent.trim() || isPosting}
-                  className="bg-[#FF6B35] hover:bg-[#FF5722] text-white"
+                  variant="wellness"
+                  className="rounded-xl"
                 >
                   {isPosting ? "Posting..." : "Post"}
                 </Button>
@@ -366,35 +367,35 @@ const Dashboard = () => {
           {/* Bottom Row */}
           <div className="grid md:grid-cols-2 gap-6">
             {/* Instant Panic Relief */}
-            <div className="bg-[#E3F2FD] rounded-2xl p-6 border border-[#90CAF9]">
+            <div className="bg-success-soft rounded-2xl p-6 border border-success/20 shadow-soft animate-fade-in">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-blue-600">⚡</span>
-                <h3 className="font-semibold text-[#1976D2]">Instant Panic Relief</h3>
+                <span className="text-2xl">⚡</span>
+                <h3 className="font-semibold text-success">Instant Panic Relief</h3>
               </div>
-              <p className="text-sm text-[#424242] mb-4">
+              <p className="text-sm text-foreground/80 mb-4">
                 Use these simple grounding techniques or start a guided breathing exercise for immediate calm.
               </p>
               <div className="mb-4">
-                <p className="text-sm font-medium text-[#1976D2] mb-2">
+                <p className="text-sm font-medium text-success mb-2">
                   Butterfly Hug: Cross your arms and gently tap your shoulders.
                 </p>
-                <p className="text-xs text-blue-600">
+                <p className="text-xs text-success/80">
                   5-4-3-2-1: Name 5 things you see, 4 you feel, 3 you hear, 2 you smell, 1 you taste.
                 </p>
               </div>
               <Button 
                 onClick={() => navigate("/instant-relief")}
-                className="w-full bg-[#1976D2] hover:bg-[#1565C0] text-white"
+                className="w-full bg-success hover:bg-success/90 text-success-foreground rounded-xl transition-all duration-300 shadow-glow"
               >
                 Do it now
               </Button>
             </div>
 
             {/* Wellness Tip */}
-            <div className="bg-[#FFF9E6] rounded-2xl p-6 border border-[#FFE082] flex items-center justify-center min-h-[120px]">
+            <div className="bg-warning-soft rounded-2xl p-6 border border-warning/20 flex items-center justify-center min-h-[120px] shadow-soft animate-fade-in">
               <div className="flex flex-col items-center gap-3 text-center">
-                <span className="text-yellow-600 text-3xl">💪</span>
-                <p className="text-sm text-[#6B6B6B] font-medium">
+                <span className="text-3xl">💪</span>
+                <p className="text-sm text-foreground font-medium">
                   {wellnessReminders[currentReminderIndex]}
                 </p>
               </div>
@@ -402,49 +403,49 @@ const Dashboard = () => {
           </div>
 
           {/* Wellness Reminder - Inspirational Quote */}
-          <div className="bg-gradient-to-r from-[#FFF4E6] to-[#FFE8CC] rounded-2xl p-6 border-l-4 border-[#FF6B35]">
-            <p className="text-[#D4933D] italic text-center">
+          <div className="gradient-misty rounded-2xl p-6 border-l-4 border-primary shadow-soft animate-fade-in">
+            <p className="text-primary italic text-center text-lg">
               "You are a child of the universe, no less than the trees and the stars; you have a right to be here."
             </p>
           </div>
 
           {/* Emergency Helplines */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#E8DED0]">
+          <div className="bg-card rounded-2xl p-6 shadow-soft border border-border animate-fade-in">
             <button
               onClick={() => setShowEmergencyHelp(!showEmergencyHelp)}
               className="flex items-center justify-between w-full"
             >
               <div className="flex items-center gap-2">
-                <span className="text-yellow-600">⚠️</span>
-                <h3 className="font-semibold text-[#4A4A4A]">Emergency Helplines</h3>
+                <span className="text-2xl">⚠️</span>
+                <h3 className="font-semibold text-foreground">Emergency Helplines</h3>
               </div>
               {showEmergencyHelp ? (
-                <ChevronUp className="h-5 w-5 text-[#6B6B6B]" />
+                <ChevronUp className="h-5 w-5 text-muted-foreground" />
               ) : (
-                <ChevronDown className="h-5 w-5 text-[#6B6B6B]" />
+                <ChevronDown className="h-5 w-5 text-muted-foreground" />
               )}
             </button>
 
             {showEmergencyHelp && (
               <div className="mt-4 space-y-4">
                 <div>
-                  <h4 className="font-semibold text-[#4A4A4A] mb-2">India</h4>
+                  <h4 className="font-semibold text-foreground mb-2">India</h4>
                   <div className="space-y-2">
-                    <div className="flex justify-between items-center p-3 bg-[#FDFBF7] rounded-lg">
+                    <div className="flex justify-between items-center p-3 bg-accent rounded-xl">
                       <div>
-                        <p className="font-medium text-[#4A4A4A]">Vandrevala Foundation (India)</p>
-                        <p className="text-sm text-[#6B6B6B]">Mental Health & Suicide Prevention</p>
+                        <p className="font-medium text-foreground">Vandrevala Foundation (India)</p>
+                        <p className="text-sm text-muted-foreground">Mental Health & Suicide Prevention</p>
                       </div>
-                      <a href="tel:9999666555" className="text-[#FF6B35] font-semibold">
+                      <a href="tel:9999666555" className="text-primary font-semibold hover:text-primary-hover transition-colors">
                         9999666555
                       </a>
                     </div>
-                    <div className="flex justify-between items-center p-3 bg-[#FDFBF7] rounded-lg">
+                    <div className="flex justify-between items-center p-3 bg-accent rounded-xl">
                       <div>
-                        <p className="font-medium text-[#4A4A4A]">AASRA (India)</p>
-                        <p className="text-sm text-[#6B6B6B]">Suicide Prevention & Counseling</p>
+                        <p className="font-medium text-foreground">AASRA (India)</p>
+                        <p className="text-sm text-muted-foreground">Suicide Prevention & Counseling</p>
                       </div>
-                      <a href="tel:9820466726" className="text-[#FF6B35] font-semibold">
+                      <a href="tel:9820466726" className="text-primary font-semibold hover:text-primary-hover transition-colors">
                         91-9820466726
                       </a>
                     </div>
@@ -452,27 +453,27 @@ const Dashboard = () => {
                 </div>
 
                 <div>
-                  <h4 className="font-semibold text-[#4A4A4A] mb-2">International</h4>
+                  <h4 className="font-semibold text-foreground mb-2">International</h4>
                   <div className="space-y-2">
-                    <div className="flex justify-between items-center p-3 bg-[#FDFBF7] rounded-lg">
+                    <div className="flex justify-between items-center p-3 bg-accent rounded-xl">
                       <div>
-                        <p className="font-medium text-[#4A4A4A]">Crisis Text Line</p>
-                        <p className="text-sm text-[#6B6B6B]">24/7 Crisis Support (US, UK, Canada, Ireland)</p>
+                        <p className="font-medium text-foreground">Crisis Text Line</p>
+                        <p className="text-sm text-muted-foreground">24/7 Crisis Support (US, UK, Canada, Ireland)</p>
                       </div>
-                      <span className="text-[#FF6B35] font-semibold text-sm">
+                      <span className="text-primary font-semibold text-sm">
                         Text HOME to 741741
                       </span>
                     </div>
-                    <div className="flex justify-between items-center p-3 bg-[#FDFBF7] rounded-lg">
+                    <div className="flex justify-between items-center p-3 bg-accent rounded-xl">
                       <div className="flex-1">
-                        <p className="font-medium text-[#4A4A4A]">International Suicide Hotlines</p>
-                        <p className="text-sm text-[#6B6B6B]">List of hotlines by country (via Befrienders Worldwide)</p>
+                        <p className="font-medium text-foreground">International Suicide Hotlines</p>
+                        <p className="text-sm text-muted-foreground">List of hotlines by country (via Befrienders Worldwide)</p>
                       </div>
                       <a 
                         href="https://befrienders.org" 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-[#FF6B35] font-semibold text-sm hover:underline whitespace-nowrap ml-2"
+                        className="text-primary font-semibold text-sm hover:text-primary-hover hover:underline whitespace-nowrap ml-2 transition-colors"
                       >
                         Visit Website
                       </a>
@@ -489,7 +490,7 @@ const Dashboard = () => {
       <div className="absolute top-4 right-4">
         <button
           onClick={() => navigate("/profile")}
-          className="w-10 h-10 bg-[#8B7355] rounded-full hover:bg-[#6B5345] transition-colors cursor-pointer"
+          className="w-10 h-10 bg-primary/20 rounded-full hover:bg-primary/30 transition-all duration-300 cursor-pointer shadow-soft"
           title="Go to Profile"
         />
       </div>

@@ -232,37 +232,37 @@ const Rant = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5EFE6]">
+    <div className="min-h-screen gradient-soft page-transition">
       {/* Header */}
-      <header className="bg-white border-b border-[#D4C4B0] px-6 py-4">
+      <header className="bg-card border-b border-border px-6 py-4 shadow-soft">
         <div className="max-w-4xl mx-auto flex items-center gap-4">
           <button
             onClick={() => navigate("/dashboard")}
-            className="text-[#6B6B6B] hover:text-[#FF6B35] transition-colors"
+            className="text-muted-foreground hover:text-primary transition-colors duration-300"
           >
             <ArrowLeft className="h-6 w-6" />
           </button>
-          <h1 className="text-2xl font-bold text-[#4A4A4A]">Share Your Thoughts</h1>
+          <h1 className="text-2xl font-bold text-foreground">Share Your Thoughts</h1>
         </div>
       </header>
 
       <div className="max-w-4xl mx-auto p-6 space-y-8">
         {/* Post Section */}
-        <Card className="p-6 bg-white shadow-md">
-          <h2 className="text-xl font-semibold text-[#4A4A4A] mb-2">What's on your mind?</h2>
-          <p className="text-[#FF6B35] text-sm mb-4">This is a safe space. Let it all out.</p>
+        <Card className="p-6 bg-card shadow-soft border-border animate-fade-in">
+          <h2 className="text-xl font-semibold text-foreground mb-2">What's on your mind?</h2>
+          <p className="text-primary text-sm mb-4">This is a safe space. Let it all out.</p>
 
           <div className="relative">
             <Textarea
               value={rantText}
               onChange={(e) => setRantText(e.target.value)}
               placeholder="Share your feelings, frustrations, or anything else..."
-              className="min-h-[120px] resize-none border-[#D4C4B0] focus:border-[#FF6B35]"
+              className="min-h-[120px] resize-none border-border focus:border-primary rounded-xl bg-input"
             />
             <button
               onClick={handleVoiceClick}
-              className={`absolute bottom-3 right-3 transition-colors ${
-                isRecording ? "text-red-500 animate-pulse" : "text-[#6B6B6B] hover:text-[#FF6B35]"
+              className={`absolute bottom-3 right-3 transition-all duration-300 ${
+                isRecording ? "text-destructive animate-pulse" : "text-muted-foreground hover:text-primary"
               }`}
               title={isRecording ? "Stop recording" : "Voice input"}
             >
@@ -272,24 +272,24 @@ const Rant = () => {
 
           <div className="mt-4 flex items-center justify-between">
             <div>
-              <Label className="text-sm font-medium text-[#4A4A4A] mb-2 block">
+              <Label className="text-sm font-medium text-foreground mb-2 block">
                 Share as:
               </Label>
               <RadioGroup value={privacy} onValueChange={setPrivacy} className="flex gap-6">
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="public" id="public" className="border-[#FF6B35] text-[#FF6B35]" />
-                  <Label htmlFor="public" className="cursor-pointer text-sm text-[#4A4A4A]">
+                  <RadioGroupItem value="public" id="public" className="border-primary text-primary" />
+                  <Label htmlFor="public" className="cursor-pointer text-sm text-foreground">
                     Public (Anonymous)
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="private" id="private" className="border-[#FF6B35] text-[#FF6B35]" />
-                  <Label htmlFor="private" className="cursor-pointer text-sm text-[#4A4A4A]">
+                  <RadioGroupItem value="private" id="private" className="border-primary text-primary" />
+                  <Label htmlFor="private" className="cursor-pointer text-sm text-foreground">
                     Private (Journal Only)
                   </Label>
                 </div>
               </RadioGroup>
-              <p className="text-xs text-[#8B7355] mt-2">
+              <p className="text-xs text-muted-foreground mt-2">
                 {privacy === "public" 
                   ? "Your post will appear in the community feed anonymously" 
                   : "Only you can see this in your journal"}
@@ -299,7 +299,8 @@ const Rant = () => {
             <Button
               onClick={handlePostRant}
               disabled={!rantText.trim() || isLoading}
-              className="bg-[#FF6B35] hover:bg-[#FF5722] text-white px-8"
+              variant="wellness"
+              className="px-8 rounded-xl"
             >
               {isLoading ? "Posting..." : "Post"}
             </Button>
@@ -308,26 +309,26 @@ const Rant = () => {
 
         {/* Community Rants Feed */}
         <div>
-          <h2 className="text-2xl font-bold text-[#4A4A4A] mb-4">Community Rants</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-4">Community Rants</h2>
           <div className="space-y-4">
             {publicRants.length === 0 ? (
-              <Card className="p-6 bg-white text-center">
-                <p className="text-[#6B6B6B]">No public rants yet. Be the first to share!</p>
+              <Card className="p-6 bg-card text-center shadow-soft animate-fade-in">
+                <p className="text-muted-foreground">No public rants yet. Be the first to share!</p>
               </Card>
             ) : (
               publicRants.map((rant) => (
-                <Card key={rant.id} className="p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
+                <Card key={rant.id} className="p-6 bg-card shadow-soft hover:shadow-glow transition-all duration-300 border-border animate-fade-in">
                   <div className="flex justify-between items-start mb-3">
-                    <p className="text-sm text-[#FF6B35] font-medium">
+                    <p className="text-sm text-primary font-medium">
                       Anonymous
                     </p>
-                    <span className="text-xs text-[#6B6B6B]">{formatTimestamp(rant.created_at)}</span>
+                    <span className="text-xs text-muted-foreground">{formatTimestamp(rant.created_at)}</span>
                   </div>
                   
-                  <p className="text-[#4A4A4A] mb-4 whitespace-pre-wrap">{rant.content}</p>
+                  <p className="text-foreground mb-4 whitespace-pre-wrap">{rant.content}</p>
 
-                  <div className="flex items-center gap-4 pt-3 border-t border-[#E8DED0]">
-                    <button className="flex items-center gap-1 text-sm text-[#FF6B35] hover:underline">
+                  <div className="flex items-center gap-4 pt-3 border-t border-border">
+                    <button className="flex items-center gap-1 text-sm text-primary hover:text-primary-hover hover:underline transition-colors duration-300">
                       <MessageCircle className="h-4 w-4" />
                       <span>12 comments</span>
                     </button>
@@ -335,14 +336,14 @@ const Rant = () => {
                     {currentUserId === rant.user_id && (
                       <button
                         onClick={() => handleDeleteRant(rant.id)}
-                        className="flex items-center gap-1 text-sm text-[#FF6B35] hover:text-[#FF5722] transition-colors"
+                        className="flex items-center gap-1 text-sm text-destructive hover:text-destructive/80 transition-colors duration-300"
                       >
                         <Trash2 className="h-4 w-4" />
                         <span>Delete</span>
                       </button>
                     )}
 
-                    <button className="flex items-center gap-1 text-sm text-[#6B6B6B] hover:text-[#4A4A4A] transition-colors ml-auto">
+                    <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 ml-auto">
                       <Flag className="h-4 w-4" />
                       <span>Report</span>
                     </button>
