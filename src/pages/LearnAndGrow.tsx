@@ -167,7 +167,7 @@ const LearnAndGrow = () => {
                 <Button 
                   variant="wellness"
                   className="rounded-xl"
-                  onClick={() => navigate('/wellness-toolkit/breathe')}
+                  onClick={() => {window.location.href = '/wellness-toolkit/breathe'}}
                 >
                   Breathe With Me
                 </Button>
@@ -330,7 +330,6 @@ const LearnAndGrow = () => {
           </Accordion>
         </div>
       </div>
-    </div>
   );
 };
 

@@ -253,7 +253,6 @@ const SoulStream = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
