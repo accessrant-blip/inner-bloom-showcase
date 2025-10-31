@@ -203,14 +203,14 @@ const SoulStream = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F5EFE6] flex">
+    <div className="min-h-screen gradient-soft flex page-transition">
       {/* Sidebar */}
-      <aside className="w-64 bg-[#E8DED0] border-r border-[#D4C4B0] p-6 fixed h-full overflow-y-auto">
+      <aside className="w-64 bg-card border-r border-border p-6 fixed h-full overflow-y-auto shadow-soft">
         <div className="flex items-center gap-2 mb-8">
-          <div className="w-8 h-8 bg-[#FF6B35] rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">R</span>
+          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-glow">
+            <span className="text-primary-foreground font-bold text-sm">R</span>
           </div>
-          <span className="font-bold text-xl text-[#4A4A4A]">RANT</span>
+          <span className="font-bold text-xl text-foreground">RANT</span>
         </div>
         
         <nav className="space-y-2">
@@ -218,10 +218,10 @@ const SoulStream = () => {
             <button
               key={item.label}
               onClick={() => navigate(item.path)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
                 item.active
-                  ? "bg-[#FF6B35] text-white"
-                  : "text-[#6B6B6B] hover:bg-[#D4C4B0]"
+                  ? "bg-primary text-primary-foreground shadow-glow"
+                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
               }`}
             >
               <item.icon className="h-5 w-5" />
@@ -235,9 +235,9 @@ const SoulStream = () => {
       <main className="flex-1 ml-64 p-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-[#4A4A4A] mb-2">Soul Stream</h1>
-            <p className="text-[#6B6B6B]">
+          <div className="mb-8 animate-fade-up">
+            <h1 className="text-4xl font-bold text-foreground mb-2">Soul Stream</h1>
+            <p className="text-muted-foreground">
               Find calm and inspiration with this curated collection of videos.
             </p>
           </div>
@@ -246,7 +246,7 @@ const SoulStream = () => {
           <div className="space-y-12">
             {categories.map((category) => (
               <div key={category.name}>
-                <h2 className="text-2xl font-bold text-[#4A4A4A] mb-6 border-b-4 border-[#FF6B35] inline-block pb-2">
+                <h2 className="text-2xl font-bold text-foreground mb-6 border-b-4 border-primary inline-block pb-2">
                   {category.name}
                 </h2>
                 
@@ -254,9 +254,9 @@ const SoulStream = () => {
                   {category.videos.map((video) => (
                     <div
                       key={video.id}
-                      className="bg-white rounded-2xl overflow-hidden shadow-sm border border-[#E8DED0] hover:shadow-md transition-shadow"
+                      className="bg-card rounded-2xl overflow-hidden shadow-soft border border-border hover:shadow-glow transition-all duration-300 animate-fade-in"
                     >
-                      <div className="relative aspect-video bg-[#E8DED0] group cursor-pointer">
+                      <div className="relative aspect-video bg-accent group cursor-pointer">
                         {playingVideo === video.id ? (
                           <iframe
                             src={`https://www.youtube.com/embed/${video.id}?autoplay=1`}
@@ -279,8 +279,8 @@ const SoulStream = () => {
                               onClick={() => setPlayingVideo(video.id)}
                               className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors flex items-center justify-center"
                             >
-                              <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <Play className="h-8 w-8 text-[#FF6B35] ml-1" fill="#FF6B35" />
+                              <div className="w-16 h-16 bg-card/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <Play className="h-8 w-8 text-primary ml-1" fill="currentColor" />
                               </div>
                             </div>
                           </>
@@ -288,10 +288,10 @@ const SoulStream = () => {
                       </div>
                       
                       <div className="p-5">
-                        <h3 className="font-semibold text-[#4A4A4A] mb-2 line-clamp-2">
+                        <h3 className="font-semibold text-foreground mb-2 line-clamp-2">
                           {video.title}
                         </h3>
-                        <p className="text-sm text-[#6B6B6B] line-clamp-2">
+                        <p className="text-sm text-muted-foreground line-clamp-2">
                           {video.description}
                         </p>
                       </div>
@@ -306,7 +306,7 @@ const SoulStream = () => {
 
       {/* Profile Avatar - Top Right */}
       <div className="fixed top-4 right-4">
-        <div className="w-10 h-10 bg-[#8B7355] rounded-full cursor-pointer"></div>
+        <div className="w-10 h-10 bg-primary/20 rounded-full cursor-pointer"></div>
       </div>
     </div>
   );

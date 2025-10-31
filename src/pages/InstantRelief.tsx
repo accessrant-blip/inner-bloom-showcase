@@ -103,12 +103,12 @@ const InstantRelief = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-400 to-indigo-500 flex flex-col">
+    <div className="min-h-screen gradient-misty flex flex-col page-transition">
       {/* Header */}
       <header className="p-4">
         <button
           onClick={() => navigate("/dashboard")}
-          className="text-white hover:text-white/80 transition-colors flex items-center gap-2"
+          className="text-foreground hover:text-primary transition-colors flex items-center gap-2"
         >
           <ArrowLeft className="h-5 w-5" />
           <span className="font-medium">Back</span>
@@ -120,27 +120,27 @@ const InstantRelief = () => {
         {!isComplete ? (
           <>
             {/* Title */}
-            <h1 className="text-white text-3xl font-bold mb-2 text-center">
+            <h1 className="text-foreground text-3xl font-bold mb-2 text-center">
               Instant Relief Breathing
             </h1>
-            <p className="text-white/90 text-center mb-12 max-w-md">
+            <p className="text-muted-foreground text-center mb-12 max-w-md">
               Follow the breathing pattern for immediate calm
             </p>
 
             {/* Breathing Circle */}
             <div className="relative mb-12">
               <div
-                className="w-64 h-64 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center transition-transform duration-1000 ease-in-out shadow-2xl"
+                className="w-64 h-64 rounded-full bg-primary/20 backdrop-blur-sm flex items-center justify-center transition-transform duration-1000 ease-in-out shadow-glow"
                 style={{
                   transform: `scale(${scale})`,
                 }}
               >
                 <div className="text-center">
-                  <p className="text-white text-2xl font-semibold mb-2">
+                  <p className="text-primary text-2xl font-semibold mb-2">
                     {isActive ? phaseMessages[phase] : "Ready to begin"}
                   </p>
                   {isActive && (
-                    <p className="text-white/80 text-lg">
+                    <p className="text-foreground/80 text-lg">
                       Round {currentRound} of {totalRounds}
                     </p>
                   )}
@@ -149,7 +149,7 @@ const InstantRelief = () => {
 
               {/* Outer glow ring */}
               <div
-                className="absolute inset-0 w-64 h-64 rounded-full bg-white/10 blur-2xl transition-transform duration-1000"
+                className="absolute inset-0 w-64 h-64 rounded-full bg-primary/10 blur-2xl transition-transform duration-1000"
                 style={{
                   transform: `scale(${scale * 1.2})`,
                 }}
@@ -163,10 +163,10 @@ const InstantRelief = () => {
                   key={index}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
                     index + 1 < currentRound
-                      ? "bg-white"
+                      ? "bg-primary"
                       : index + 1 === currentRound
-                      ? "bg-white scale-125"
-                      : "bg-white/30"
+                      ? "bg-primary scale-125"
+                      : "bg-primary/30"
                   }`}
                 />
               ))}
@@ -178,7 +178,8 @@ const InstantRelief = () => {
                 <Button
                   onClick={handleStart}
                   size="lg"
-                  className="bg-white text-blue-600 hover:bg-white/90 text-lg px-8 py-6 shadow-xl"
+                  variant="wellness"
+                  className="text-lg px-8 py-6 shadow-glow rounded-xl"
                 >
                   <Play className="mr-2 h-5 w-5" />
                   Start Breathing
@@ -189,7 +190,7 @@ const InstantRelief = () => {
                     onClick={handlePause}
                     size="lg"
                     variant="outline"
-                    className="bg-white/20 border-white text-white hover:bg-white/30 backdrop-blur-sm text-lg px-8 py-6"
+                    className="bg-card/80 border-border text-foreground hover:bg-card/90 backdrop-blur-sm text-lg px-8 py-6 rounded-xl"
                   >
                     {isPaused ? (
                       <>
@@ -207,7 +208,7 @@ const InstantRelief = () => {
                     onClick={handleEnd}
                     size="lg"
                     variant="outline"
-                    className="bg-white/20 border-white text-white hover:bg-white/30 backdrop-blur-sm text-lg px-8 py-6"
+                    className="bg-card/80 border-border text-foreground hover:bg-card/90 backdrop-blur-sm text-lg px-8 py-6 rounded-xl"
                   >
                     <X className="mr-2 h-5 w-5" />
                     End Session
@@ -219,11 +220,11 @@ const InstantRelief = () => {
         ) : (
           /* Completion Message */
           <div className="text-center animate-fade-in max-w-lg">
-            <div className="w-32 h-32 mx-auto mb-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+            <div className="w-32 h-32 mx-auto mb-8 rounded-full bg-primary/20 backdrop-blur-sm flex items-center justify-center">
               <span className="text-6xl">✨</span>
             </div>
-            <h2 className="text-white text-4xl font-bold mb-4">You did it!</h2>
-            <p className="text-white/90 text-xl mb-8 leading-relaxed">
+            <h2 className="text-foreground text-4xl font-bold mb-4">You did it!</h2>
+            <p className="text-muted-foreground text-xl mb-8 leading-relaxed">
               Notice how your body feels now. Take a moment of gratitude for taking care of
               yourself.
             </p>
@@ -231,7 +232,8 @@ const InstantRelief = () => {
               <Button
                 onClick={handleRestart}
                 size="lg"
-                className="bg-white text-blue-600 hover:bg-white/90 text-lg px-8 py-6 shadow-xl"
+                variant="wellness"
+                className="text-lg px-8 py-6 shadow-glow rounded-xl"
               >
                 Practice Again
               </Button>
@@ -239,7 +241,7 @@ const InstantRelief = () => {
                 onClick={() => navigate("/dashboard")}
                 size="lg"
                 variant="outline"
-                className="bg-white/20 border-white text-white hover:bg-white/30 backdrop-blur-sm text-lg px-8 py-6"
+                className="bg-card/80 border-border text-foreground hover:bg-card/90 backdrop-blur-sm text-lg px-8 py-6 rounded-xl"
               >
                 Return Home
               </Button>
@@ -250,8 +252,8 @@ const InstantRelief = () => {
 
       {/* Ambient Background Animation */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-300/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-300/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
       </div>
     </div>
   );

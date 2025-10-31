@@ -115,11 +115,11 @@ const Connect = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5EFE6] flex">
+    <div className="min-h-screen gradient-soft flex page-transition">
       {/* Sidebar */}
-      <aside className="hidden md:flex md:w-64 lg:w-72 bg-white border-r border-[#E8DCC4] flex-col">
-        <div className="p-6 border-b border-[#E8DCC4]">
-          <h1 className="text-2xl font-bold text-[#4A4A4A]">Rant</h1>
+      <aside className="hidden md:flex md:w-64 lg:w-72 bg-card border-r border-border flex-col shadow-soft">
+        <div className="p-6 border-b border-border">
+          <h1 className="text-2xl font-bold text-foreground">Rant</h1>
         </div>
         <nav className="flex-1 p-4">
           <ul className="space-y-2">
@@ -127,10 +127,10 @@ const Connect = () => {
               <li key={item.label}>
                 <button
                   onClick={() => navigate(item.path)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
                     item.active
-                      ? "bg-[#FF6B35] text-white shadow-md"
-                      : "text-[#6B6B6B] hover:bg-[#FDFBF7]"
+                      ? "bg-primary text-primary-foreground shadow-glow"
+                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                   }`}
                 >
                   <item.icon className="h-5 w-5" />
@@ -145,9 +145,9 @@ const Connect = () => {
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
         <div className="container mx-auto p-6 max-w-6xl">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-[#4A4A4A] mb-2">Join the Conversation</h1>
-            <p className="text-[#FF6B35] text-lg">Find a group that resonates with you.</p>
+          <div className="mb-8 animate-fade-up">
+            <h1 className="text-4xl font-bold text-foreground mb-2">Join the Conversation</h1>
+            <p className="text-primary text-lg">Find a group that resonates with you.</p>
           </div>
 
           {isLoading ? (
@@ -155,8 +155,8 @@ const Connect = () => {
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <Card key={i} className="animate-pulse">
                   <CardHeader>
-                    <div className="h-6 bg-gray-200 rounded w-3/4 mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-full"></div>
+                    <div className="h-6 bg-muted rounded w-3/4 mb-2"></div>
+                    <div className="h-4 bg-muted rounded w-full"></div>
                   </CardHeader>
                 </Card>
               ))}
@@ -168,26 +168,26 @@ const Connect = () => {
                 return (
                   <Card
                     key={circle.id}
-                    className="hover:shadow-lg transition-all cursor-pointer border-[#E8DCC4] bg-white"
+                    className="hover:shadow-glow transition-all duration-300 cursor-pointer border-border bg-card animate-fade-in"
                     onClick={() => openCircle(circle)}
                   >
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2 text-[#4A4A4A]">
+                      <CardTitle className="flex items-center gap-2 text-foreground">
                         <span className="text-3xl">{circle.icon}</span>
                         {circle.name}
                       </CardTitle>
-                      <CardDescription className="text-[#FF6B35]">
+                      <CardDescription className="text-primary">
                         {circle.description}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-[#6B6B6B]">
+                        <div className="flex items-center gap-2 text-muted-foreground">
                           <Users className="h-4 w-4" />
                           <span className="text-sm">{circle.member_count} members</span>
                         </div>
                         <Button
-                          variant={isMember ? "secondary" : "default"}
+                          variant={isMember ? "secondary" : "wellness"}
                           size="sm"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -197,7 +197,7 @@ const Connect = () => {
                               openCircle(circle);
                             }
                           }}
-                          className={isMember ? "" : "bg-[#FF6B35] hover:bg-[#FF6B35]/90"}
+                          className="rounded-xl"
                         >
                           {isMember ? "Open" : "Join Group"}
                         </Button>

@@ -245,19 +245,19 @@ const Kai = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F5EFE6] to-[#E8DED0] flex flex-col">
+    <div className="min-h-screen gradient-misty flex flex-col page-transition">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-[#D4C4B0] px-6 py-4 sticky top-0 z-10">
+      <header className="bg-card/80 backdrop-blur-sm border-b border-border px-6 py-4 sticky top-0 z-10 shadow-soft">
         <div className="max-w-4xl mx-auto flex items-center gap-4">
           <button
             onClick={() => navigate("/dashboard")}
-            className="text-[#6B6B6B] hover:text-[#FF6B35] transition-colors"
+            className="text-muted-foreground hover:text-primary transition-colors duration-300"
           >
             <ArrowLeft className="h-6 w-6" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-[#4A4A4A]">Chat with Kai</h1>
-            <p className="text-sm text-[#6B6B6B]">Your compassionate AI companion</p>
+            <h1 className="text-2xl font-bold text-foreground">Chat with Kai</h1>
+            <p className="text-sm text-muted-foreground">Your compassionate AI companion</p>
           </div>
         </div>
       </header>
@@ -273,15 +273,15 @@ const Kai = () => {
               <Card
                 className={`max-w-[80%] p-4 ${
                   message.role === "user"
-                    ? "bg-[#FF6B35] text-white"
-                    : "bg-white text-[#4A4A4A]"
-                } shadow-sm animate-fade-in`}
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-card text-foreground"
+                } shadow-soft animate-fade-in border-border`}
               >
                 <p className="whitespace-pre-wrap">{message.content}</p>
                 {message.content && (
                   <p
                     className={`text-xs mt-2 ${
-                      message.role === "user" ? "text-white/70" : "text-[#6B6B6B]"
+                      message.role === "user" ? "text-primary-foreground/70" : "text-muted-foreground"
                     }`}
                   >
                     {message.timestamp.toLocaleTimeString([], {
@@ -297,8 +297,8 @@ const Kai = () => {
           {/* Mood-based suggestions */}
           {detectedMood && !isLoading && (
             <div className="flex justify-center">
-              <div className="bg-white/50 backdrop-blur-sm rounded-lg p-4 flex items-center gap-3">
-                <p className="text-sm text-[#6B6B6B]">Need extra support?</p>
+              <div className="bg-card/50 backdrop-blur-sm rounded-lg p-4 flex items-center gap-3">
+                <p className="text-sm text-muted-foreground">Need extra support?</p>
                 {getSuggestionButton()}
               </div>
             </div>
@@ -309,20 +309,21 @@ const Kai = () => {
       </div>
 
       {/* Input Area */}
-      <div className="bg-white border-t border-[#D4C4B0] px-6 py-4 sticky bottom-0">
+      <div className="bg-card border-t border-border px-6 py-4 sticky bottom-0 shadow-soft">
         <div className="max-w-4xl mx-auto flex gap-3">
           <Textarea
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Share what's on your mind..."
-            className="min-h-[60px] max-h-[120px] resize-none"
+            className="min-h-[60px] max-h-[120px] resize-none border-border rounded-xl"
             disabled={isLoading}
           />
           <Button
             onClick={handleSendMessage}
             disabled={!inputText.trim() || isLoading}
-            className="bg-[#FF6B35] hover:bg-[#FF5722] text-white px-6"
+            variant="wellness"
+            className="px-6 rounded-xl"
           >
             {isLoading ? (
               <Loader2 className="h-5 w-5 animate-spin" />
@@ -331,26 +332,26 @@ const Kai = () => {
             )}
           </Button>
         </div>
-        <p className="text-xs text-[#6B6B6B] text-center mt-2">
+        <p className="text-xs text-muted-foreground text-center mt-2">
           Kai is here to listen and support. Press Enter to send, Shift+Enter for new line.
         </p>
       </div>
 
       {/* Safety Dialog */}
       <AlertDialog open={showSafetyDialog} onOpenChange={setShowSafetyDialog}>
-        <AlertDialogContent className="bg-white">
+        <AlertDialogContent className="bg-card border-border">
           <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2 text-[#FF6B35]">
+            <AlertDialogTitle className="flex items-center gap-2 text-primary">
               <AlertCircle className="h-5 w-5" />
               You're Not Alone
             </AlertDialogTitle>
-            <AlertDialogDescription className="space-y-4 text-[#4A4A4A]">
+            <AlertDialogDescription className="space-y-4 text-foreground">
               <p>
                 It sounds like you might be going through something really difficult right now. 
                 You're not alone, and there are people who can help.
               </p>
-              <div className="bg-[#F5EFE6] p-4 rounded-lg space-y-2">
-                <p className="font-semibold text-[#4A4A4A]">24/7 Crisis Support:</p>
+              <div className="bg-accent p-4 rounded-lg space-y-2">
+                <p className="font-semibold text-foreground">24/7 Crisis Support:</p>
                 <p className="text-sm">
                   <strong>988 Suicide & Crisis Lifeline:</strong> Call or text 988
                 </p>
@@ -359,7 +360,8 @@ const Kai = () => {
                 </p>
                 <Button
                   onClick={() => navigate("/emergency-support")}
-                  className="w-full mt-2 bg-[#FF6B35] hover:bg-[#FF5722]"
+                  variant="wellness"
+                  className="w-full mt-2 rounded-xl"
                 >
                   View All Emergency Resources
                 </Button>
@@ -369,7 +371,7 @@ const Kai = () => {
           <AlertDialogFooter>
             <AlertDialogAction
               onClick={() => setShowSafetyDialog(false)}
-              className="bg-[#4A4A4A] hover:bg-[#6B6B6B]"
+              className="bg-primary hover:bg-primary-hover rounded-xl"
             >
               I Understand
             </AlertDialogAction>
