@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Download, Smartphone } from "lucide-react";
+import { useState } from "react";
+import AuthModal from "@/components/auth/AuthModal";
 
 const CTASection = () => {
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  
   return (
     <section className="py-24 gradient-hero">
       <div className="container mx-auto px-6">
@@ -24,6 +28,7 @@ const CTASection = () => {
                   size="lg" 
                   variant="wellness"
                   className="text-lg px-8 py-6"
+                  onClick={() => setAuthModalOpen(true)}
                 >
                   Start Free Trial
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -32,7 +37,8 @@ const CTASection = () => {
                 <Button 
                   size="lg" 
                   variant="outline"
-                  className="text-lg px-8 py-6"
+                  className="text-lg px-8 py-6 border-border hover:bg-accent/10"
+                  onClick={() => setAuthModalOpen(true)}
                 >
                   <Download className="mr-2 h-5 w-5" />
                   Download App
@@ -72,6 +78,8 @@ const CTASection = () => {
           </CardContent>
         </Card>
       </div>
+      
+      <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} defaultTab="signup" />
     </section>
   );
 };

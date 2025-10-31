@@ -2,12 +2,12 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 import heroImage from "@/assets/hero-wellness.jpg";
 import DemoModal from "./DemoModal";
+import AuthModal from "@/components/auth/AuthModal";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
   const [isDemoOpen, setIsDemoOpen] = useState(false);
-  const navigate = useNavigate();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -42,7 +42,7 @@ const HeroSection = () => {
               size="lg" 
               variant="wellness"
               className="text-lg px-8 py-6"
-              onClick={() => navigate('/dashboard')}
+              onClick={() => setAuthModalOpen(true)}
             >
               Start Your Journey
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -51,7 +51,7 @@ const HeroSection = () => {
             <Button 
               size="lg" 
               variant="outline"
-              className="text-lg px-8 py-6"
+              className="text-lg px-8 py-6 border-border hover:bg-accent/10"
               onClick={() => setIsDemoOpen(true)}
             >
               <Play className="mr-2 h-5 w-5" />
@@ -81,8 +81,9 @@ const HeroSection = () => {
       <div className="absolute bottom-32 left-16 w-12 h-12 bg-accent/20 rounded-full animate-float" style={{animationDelay: '2s'}}></div>
       <div className="absolute top-1/2 left-8 w-8 h-8 bg-secondary-accent/30 rounded-full animate-float" style={{animationDelay: '4s'}}></div>
       
-      {/* Demo Modal */}
+      {/* Modals */}
       <DemoModal open={isDemoOpen} onOpenChange={setIsDemoOpen} />
+      <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} defaultTab="signup" />
     </section>
   );
 };

@@ -1,16 +1,32 @@
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import AuthModal from "@/components/auth/AuthModal";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authModalTab, setAuthModalTab] = useState<"login" | "signup">("signup");
   
   const navLinks = [
     { name: "Features", href: "#features" },
     { name: "How it Works", href: "#how-it-works" },
-    { name: "Testimonials", href: "#testimonials" },
-    { name: "Pricing", href: "#pricing" }
+    { name: "Testimonials", href: "#testimonials" }
   ];
+
+  const handleNavClick = (href: string) => {
+    setIsMenuOpen(false);
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const openAuthModal = (tab: "login" | "signup") => {
+    setAuthModalTab(tab);
+    setAuthModalOpen(true);
+    setIsMenuOpen(false);
+  };
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
@@ -27,22 +43,22 @@ const Navigation = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <a
+              <button
                 key={link.name}
-                href={link.href}
+                onClick={() => handleNavClick(link.href)}
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 {link.name}
-              </a>
+              </button>
             ))}
           </div>
           
           {/* Desktop CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost">
+            <Button variant="ghost" onClick={() => openAuthModal("login")}>
               Sign In
             </Button>
-            <Button variant="wellness">
+            <Button variant="wellness" onClick={() => openAuthModal("signup")}>
               Get Started
             </Button>
           </div>
@@ -63,20 +79,19 @@ const Navigation = () => {
           <div className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col space-y-4">
               {navLinks.map((link) => (
-                <a
+                <button
                   key={link.name}
-                  href={link.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors px-4"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => handleNavClick(link.href)}
+                  className="text-muted-foreground hover:text-foreground transition-colors px-4 text-left"
                 >
                   {link.name}
-                </a>
+                </button>
               ))}
               <div className="flex flex-col space-y-2 px-4 pt-4">
-                <Button variant="ghost" className="justify-start">
+                <Button variant="ghost" className="justify-start" onClick={() => openAuthModal("login")}>
                   Sign In
                 </Button>
-                <Button variant="wellness" className="justify-start">
+                <Button variant="wellness" className="justify-start" onClick={() => openAuthModal("signup")}>
                   Get Started
                 </Button>
               </div>
@@ -84,6 +99,12 @@ const Navigation = () => {
           </div>
         )}
       </div>
+      
+      <AuthModal 
+        open={authModalOpen} 
+        onOpenChange={setAuthModalOpen}
+        defaultTab={authModalTab}
+      />
     </nav>
   );
 };
