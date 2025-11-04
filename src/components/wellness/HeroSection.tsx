@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
-import heroImage from "@/assets/hero-wellness.jpg";
+import heroImage from "@/assets/hero-mental-wellness.png";
 import DemoModal from "./DemoModal";
 import AuthModal from "@/components/auth/AuthModal";
 import { useState } from "react";
@@ -16,7 +16,7 @@ const HeroSection = () => {
         <img 
           src={heroImage} 
           alt="Peaceful meditation scene representing mental wellness"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover animate-fade-in"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-background/90 to-background/60"></div>
       </div>
