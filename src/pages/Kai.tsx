@@ -245,88 +245,89 @@ const Kai = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background/50 flex flex-col p-6">
-      <div className="max-w-4xl mx-auto w-full flex-1 flex flex-col">
+    <div className="min-h-screen bg-background/50 flex flex-col">
+      <div className="max-w-4xl mx-auto w-full flex-1 flex flex-col p-6">
+        {/* Header */}
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-foreground mb-2">Chat with Kai 💬</h1>
           <p className="text-muted-foreground">Your compassionate AI companion</p>
         </div>
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto mb-4">
-        <div className="space-y-6">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
-            >
-              <Card
-                className={`max-w-[80%] p-4 ${
-                  message.role === "user"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-card text-foreground"
-                } shadow-soft animate-fade-in border-border rounded-2xl`}
+        {/* Messages Container */}
+        <div className="flex-1 overflow-y-auto mb-4 px-2">
+          <div className="space-y-6">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
               >
-                <p className="whitespace-pre-wrap">{message.content}</p>
-                {message.content && (
-                  <p
-                    className={`text-xs mt-2 ${
-                      message.role === "user" ? "text-primary-foreground/70" : "text-muted-foreground"
-                    }`}
-                  >
-                    {message.timestamp.toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
-                )}
-              </Card>
-            </div>
-          ))}
-          
-          {/* Mood-based suggestions */}
-          {detectedMood && !isLoading && (
-            <div className="flex justify-center animate-fade-in">
-              <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-3 shadow-soft border border-border">
-                <p className="text-sm text-muted-foreground">Need extra support?</p>
-                {getSuggestionButton()}
+                <Card
+                  className={`max-w-[80%] p-4 ${
+                    message.role === "user"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-card text-foreground"
+                  } shadow-soft animate-fade-in border-border rounded-2xl`}
+                >
+                  <p className="whitespace-pre-wrap">{message.content}</p>
+                  {message.content && (
+                    <p
+                      className={`text-xs mt-2 ${
+                        message.role === "user" ? "text-primary-foreground/70" : "text-muted-foreground"
+                      }`}
+                    >
+                      {message.timestamp.toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
+                  )}
+                </Card>
               </div>
-            </div>
-          )}
-          
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Input Area */}
-      <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-4 shadow-soft">
-        <div className="flex gap-3">
-          <Textarea
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Share what's on your mind..."
-            className="min-h-[60px] max-h-[120px] resize-none border-border rounded-xl bg-background"
-            disabled={isLoading}
-          />
-          <Button
-            onClick={handleSendMessage}
-            disabled={!inputText.trim() || isLoading}
-            variant="wellness"
-            className="px-6 rounded-xl"
-          >
-            {isLoading ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
-            ) : (
-              <Send className="h-5 w-5" />
+            ))}
+            
+            {/* Mood-based suggestions */}
+            {detectedMood && !isLoading && (
+              <div className="flex justify-center animate-fade-in">
+                <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-3 shadow-soft border border-border">
+                  <p className="text-sm text-muted-foreground">Need extra support?</p>
+                  {getSuggestionButton()}
+                </div>
+              </div>
             )}
-          </Button>
+            
+            <div ref={messagesEndRef} />
+          </div>
         </div>
-        <p className="text-xs text-muted-foreground text-center mt-2">
-          Kai is here to listen and support. Press Enter to send, Shift+Enter for new line.
-        </p>
+
+        {/* Input Area - Fixed at bottom */}
+        <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-4 shadow-soft">
+          <div className="flex gap-3">
+            <Textarea
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Share what's on your mind..."
+              className="min-h-[60px] max-h-[120px] resize-none border-border rounded-xl bg-background"
+              disabled={isLoading}
+            />
+            <Button
+              onClick={handleSendMessage}
+              disabled={!inputText.trim() || isLoading}
+              variant="wellness"
+              className="px-6 rounded-xl"
+            >
+              {isLoading ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <Send className="h-5 w-5" />
+              )}
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground text-center mt-2">
+            Kai is here to listen and support. Press Enter to send, Shift+Enter for new line.
+          </p>
+        </div>
       </div>
-      </div>
-    </div>
 
       {/* Safety Dialog */}
       <AlertDialog open={showSafetyDialog} onOpenChange={setShowSafetyDialog}>
