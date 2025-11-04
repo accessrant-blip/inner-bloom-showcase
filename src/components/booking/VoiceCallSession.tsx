@@ -55,9 +55,12 @@ export const VoiceCallSession = ({ bookingId, professionalId, professionalName, 
       if (error) throw error;
 
       // Simulate connection (in real app, use Twilio Voice SDK)
-      setTimeout(() => {
+      setTimeout(async () => {
+        // Add a small delay to ensure call record is committed to database
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
         setStatus('connected');
-        updateCallStatus('connected');
+        await updateCallStatus('connected');
         toast({
           title: "Connected",
           description: `You're now connected with ${professionalName} 🌿`,

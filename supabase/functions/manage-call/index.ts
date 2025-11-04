@@ -73,6 +73,8 @@ serve(async (req) => {
     if (action === 'update') {
       const updates: any = { status };
       
+      console.log('Updating call:', callId, 'with status:', status);
+      
       if (status === 'connected') {
         // Notify both parties
         await supabase.from('notifications').insert([
@@ -111,11 +113,19 @@ serve(async (req) => {
         .update(updates)
         .eq('call_id', callId)
         .select()
-        .single();
+        .maybeSingle();
 
-      if (updateError) throw updateError;
+      if (updateError) {
+        console.error('Update error:', updateError);
+        throw updateError;
+      }
+      
+      if (!call) {
+        console.error('Call not found with call_id:', callId);
+        throw new Error('Call not found');
+      }
 
-      console.log('Call updated:', callId, status);
+      console.log('Call updated successfully:', callId, status);
       return new Response(
         JSON.stringify({ success: true, call }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
