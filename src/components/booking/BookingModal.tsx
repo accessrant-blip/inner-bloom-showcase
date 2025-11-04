@@ -8,6 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { BookingConfirmation } from "./BookingConfirmation";
+import { VoiceCallSession } from "./VoiceCallSession";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -33,10 +35,13 @@ const BookingModal = ({
     email: "",
     date: "",
     time: "",
-    mode: "",
+    mode: "audio",
     notes: "",
   });
   const [loading, setLoading] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showCallSession, setShowCallSession] = useState(false);
+  const [currentBookingId, setCurrentBookingId] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,24 +106,22 @@ const BookingModal = ({
 
       if (paymentError) throw paymentError;
 
-      toast({
-        title: "Success!",
-        description: "Your booking has been confirmed. Proceeding to payment...",
+      // Update booking status to confirmed
+      await supabase
+        .from("bookings")
+        .update({ status: 'confirmed' })
+        .eq('id', booking.id);
+
+      // Create notification
+      await supabase.from('notifications').insert({
+        user_id: user.id,
+        type: 'booking_confirmed',
+        title: 'Booking Confirmed',
+        message: `Your session with ${professionalName} has been confirmed.`,
       });
 
-      // Here you would normally redirect to payment gateway
-      // For now, we'll just show success
-      setTimeout(() => {
-        setFormData({
-          name: "",
-          email: "",
-          date: "",
-          time: "",
-          mode: "",
-          notes: "",
-        });
-        onClose();
-      }, 1500);
+      setCurrentBookingId(booking.id);
+      setShowConfirmation(true);
 
     } catch (error) {
       console.error("Error creating booking:", error);
@@ -132,9 +135,52 @@ const BookingModal = ({
     }
   };
 
+  const handleConfirmJoinCall = () => {
+    setShowConfirmation(false);
+    setShowCallSession(true);
+    onClose();
+  };
+
+  const handleCloseConfirmation = () => {
+    setShowConfirmation(false);
+    setFormData({
+      name: "",
+      email: "",
+      date: "",
+      time: "",
+      mode: "audio",
+      notes: "",
+    });
+    onClose();
+  };
+
+  const handleEndCall = () => {
+    setShowCallSession(false);
+    setFormData({
+      name: "",
+      email: "",
+      date: "",
+      time: "",
+      mode: "audio",
+      notes: "",
+    });
+  };
+
+  if (showCallSession && professionalId && professionalName) {
+    return (
+      <VoiceCallSession
+        bookingId={currentBookingId}
+        professionalId={professionalId}
+        professionalName={professionalName}
+        onEnd={handleEndCall}
+      />
+    );
+  }
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md bg-[#fff8f2] border-2 border-[#5c2c2c]/20 rounded-3xl">
+    <>
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="max-w-md bg-[#fff8f2] border-2 border-[#5c2c2c]/20 rounded-3xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-[#5c2c2c] text-center">
             Book Session{professionalName ? ` with ${professionalName}` : ''}
@@ -250,6 +296,14 @@ const BookingModal = ({
         </form>
       </DialogContent>
     </Dialog>
+
+    <BookingConfirmation
+      open={showConfirmation}
+      onClose={handleCloseConfirmation}
+      onConfirm={handleConfirmJoinCall}
+      professionalName={professionalName || "Professional"}
+    />
+  </>
   );
 };
 

@@ -100,6 +100,63 @@ export type Database = {
           },
         ]
       }
+      calls: {
+        Row: {
+          booking_id: string
+          call_id: string
+          created_at: string
+          duration: number | null
+          ended_at: string | null
+          id: string
+          professional_id: string
+          started_at: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          booking_id: string
+          call_id: string
+          created_at?: string
+          duration?: number | null
+          ended_at?: string | null
+          id?: string
+          professional_id: string
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          booking_id?: string
+          call_id?: string
+          created_at?: string
+          duration?: number | null
+          ended_at?: string | null
+          id?: string
+          professional_id?: string
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calls_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calls_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       circles: {
         Row: {
           created_at: string
@@ -383,6 +440,36 @@ export type Database = {
           mood?: string
           note?: string | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          read: boolean
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          read?: boolean
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          read?: boolean
+          title?: string
+          type?: string
           user_id?: string
         }
         Relationships: []
@@ -676,6 +763,51 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      session_feedback: {
+        Row: {
+          booking_id: string
+          created_at: string
+          id: string
+          notes: string | null
+          professional_id: string
+          rating: number
+          user_id: string
+        }
+        Insert: {
+          booking_id: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          professional_id: string
+          rating: number
+          user_id: string
+        }
+        Update: {
+          booking_id?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          professional_id?: string
+          rating?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_feedback_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "session_feedback_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sessions: {
         Row: {
