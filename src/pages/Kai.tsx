@@ -223,10 +223,10 @@ const Kai = () => {
   const getSuggestionCard = () => {
     const suggestions: Record<string, { text: string; action: string; icon: JSX.Element; path: string }> = {
       angry: {
-        text: "Try Instant Panic Relief 🫁",
-        action: "Breathing exercises can help calm anger",
-        icon: <Wind className="h-5 w-5" />,
-        path: "/instant-relief"
+        text: "Talk to a Compassionate Listener 💛",
+        action: "Professional support can help process anger",
+        icon: <Users className="h-5 w-5" />,
+        path: "/book-help"
       },
       sad: {
         text: "Write it out in your Journal ✍️",
@@ -247,10 +247,10 @@ const Kai = () => {
         path: "/soul-stream"
       },
       stressed: {
-        text: "Try Grounding Exercise 🌿",
-        action: "Ground yourself in the present moment",
-        icon: <Heart className="h-5 w-5" />,
-        path: "/wellness-toolkit/ground"
+        text: "Try Instant Panic Relief 🫁",
+        action: "Breathing exercises can help calm stress",
+        icon: <Wind className="h-5 w-5" />,
+        path: "/instant-relief"
       },
       numb: {
         text: "Talk to a Compassionate Listener 💛",
