@@ -217,6 +217,30 @@ export type Database = {
         }
         Relationships: []
       }
+      emotion_suggestions: {
+        Row: {
+          created_at: string | null
+          emotion: string
+          id: string
+          suggestion: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          emotion: string
+          id?: string
+          suggestion: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          emotion?: string
+          id?: string
+          suggestion?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       grounding_progress: {
         Row: {
           completed_count: number | null

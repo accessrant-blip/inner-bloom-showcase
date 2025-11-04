@@ -42,12 +42,28 @@ const Kai = () => {
 
   const detectMood = (text: string): string => {
     const lowerText = text.toLowerCase();
-    if (lowerText.match(/angry|mad|furious|irritated|annoyed/)) return "angry";
-    if (lowerText.match(/sad|depressed|down|crying|tears/)) return "sad";
-    if (lowerText.match(/anxious|worried|nervous|scared|afraid/)) return "anxious";
-    if (lowerText.match(/happy|excited|great|good|wonderful|amazing/)) return "happy";
-    if (lowerText.match(/lonely|alone|isolated/)) return "lonely";
-    if (lowerText.match(/numb|empty|nothing/)) return "numb";
+    
+    // Anger patterns
+    if (lowerText.match(/angry|mad|furious|irritated|annoyed|pissed|rage|frustrated|hate|ugh/)) return "angry";
+    
+    // Sadness patterns
+    if (lowerText.match(/sad|depressed|down|crying|tears|hopeless|helpless|worthless|tired of|give up|can't go on/)) return "sad";
+    
+    // Anxiety/Stress patterns
+    if (lowerText.match(/anxious|worried|nervous|scared|afraid|panic|stress|overwhelm|can't relax|freaking out|心配/)) return "anxious";
+    
+    // Loneliness patterns
+    if (lowerText.match(/lonely|alone|isolated|no one|nobody|ignored|left out|abandoned/)) return "lonely";
+    
+    // Stress/Overload patterns
+    if (lowerText.match(/stressed|overwhelmed|too much|can't cope|burned out|exhausted|pressure/)) return "stressed";
+    
+    // Numbness patterns
+    if (lowerText.match(/numb|empty|nothing|void|disconnected|detached|feel nothing/)) return "numb";
+    
+    // Happiness/Positive patterns
+    if (lowerText.match(/happy|excited|great|good|wonderful|amazing|grateful|peaceful|better|relaxed|joyful|content/)) return "happy";
+    
     return "";
   };
 
@@ -189,59 +205,91 @@ const Kai = () => {
     }
   };
 
-  const getSuggestionButton = () => {
-    switch (detectedMood) {
-      case "angry":
-        return (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate("/wellness-toolkit/breathe")}
-            className="gap-2 rounded-xl border-border hover:bg-muted"
-          >
-            <Wind className="h-4 w-4" />
-            Try Breathing Tool
-          </Button>
-        );
-      case "sad":
-        return (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate("/wellness-toolkit/journal")}
-            className="gap-2 rounded-xl border-border hover:bg-muted"
-          >
-            <BookOpen className="h-4 w-4" />
-            Journal This
-          </Button>
-        );
-      case "anxious":
-        return (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate("/wellness-toolkit/ground")}
-            className="gap-2 rounded-xl border-border hover:bg-muted"
-          >
-            <Heart className="h-4 w-4" />
-            Ground Yourself
-          </Button>
-        );
-      case "lonely":
-        return (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate("/connect")}
-            className="gap-2 rounded-xl border-border hover:bg-muted"
-          >
-            <Users className="h-4 w-4" />
-            Join Circle
-          </Button>
-        );
-      default:
-        return null;
+  const saveEmotionSuggestion = async (emotion: string, suggestion: string) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      await supabase.from('emotion_suggestions').insert({
+        user_id: user.id,
+        emotion,
+        suggestion
+      });
+    } catch (error) {
+      console.error('Error saving emotion suggestion:', error);
     }
+  };
+
+  const getSuggestionCard = () => {
+    const suggestions: Record<string, { text: string; action: string; icon: JSX.Element; path: string }> = {
+      angry: {
+        text: "Try Instant Panic Relief 🫁",
+        action: "Breathing exercises can help calm anger",
+        icon: <Wind className="h-5 w-5" />,
+        path: "/instant-relief"
+      },
+      sad: {
+        text: "Write it out in your Journal ✍️",
+        action: "Express your feelings through writing",
+        icon: <BookOpen className="h-5 w-5" />,
+        path: "/wellness-toolkit/journal"
+      },
+      anxious: {
+        text: "Try Instant Panic Relief 🫁",
+        action: "Breathing exercises help reduce anxiety",
+        icon: <Wind className="h-5 w-5" />,
+        path: "/instant-relief"
+      },
+      lonely: {
+        text: "Join the Soul Stream 🌐",
+        action: "Connect with others in a safe space",
+        icon: <Users className="h-5 w-5" />,
+        path: "/soul-stream"
+      },
+      stressed: {
+        text: "Try Grounding Exercise 🌿",
+        action: "Ground yourself in the present moment",
+        icon: <Heart className="h-5 w-5" />,
+        path: "/wellness-toolkit/ground"
+      },
+      numb: {
+        text: "Talk to a Compassionate Listener 💛",
+        action: "Professional support can help",
+        icon: <Users className="h-5 w-5" />,
+        path: "/book-help"
+      },
+      happy: {
+        text: "Share this positive moment 🌸",
+        action: "Post to Soul Stream and spread joy",
+        icon: <Heart className="h-5 w-5" />,
+        path: "/soul-stream"
+      }
+    };
+
+    const suggestion = suggestions[detectedMood];
+    if (!suggestion) return null;
+
+    const handleClick = () => {
+      saveEmotionSuggestion(detectedMood, suggestion.text);
+      navigate(suggestion.path);
+    };
+
+    return (
+      <button
+        onClick={handleClick}
+        className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-glow w-full text-left group"
+      >
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-xl bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
+            {suggestion.icon}
+          </div>
+          <div className="flex-1">
+            <p className="font-medium text-foreground">{suggestion.text}</p>
+            <p className="text-sm text-muted-foreground mt-0.5">{suggestion.action}</p>
+          </div>
+        </div>
+      </button>
+    );
   };
 
   return (
@@ -287,10 +335,10 @@ const Kai = () => {
             
             {/* Mood-based suggestions */}
             {detectedMood && !isLoading && (
-              <div className="flex justify-center animate-fade-in">
-                <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-3 shadow-soft border border-border">
-                  <p className="text-sm text-muted-foreground">Need extra support?</p>
-                  {getSuggestionButton()}
+              <div className="flex justify-center animate-fade-in max-w-md mx-auto px-4">
+                <div className="w-full space-y-2">
+                  <p className="text-sm text-muted-foreground text-center">Need extra support?</p>
+                  {getSuggestionCard()}
                 </div>
               </div>
             )}
