@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Trash2, Flag, MessageCircle, Mic } from "lucide-react";
+import { ArrowLeft, Trash2, Flag, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -30,8 +30,6 @@ const Rant = () => {
   const [publicRants, setPublicRants] = useState<Rant[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isRecording, setIsRecording] = useState(false);
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
 
   useEffect(() => {
     getCurrentUser();
@@ -73,87 +71,6 @@ const Rant = () => {
     }
   };
 
-  const startVoiceRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream);
-      const chunks: Blob[] = [];
-
-      recorder.ondataavailable = (e) => chunks.push(e.data);
-      recorder.onstop = async () => {
-        const blob = new Blob(chunks, { type: "audio/webm" });
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        reader.onloadend = async () => {
-          const base64Audio = reader.result?.toString().split(",")[1];
-          if (base64Audio) {
-            await transcribeAudio(base64Audio);
-          }
-        };
-        stream.getTracks().forEach((track) => track.stop());
-      };
-
-      recorder.start();
-      setMediaRecorder(recorder);
-      setIsRecording(true);
-      
-      toast({
-        title: "Recording...",
-        description: "Speak now. Click again to stop.",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Could not access microphone.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const stopVoiceRecording = () => {
-    if (mediaRecorder && isRecording) {
-      mediaRecorder.stop();
-      setIsRecording(false);
-      setMediaRecorder(null);
-    }
-  };
-
-  const transcribeAudio = async (base64Audio: string) => {
-    toast({
-      title: "Processing...",
-      description: "Converting speech to text...",
-    });
-
-    try {
-      const { data, error } = await supabase.functions.invoke("transcribe-audio", {
-        body: { audio: base64Audio },
-      });
-
-      if (error || !data?.text) {
-        throw new Error("Transcription failed");
-      }
-      
-      setRantText((prev) => (prev ? prev + " " + data.text : data.text));
-      toast({
-        title: "Done!",
-        description: "Voice converted to text.",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to transcribe audio. Voice-to-text is not set up yet.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleVoiceClick = () => {
-    if (isRecording) {
-      stopVoiceRecording();
-    } else {
-      startVoiceRecording();
-    }
-  };
 
   const handlePostRant = async () => {
     if (!rantText.trim()) {
@@ -249,23 +166,12 @@ const Rant = () => {
           <h2 className="text-xl font-semibold text-foreground mb-2">What's on your mind?</h2>
           <p className="text-primary text-sm mb-4">This is a safe space. Let it all out.</p>
 
-          <div className="relative">
-            <Textarea
-              value={rantText}
-              onChange={(e) => setRantText(e.target.value)}
-              placeholder="Share your feelings, frustrations, or anything else..."
-              className="min-h-[120px] resize-none border-border focus:border-primary rounded-xl bg-input"
-            />
-            <button
-              onClick={handleVoiceClick}
-              className={`absolute bottom-3 right-3 transition-all duration-300 ${
-                isRecording ? "text-destructive animate-pulse" : "text-muted-foreground hover:text-primary"
-              }`}
-              title={isRecording ? "Stop recording" : "Voice input"}
-            >
-              <Mic className="h-5 w-5" />
-            </button>
-          </div>
+          <Textarea
+            value={rantText}
+            onChange={(e) => setRantText(e.target.value)}
+            placeholder="Share your feelings, frustrations, or anything else..."
+            className="min-h-[120px] resize-none border-border focus:border-primary rounded-xl bg-input"
+          />
 
           <div className="mt-4 flex items-center justify-between">
             <div>
