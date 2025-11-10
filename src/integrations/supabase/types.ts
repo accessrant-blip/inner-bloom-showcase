@@ -725,6 +725,57 @@ export type Database = {
         }
         Relationships: []
       }
+      rant_comments: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          rant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          rant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          rant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      rant_reports: {
+        Row: {
+          created_at: string
+          id: string
+          rant_id: string
+          reason: string | null
+          reporter_user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          rant_id: string
+          reason?: string | null
+          reporter_user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          rant_id?: string
+          reason?: string | null
+          reporter_user_id?: string
+        }
+        Relationships: []
+      }
       rants: {
         Row: {
           content: string

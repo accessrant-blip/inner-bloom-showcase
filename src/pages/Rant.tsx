@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ArrowLeft, Trash2, Flag, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -22,6 +23,16 @@ interface Rant {
   } | null;
 }
 
+interface Comment {
+  id: string;
+  content: string;
+  user_id: string;
+  created_at: string;
+  profiles?: {
+    username: string;
+  } | null;
+}
+
 const Rant = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -30,10 +41,18 @@ const Rant = () => {
   const [publicRants, setPublicRants] = useState<Rant[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedRantId, setSelectedRantId] = useState<string | null>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [commentCounts, setCommentCounts] = useState<Record<string, number>>({});
+  const [newComment, setNewComment] = useState("");
+  const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+  const [reportReason, setReportReason] = useState("");
+  const [isReportOpen, setIsReportOpen] = useState(false);
 
   useEffect(() => {
     getCurrentUser();
     fetchPublicRants();
+    fetchCommentCounts();
   }, []);
 
   const getCurrentUser = async () => {
@@ -68,6 +87,149 @@ const Rant = () => {
         })
       );
       setPublicRants(rantsWithProfiles);
+    }
+  };
+
+  const fetchCommentCounts = async () => {
+    const { data } = await supabase
+      .from("rant_comments")
+      .select("rant_id");
+    
+    if (data) {
+      const counts = data.reduce((acc, comment) => {
+        acc[comment.rant_id] = (acc[comment.rant_id] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+      setCommentCounts(counts);
+    }
+  };
+
+  const fetchComments = async (rantId: string) => {
+    const { data, error } = await supabase
+      .from("rant_comments")
+      .select("*")
+      .eq("rant_id", rantId)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Error fetching comments:", error);
+      return;
+    }
+
+    // Fetch usernames for comments
+    const commentsWithProfiles = await Promise.all(
+      (data || []).map(async (comment) => {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("username")
+          .eq("user_id", comment.user_id)
+          .single();
+        
+        return { ...comment, profiles: profile };
+      })
+    );
+    
+    setComments(commentsWithProfiles);
+  };
+
+  const handleOpenComments = async (rantId: string) => {
+    setSelectedRantId(rantId);
+    setIsCommentsOpen(true);
+    await fetchComments(rantId);
+  };
+
+  const handleAddComment = async () => {
+    if (!newComment.trim() || !currentUserId || !selectedRantId) {
+      toast({
+        title: "Error",
+        description: "Please write a comment",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const { error } = await supabase.from("rant_comments").insert({
+      rant_id: selectedRantId,
+      user_id: currentUserId,
+      content: newComment,
+    });
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to post comment",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Posted",
+        description: "Your comment has been added",
+      });
+      setNewComment("");
+      await fetchComments(selectedRantId);
+      await fetchCommentCounts();
+    }
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    const { error } = await supabase
+      .from("rant_comments")
+      .delete()
+      .eq("id", commentId);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete comment",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Deleted",
+        description: "Comment removed",
+      });
+      if (selectedRantId) {
+        await fetchComments(selectedRantId);
+        await fetchCommentCounts();
+      }
+    }
+  };
+
+  const handleOpenReport = (rantId: string) => {
+    setSelectedRantId(rantId);
+    setIsReportOpen(true);
+  };
+
+  const handleSubmitReport = async () => {
+    if (!currentUserId || !selectedRantId) {
+      toast({
+        title: "Error",
+        description: "You must be logged in to report",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const { error } = await supabase.from("rant_reports").insert({
+      rant_id: selectedRantId,
+      reporter_user_id: currentUserId,
+      reason: reportReason,
+    });
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to submit report",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Reported",
+        description: "Thank you for helping keep our community safe",
+      });
+      setIsReportOpen(false);
+      setReportReason("");
+      setSelectedRantId(null);
     }
   };
 
@@ -245,9 +407,12 @@ const Rant = () => {
                   <p className="text-foreground mb-4 whitespace-pre-wrap">{rant.content}</p>
 
                   <div className="flex items-center gap-4 pt-3 border-t border-border">
-                    <button className="flex items-center gap-1 text-sm text-primary hover:text-primary-hover hover:underline transition-colors duration-300">
+                    <button 
+                      onClick={() => handleOpenComments(rant.id)}
+                      className="flex items-center gap-1 text-sm text-primary hover:text-primary-hover hover:underline transition-colors duration-300"
+                    >
                       <MessageCircle className="h-4 w-4" />
-                      <span>12 comments</span>
+                      <span>{commentCounts[rant.id] || 0} comments</span>
                     </button>
 
                     {currentUserId === rant.user_id && (
@@ -260,7 +425,10 @@ const Rant = () => {
                       </button>
                     )}
 
-                    <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 ml-auto">
+                    <button 
+                      onClick={() => handleOpenReport(rant.id)}
+                      className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 ml-auto"
+                    >
                       <Flag className="h-4 w-4" />
                       <span>Report</span>
                     </button>
@@ -270,6 +438,103 @@ const Rant = () => {
             )}
           </div>
         </div>
+
+        {/* Comments Dialog */}
+        <Dialog open={isCommentsOpen} onOpenChange={setIsCommentsOpen}>
+          <DialogContent className="sm:max-w-[600px] max-h-[600px] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Comments</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              {/* Add Comment */}
+              <div className="space-y-2">
+                <Textarea
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder="Add a comment..."
+                  className="min-h-[80px]"
+                />
+                <Button onClick={handleAddComment} size="sm">
+                  Post Comment
+                </Button>
+              </div>
+
+              {/* Comments List */}
+              <div className="space-y-3 pt-4">
+                {comments.length === 0 ? (
+                  <p className="text-center text-muted-foreground py-8">
+                    No comments yet. Be the first to comment!
+                  </p>
+                ) : (
+                  comments.map((comment) => (
+                    <Card key={comment.id} className="p-4">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <p className="text-sm font-medium text-primary">
+                            {comment.profiles?.username || "Anonymous"}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {formatTimestamp(comment.created_at)}
+                          </p>
+                        </div>
+                        {currentUserId === comment.user_id && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDeleteComment(comment.id)}
+                            className="h-8 text-destructive hover:text-destructive/80"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                      <p className="text-sm text-foreground">{comment.content}</p>
+                    </Card>
+                  ))
+                )}
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Report Dialog */}
+        <Dialog open={isReportOpen} onOpenChange={setIsReportOpen}>
+          <DialogContent className="sm:max-w-[400px]">
+            <DialogHeader>
+              <DialogTitle>Report Rant</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Help us understand why you're reporting this post.
+              </p>
+              <Textarea
+                value={reportReason}
+                onChange={(e) => setReportReason(e.target.value)}
+                placeholder="Reason for reporting (optional)..."
+                className="min-h-[100px]"
+              />
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setIsReportOpen(false);
+                    setReportReason("");
+                  }}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleSubmitReport}
+                  variant="destructive"
+                  className="flex-1"
+                >
+                  Submit Report
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
