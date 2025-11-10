@@ -32,7 +32,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     toast({
-      title: "Signed out 👋",
+      title: "Signed out",
       description: "Take care of yourself. See you soon!",
     });
     navigate("/");

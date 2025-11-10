@@ -101,7 +101,7 @@ export function EmergencyModal({ open, onClose }: EmergencyModalProps) {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="rounded-3xl max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-foreground text-2xl">You're Not Alone ❤️</DialogTitle>
+          <DialogTitle className="text-foreground text-2xl">You're Not Alone</DialogTitle>
           <p className="text-muted-foreground mt-2">
             Help is available. Reach out to one of these resources — someone is ready to listen.
           </p>

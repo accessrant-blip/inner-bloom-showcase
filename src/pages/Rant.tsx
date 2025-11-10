@@ -26,7 +26,7 @@ const Rant = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [rantText, setRantText] = useState("");
-  const [privacy, setPrivacy] = useState("public");
+  const [privacy, setPrivacy] = useState("anonymous");
   const [publicRants, setPublicRants] = useState<Rant[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -47,7 +47,7 @@ const Rant = () => {
     const { data, error } = await supabase
       .from("rants")
       .select("*")
-      .in("privacy", ["public", "anonymous"])
+      .eq("privacy", "anonymous")
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -175,13 +175,10 @@ const Rant = () => {
     }
 
     setIsLoading(true);
-
-    // Convert "public" to "anonymous" for anonymity
-    const privacyValue = privacy === "public" ? "anonymous" : "private";
     
     const { error } = await supabase.from("rants").insert({
       content: rantText,
-      privacy: privacyValue,
+      privacy: privacy,
       user_id: currentUserId,
     });
 
@@ -277,9 +274,9 @@ const Rant = () => {
               </Label>
               <RadioGroup value={privacy} onValueChange={setPrivacy} className="flex gap-6">
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="public" id="public" className="border-primary text-primary" />
-                  <Label htmlFor="public" className="cursor-pointer text-sm text-foreground">
-                    Public (Anonymous)
+                  <RadioGroupItem value="anonymous" id="anonymous" className="border-primary text-primary" />
+                  <Label htmlFor="anonymous" className="cursor-pointer text-sm text-foreground">
+                    Anonymous
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -290,7 +287,7 @@ const Rant = () => {
                 </div>
               </RadioGroup>
               <p className="text-xs text-muted-foreground mt-2">
-                {privacy === "public" 
+                {privacy === "anonymous" 
                   ? "Your post will appear in the community feed anonymously" 
                   : "Only you can see this in your journal"}
               </p>

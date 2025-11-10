@@ -76,7 +76,7 @@ export default function BreatheWithMe() {
         <Card className="rounded-3xl shadow-soft border-warm-brown/20">
           <CardHeader>
             <CardTitle className="text-3xl text-warm-brown text-center">
-              Breathe With Me 💙
+              Breathe With Me
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-8">

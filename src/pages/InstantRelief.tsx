@@ -221,7 +221,7 @@ const InstantRelief = () => {
           /* Completion Message */
           <div className="text-center animate-fade-in max-w-lg">
             <div className="w-32 h-32 mx-auto mb-8 rounded-full bg-primary/20 backdrop-blur-sm flex items-center justify-center">
-              <span className="text-6xl">✨</span>
+              <div className="w-16 h-16 bg-success rounded-full"></div>
             </div>
             <h2 className="text-foreground text-4xl font-bold mb-4">You did it!</h2>
             <p className="text-muted-foreground text-xl mb-8 leading-relaxed">

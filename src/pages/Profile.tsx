@@ -65,7 +65,7 @@ export default function Profile() {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     toast({
-      title: "Signed out 👋",
+      title: "Signed out",
       description: "Take care of yourself. See you soon!",
     });
     navigate("/");
@@ -84,7 +84,7 @@ export default function Profile() {
       {/* Header */}
       <div className="bg-card/30 backdrop-blur-sm border-b border-border px-6 py-6">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Your Profile 💫</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Your Profile</h1>
           <p className="text-muted-foreground">Here's your peaceful space to just be yourself</p>
         </div>
       </div>
@@ -133,7 +133,7 @@ export default function Profile() {
                   Need Immediate Help?
                 </h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  You're not alone — help is just one click away ❤️
+                  You're not alone — help is just one click away
                 </p>
               </div>
               <div className="flex flex-col gap-2">

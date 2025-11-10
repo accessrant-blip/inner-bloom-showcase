@@ -306,7 +306,7 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
                   {/* Reactions */}
                   <div className="flex items-center gap-2 mt-2">
                     <div className="flex gap-1">
-                      {["❤️", "🙌", "🌸"].map((emoji) => (
+                      {["👍", "👏", "💭"].map((emoji) => (
                         <Button
                           key={emoji}
                           variant="ghost"

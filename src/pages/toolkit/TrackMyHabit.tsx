@@ -88,9 +88,9 @@ export default function TrackMyHabit() {
       .eq("id", habit.id);
 
     if (newStreak === 3 || newStreak === 7 || newStreak === 14 || newStreak === 30) {
-      toast.success(`🎉 ${newStreak} days streak! Amazing progress! 🌟`);
+      toast.success(`${newStreak} days streak! Amazing progress!`);
     } else {
-      toast.success("Checked in! Keep going! 💪");
+      toast.success("Checked in! Keep going!");
     }
 
     fetchHabits();

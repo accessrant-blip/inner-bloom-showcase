@@ -225,7 +225,7 @@ const Dashboard = () => {
           {/* Welcome Message */}
           <div className="animate-fade-up">
             <h1 className="text-3xl font-medium text-foreground">
-              Hi, welcome back {username}! 🌸
+              Hi, welcome back {username}!
             </h1>
           </div>
 
@@ -320,7 +320,6 @@ const Dashboard = () => {
             {/* Instant Panic Relief */}
             <div className="bg-success-soft rounded-2xl p-6 border border-success/20 shadow-soft animate-fade-in">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-2xl">⚡</span>
                 <h3 className="font-semibold text-success">Instant Panic Relief</h3>
               </div>
               <p className="text-sm text-foreground/80 mb-4">
@@ -345,7 +344,6 @@ const Dashboard = () => {
             {/* Wellness Tip */}
             <div className="bg-warning-soft rounded-2xl p-6 border border-warning/20 flex items-center justify-center min-h-[120px] shadow-soft animate-fade-in">
               <div className="flex flex-col items-center gap-3 text-center">
-                <span className="text-3xl">💪</span>
                 <p className="text-sm text-foreground font-medium">
                   {wellnessReminders[currentReminderIndex]}
                 </p>
