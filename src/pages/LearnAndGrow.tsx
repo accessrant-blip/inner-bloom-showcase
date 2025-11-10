@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -8,6 +9,8 @@ import {
 } from "@/components/ui/accordion";
 
 const LearnAndGrow = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-background/50 p-8">
       <div className="max-w-6xl mx-auto">
@@ -121,7 +124,11 @@ const LearnAndGrow = () => {
                   A trained therapist can help you identify patterns, develop healthy coping strategies, and work through 
                   challenges at your own pace.
                 </p>
-                <Button variant="wellness" className="rounded-xl">
+                <Button 
+                  variant="wellness" 
+                  className="rounded-xl"
+                  onClick={() => navigate('/book-help')}
+                >
                   Book Therapist
                 </Button>
               </AccordionContent>
@@ -167,7 +174,7 @@ const LearnAndGrow = () => {
                 <Button 
                   variant="wellness"
                   className="rounded-xl"
-                  onClick={() => {window.location.href = '/wellness-toolkit/breathe'}}
+                  onClick={() => navigate('/wellness-toolkit/breathe')}
                 >
                   Breathe With Me
                 </Button>
@@ -234,7 +241,11 @@ const LearnAndGrow = () => {
                   build trust, and promote healing. Even a brief conversation can shift your nervous system from 
                   fight-or-flight to rest-and-digest mode.
                 </p>
-                <Button variant="wellness" className="rounded-xl">
+                <Button 
+                  variant="wellness" 
+                  className="rounded-xl"
+                  onClick={() => navigate('/book-help')}
+                >
                   Book Compassionate Listener
                 </Button>
               </AccordionContent>
