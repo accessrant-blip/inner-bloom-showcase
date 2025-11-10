@@ -45,14 +45,14 @@ const Rant = () => {
     const { data, error } = await supabase
       .from("rants")
       .select("*")
-      .eq("privacy", "anonymous")
+      .in("privacy", ["public", "anonymous"])
       .order("created_at", { ascending: false });
 
     if (error) {
       console.error("Error fetching rants:", error);
       setPublicRants([]);
     } else {
-      // Fetch usernames separately for public posts
+      // Fetch usernames for public posts
       const rantsWithProfiles = await Promise.all(
         (data || []).map(async (rant) => {
           if (rant.user_id && rant.privacy === "public") {
@@ -110,7 +110,11 @@ const Rant = () => {
     } else {
       toast({
         title: "Posted!",
-        description: privacy === "private" ? "Your private rant has been saved to your journal." : "Your rant is now live in the community.",
+        description: privacy === "private" 
+          ? "Your private rant has been saved to your journal." 
+          : privacy === "public"
+          ? "Your rant is now live in the community with your username."
+          : "Your anonymous rant is now live in the community.",
       });
       setRantText("");
       if (privacy !== "private") {
@@ -180,6 +184,12 @@ const Rant = () => {
               </Label>
               <RadioGroup value={privacy} onValueChange={setPrivacy} className="flex gap-6">
                 <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="public" id="public" className="border-primary text-primary" />
+                  <Label htmlFor="public" className="cursor-pointer text-sm text-foreground">
+                    Public
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
                   <RadioGroupItem value="anonymous" id="anonymous" className="border-primary text-primary" />
                   <Label htmlFor="anonymous" className="cursor-pointer text-sm text-foreground">
                     Anonymous
@@ -193,7 +203,9 @@ const Rant = () => {
                 </div>
               </RadioGroup>
               <p className="text-xs text-muted-foreground mt-2">
-                {privacy === "anonymous" 
+                {privacy === "public" 
+                  ? "Your post will appear with your username in the community feed"
+                  : privacy === "anonymous" 
                   ? "Your post will appear in the community feed anonymously" 
                   : "Only you can see this in your journal"}
               </p>
@@ -223,7 +235,9 @@ const Rant = () => {
                 <Card key={rant.id} className="p-6 bg-card shadow-soft hover:shadow-glow transition-all duration-300 border-border animate-fade-in">
                   <div className="flex justify-between items-start mb-3">
                     <p className="text-sm text-primary font-medium">
-                      Anonymous
+                      {rant.privacy === "public" && rant.profiles?.username 
+                        ? rant.profiles.username 
+                        : "Anonymous"}
                     </p>
                     <span className="text-xs text-muted-foreground">{formatTimestamp(rant.created_at)}</span>
                   </div>
