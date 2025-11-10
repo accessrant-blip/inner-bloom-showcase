@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { 
   User, Edit, AlertCircle
@@ -13,6 +14,7 @@ import { EmergencyModal } from "@/components/profile/EmergencyModal";
 import { PrivateInfoSection } from "@/components/profile/PrivateInfoSection";
 import { WellnessToolkit } from "@/components/profile/WellnessToolkit";
 import { AIReflection } from "@/components/profile/AIReflection";
+import { SafetyPolicy } from "@/components/profile/SafetyPolicy";
 
 export default function Profile() {
   const [user, setUser] = useState<any>(null);
@@ -148,19 +150,36 @@ export default function Profile() {
           </CardContent>
         </Card>
 
-        {/* Private Info */}
-        <PrivateInfoSection userId={user?.id} />
+        {/* Tabs for Profile Sections */}
+        <Tabs defaultValue="private-info" className="w-full">
+          <TabsList className="grid w-full grid-cols-4 rounded-xl">
+            <TabsTrigger value="private-info" className="rounded-lg">Private Info</TabsTrigger>
+            <TabsTrigger value="ai-reflection" className="rounded-lg">AI Reflection</TabsTrigger>
+            <TabsTrigger value="wellness-toolkit" className="rounded-lg">Wellness Toolkit</TabsTrigger>
+            <TabsTrigger value="safety-policy" className="rounded-lg">Safety & Policy</TabsTrigger>
+          </TabsList>
 
-        {/* AI Reflection */}
-        <AIReflection userId={user?.id} />
+          <TabsContent value="private-info" className="mt-6">
+            <PrivateInfoSection userId={user?.id} />
+          </TabsContent>
 
-        {/* Wellness Toolkit */}
-        <WellnessToolkit />
+          <TabsContent value="ai-reflection" className="mt-6">
+            <AIReflection userId={user?.id} />
+          </TabsContent>
+
+          <TabsContent value="wellness-toolkit" className="mt-6">
+            <WellnessToolkit />
+          </TabsContent>
+
+          <TabsContent value="safety-policy" className="mt-6">
+            <SafetyPolicy />
+          </TabsContent>
+        </Tabs>
 
         {/* Microcopy Footer */}
         <Card className="rounded-3xl shadow-soft border-border bg-primary/5">
           <CardContent className="pt-6 text-center space-y-2">
-            <p className="text-foreground/70">Your wellness, your pace 🌸</p>
+            <p className="text-foreground/70">Your wellness, your pace</p>
             <p className="text-sm text-muted-foreground">Small steps matter. You're doing better than you think.</p>
           </CardContent>
         </Card>
