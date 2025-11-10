@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Wind, Sprout, BookOpen, Bell, TrendingUp, Gamepad2 } from "lucide-react";
+import { Wind, Sprout, BookOpen, Bell, TrendingUp, Gamepad2, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function WellnessToolkit() {
   const navigate = useNavigate();
@@ -58,7 +59,15 @@ export default function WellnessToolkit() {
   return (
     <div className="min-h-screen bg-background/50">
       <div className="max-w-6xl mx-auto px-6 py-8">
-        <div className="mb-8">
+        <div className="mb-8 relative">
+          <Button
+            onClick={() => navigate("/profile")}
+            variant="ghost"
+            size="icon"
+            className="absolute -top-2 right-0 hover:bg-muted"
+          >
+            <X className="h-5 w-5" />
+          </Button>
           <h1 className="text-4xl font-bold text-foreground mb-2">
             Wellness Toolkit 🌿
           </h1>
