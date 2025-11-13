@@ -15,6 +15,7 @@ import { PrivateInfoSection } from "@/components/profile/PrivateInfoSection";
 import { WellnessToolkit } from "@/components/profile/WellnessToolkit";
 import { AIReflection } from "@/components/profile/AIReflection";
 import { SafetyPolicy } from "@/components/profile/SafetyPolicy";
+import FeedbackForm from "@/components/profile/FeedbackForm";
 
 export default function Profile() {
   const [user, setUser] = useState<any>(null);
@@ -175,6 +176,9 @@ export default function Profile() {
             <SafetyPolicy />
           </TabsContent>
         </Tabs>
+
+        {/* Feedback Form */}
+        <FeedbackForm />
 
         {/* Microcopy Footer */}
         <Card className="rounded-3xl shadow-soft border-border bg-primary/5">
