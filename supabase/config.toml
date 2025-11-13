@@ -2,3 +2,6 @@ project_id = "izfvkmqtwrgpncxmjbhe"
 
 [functions.generate-reflection]
 verify_jwt = true
+
+[functions.calendly-webhook]
+verify_jwt = false
