@@ -103,9 +103,9 @@ const ProfessionalProfile = () => {
         <div className="bg-success-soft/50 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-2xl border border-success/30 animate-scale-in hover:shadow-glow transition-all">
           {/* Header */}
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8 pb-8 border-b border-[#5c2c2c]/10">
-            <Avatar className="w-24 h-24 border-4 border-[#fb971c]">
+            <Avatar className="w-24 h-24 border-4 border-success">
               <AvatarImage src={professional.profile_image_url || ""} alt={displayName} />
-              <AvatarFallback className="bg-gradient-to-br from-[#fb971c] to-[#f05b5b] text-white font-bold text-2xl">
+              <AvatarFallback className="bg-gradient-to-br from-success to-success-hover text-white font-bold text-2xl">
                 {initials}
               </AvatarFallback>
             </Avatar>
@@ -116,7 +116,7 @@ const ProfessionalProfile = () => {
                   {displayName}
                 </h1>
                 {professional.is_verified && (
-                  <Badge className="bg-[#fb971c] text-white border-none">
+                  <Badge className="bg-success text-white border-none">
                     <Check className="w-3 h-3 mr-1" />
                     Verified {professional.role === 'therapist' ? 'Therapist' : 'Listener'}
                   </Badge>
@@ -171,38 +171,38 @@ const ProfessionalProfile = () => {
             </h2>
             <RadioGroup value={selectedDuration} onValueChange={setSelectedDuration}>
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-4 border-2 border-[#5c2c2c]/10 rounded-xl hover:border-[#fb971c] transition-colors">
+                <div className="flex items-center justify-between p-4 border-2 border-border rounded-xl hover:border-success transition-colors">
                   <div className="flex items-center space-x-3">
                     <RadioGroupItem value="15" id="duration-15" />
-                    <Label htmlFor="duration-15" className="text-[#5c2c2c] font-medium cursor-pointer">
+                    <Label htmlFor="duration-15" className="text-foreground font-medium cursor-pointer">
                       15 minutes
                     </Label>
                   </div>
-                  <span className="text-[#5c2c2c] font-semibold">
+                  <span className="text-foreground font-semibold">
                     ₹{((professional.rate_per_session / 30) * 15).toFixed(0)}
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between p-4 border-2 border-[#5c2c2c]/10 rounded-xl hover:border-[#fb971c] transition-colors">
+                <div className="flex items-center justify-between p-4 border-2 border-border rounded-xl hover:border-success transition-colors">
                   <div className="flex items-center space-x-3">
                     <RadioGroupItem value="30" id="duration-30" />
-                    <Label htmlFor="duration-30" className="text-[#5c2c2c] font-medium cursor-pointer">
+                    <Label htmlFor="duration-30" className="text-foreground font-medium cursor-pointer">
                       30 minutes
                     </Label>
                   </div>
-                  <span className="text-[#5c2c2c] font-semibold">
+                  <span className="text-foreground font-semibold">
                     ₹{professional.rate_per_session}
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between p-4 border-2 border-[#5c2c2c]/10 rounded-xl hover:border-[#fb971c] transition-colors">
+                <div className="flex items-center justify-between p-4 border-2 border-border rounded-xl hover:border-success transition-colors">
                   <div className="flex items-center space-x-3">
                     <RadioGroupItem value="60" id="duration-60" />
-                    <Label htmlFor="duration-60" className="text-[#5c2c2c] font-medium cursor-pointer">
+                    <Label htmlFor="duration-60" className="text-foreground font-medium cursor-pointer">
                       60 minutes
                     </Label>
                   </div>
-                  <span className="text-[#5c2c2c] font-semibold">
+                  <span className="text-foreground font-semibold">
                     ₹{(professional.rate_per_session * 2).toFixed(0)}
                   </span>
                 </div>
@@ -214,14 +214,14 @@ const ProfessionalProfile = () => {
           <Button
             onClick={() => setIsBookingModalOpen(true)}
             disabled={professional.availability_status === 'offline'}
-            className="w-full bg-gradient-to-r from-[#fb971c] to-[#f05b5b] hover:from-[#f05b5b] hover:to-[#fb971c] text-white font-bold py-6 rounded-2xl text-lg shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-gradient-to-r from-success to-success-hover hover:from-success-hover hover:to-success text-white font-bold py-6 rounded-2xl text-lg shadow-lg hover:shadow-glow transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <Calendar className="w-5 h-5" />
             Book Session - ₹{calculatedAmount.toFixed(0)}
           </Button>
 
           {professional.availability_status === 'offline' && (
-            <p className="text-center text-[#7d5a5a] text-sm mt-3">
+            <p className="text-center text-muted-foreground text-sm mt-3">
               This professional is currently offline. Please check back later.
             </p>
           )}

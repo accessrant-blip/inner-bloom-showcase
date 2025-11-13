@@ -37,9 +37,9 @@ const ProfessionalCard = ({ professional }: ProfessionalCardProps) => {
   return (
     <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-soft hover:shadow-glow transition-all duration-300 border border-border animate-fade-in">
       <div className="flex items-start gap-4 mb-4">
-        <Avatar className="w-16 h-16 border-2 border-primary">
+        <Avatar className="w-16 h-16 border-2 border-success">
           <AvatarImage src={professional.profile_image_url || ""} alt={displayName} />
-          <AvatarFallback className="bg-gradient-to-br from-primary to-primary-hover text-primary-foreground font-semibold">
+          <AvatarFallback className="bg-gradient-to-br from-success to-success-hover text-white font-semibold">
             {initials}
           </AvatarFallback>
         </Avatar>
@@ -48,7 +48,7 @@ const ProfessionalCard = ({ professional }: ProfessionalCardProps) => {
           <div className="flex items-center gap-2 mb-1">
             <h3 className="text-xl font-bold text-foreground">{displayName}</h3>
             {professional.is_verified && (
-              <Badge className="bg-primary text-primary-foreground border-none">
+              <Badge className="bg-success text-white border-none">
                 <Check className="w-3 h-3 mr-1" />
                 Verified
               </Badge>
