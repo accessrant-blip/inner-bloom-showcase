@@ -27,6 +27,8 @@ const ProfessionalCard = ({ professional }: ProfessionalCardProps) => {
   const navigate = useNavigate();
   const displayName = professional.alias || professional.name;
   const initials = displayName.split(" ").map(n => n[0]).join("").toUpperCase();
+  
+  const sessionType = professional.role === 'therapist' ? 'therapist' : 'listener';
 
   const statusColors = {
     online: "bg-green-500",
@@ -85,11 +87,11 @@ const ProfessionalCard = ({ professional }: ProfessionalCardProps) => {
         </div>
 
         <Button
-          onClick={() => navigate(`/book-help/professional/${professional.id}`)}
+          onClick={() => navigate(`/book-calendly/${sessionType}`)}
           variant="wellness"
           className="px-6 py-2 rounded-xl shadow-soft hover:shadow-glow transition-all duration-300"
         >
-          View Profile
+          Book Now
         </Button>
       </div>
     </div>

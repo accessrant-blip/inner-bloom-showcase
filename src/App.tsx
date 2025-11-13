@@ -15,6 +15,7 @@ import Profile from "./pages/Profile";
 import EmergencySupport from "./pages/EmergencySupport";
 import NotFound from "./pages/NotFound";
 import WellnessToolkit from "./pages/WellnessToolkit";
+import BookCalendly from "./pages/BookCalendly";
 import BreatheWithMe from "./pages/toolkit/BreatheWithMe";
 import GroundYourself from "./pages/toolkit/GroundYourself";
 import JournalSpace from "./pages/toolkit/JournalSpace";
@@ -46,6 +47,7 @@ const App = () => (
           <Route path="/soul-stream" element={<AppLayout><SoulStream /></AppLayout>} />
           <Route path="/learn-grow" element={<AppLayout><LearnAndGrow /></AppLayout>} />
           <Route path="/book-help" element={<AppLayout><BookHelp /></AppLayout>} />
+          <Route path="/book-calendly/:sessionType" element={<AppLayout><BookCalendly /></AppLayout>} />
           <Route path="/book-help/professional/:id" element={<AppLayout><ProfessionalProfile /></AppLayout>} />
           <Route path="/kai" element={<AppLayout><Kai /></AppLayout>} />
           <Route path="/instant-relief" element={<AppLayout><InstantRelief /></AppLayout>} />
