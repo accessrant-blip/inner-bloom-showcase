@@ -47,7 +47,7 @@ const FeedbackForm = () => {
       const { data: { user } } = await supabase.auth.getUser();
 
       const { error } = await supabase
-        .from('feedback_form')
+        .from('feedback_form' as any)
         .insert({
           user_id: user?.id,
           name: formData.name,
