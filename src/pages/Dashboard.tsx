@@ -318,7 +318,7 @@ const Dashboard = () => {
           {/* Bottom Row */}
           <div className="grid md:grid-cols-2 gap-6">
             {/* Instant Panic Relief */}
-            <div className="bg-success-soft rounded-2xl p-6 border border-success/20 shadow-soft animate-fade-in">
+            <div className="bg-success-soft rounded-2xl p-6 border border-success/30 shadow-soft animate-fade-in hover:shadow-glow transition-all">
               <div className="flex items-center gap-2 mb-3">
                 <h3 className="font-semibold text-success">Instant Panic Relief</h3>
               </div>
@@ -342,7 +342,7 @@ const Dashboard = () => {
             </div>
 
             {/* Wellness Tip */}
-            <div className="bg-warning-soft rounded-2xl p-6 border border-warning/20 flex items-center justify-center min-h-[120px] shadow-soft animate-fade-in">
+            <div className="bg-primary-soft rounded-2xl p-6 border border-primary/30 flex items-center justify-center min-h-[120px] shadow-soft animate-fade-in hover:shadow-glow transition-all">
               <div className="flex flex-col items-center gap-3 text-center">
                 <p className="text-sm text-foreground font-medium">
                   {wellnessReminders[currentReminderIndex]}
@@ -352,14 +352,14 @@ const Dashboard = () => {
           </div>
 
           {/* Wellness Reminder - Inspirational Quote */}
-          <div className="gradient-misty rounded-2xl p-6 border-l-4 border-primary shadow-soft animate-fade-in">
+          <div className="bg-accent-soft rounded-2xl p-6 border-l-4 border-primary shadow-soft animate-fade-in hover:shadow-glow transition-all">
             <p className="text-primary italic text-center text-lg">
               "You are a child of the universe, no less than the trees and the stars; you have a right to be here."
             </p>
           </div>
 
           {/* Emergency Helplines */}
-          <div className="bg-card rounded-2xl p-6 shadow-soft border border-border animate-fade-in">
+          <div className="bg-destructive/5 rounded-2xl p-6 shadow-soft border border-destructive/20 animate-fade-in hover:shadow-glow transition-all">
             <button
               onClick={() => setShowEmergencyHelp(!showEmergencyHelp)}
               className="flex items-center justify-between w-full"
