@@ -66,8 +66,8 @@ const ProfessionalProfile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#fff8f2] to-[#fef5ed] flex items-center justify-center">
-        <Loader2 className="w-10 h-10 animate-spin text-[#fb971c]" />
+      <div className="min-h-screen bg-gradient-to-br from-success-soft to-success/10 flex items-center justify-center">
+        <Loader2 className="w-10 h-10 animate-spin text-success" />
       </div>
     );
   }
@@ -87,20 +87,20 @@ const ProfessionalProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fff8f2] to-[#fef5ed] font-['Poppins',_sans-serif] pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-success-soft to-success/10 font-['Poppins',_sans-serif] pb-24">
       <div className="max-w-4xl mx-auto px-6 pt-16">
         {/* Back Button */}
         <Button
           onClick={() => navigate('/book-help')}
           variant="ghost"
-          className="mb-6 text-[#7d5a5a] hover:text-[#5c2c2c]"
+          className="mb-6 text-foreground hover:text-success"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Listings
         </Button>
 
         {/* Profile Card */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-2xl border border-[#5c2c2c]/10 animate-scale-in">
+        <div className="bg-success-soft/50 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-2xl border border-success/30 animate-scale-in hover:shadow-glow transition-all">
           {/* Header */}
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8 pb-8 border-b border-[#5c2c2c]/10">
             <Avatar className="w-24 h-24 border-4 border-[#fb971c]">
