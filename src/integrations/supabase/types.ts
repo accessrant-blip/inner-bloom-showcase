@@ -241,6 +241,39 @@ export type Database = {
         }
         Relationships: []
       }
+      feedback_form: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          name: string
+          recommend: string
+          responsiveness: string
+          suggestions: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          name: string
+          recommend: string
+          responsiveness: string
+          suggestions?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          name?: string
+          recommend?: string
+          responsiveness?: string
+          suggestions?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       grounding_progress: {
         Row: {
           completed_count: number | null
@@ -836,6 +869,39 @@ export type Database = {
           time?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      scheduled_sessions: {
+        Row: {
+          calendly_event_id: string | null
+          created_at: string | null
+          email: string
+          id: string
+          name: string
+          scheduled_at: string | null
+          session_type: string
+          user_id: string | null
+        }
+        Insert: {
+          calendly_event_id?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          name: string
+          scheduled_at?: string | null
+          session_type: string
+          user_id?: string | null
+        }
+        Update: {
+          calendly_event_id?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          name?: string
+          scheduled_at?: string | null
+          session_type?: string
+          user_id?: string | null
         }
         Relationships: []
       }
