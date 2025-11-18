@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Brain } from "lucide-react";
 import { useState } from "react";
 import AuthModal from "@/components/auth/AuthModal";
 
@@ -35,7 +35,7 @@ const Navigation = () => {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">R</span>
+              <Brain className="text-primary-foreground" size={20} />
             </div>
             <span className="font-bold text-xl text-foreground">Rant</span>
           </div>
