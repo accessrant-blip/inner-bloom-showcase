@@ -5,7 +5,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowLeft, Trash2, Flag, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,7 +20,6 @@ interface Rant {
   mood?: string;
   profiles?: {
     username: string;
-    avatar_url: string | null;
   } | null;
 }
 
@@ -73,13 +71,13 @@ const Rant = () => {
       console.error("Error fetching rants:", error);
       setPublicRants([]);
     } else {
-      // Fetch usernames and avatars for public posts
+      // Fetch usernames for public posts
       const rantsWithProfiles = await Promise.all(
         (data || []).map(async (rant) => {
           if (rant.user_id && rant.privacy === "public") {
             const { data: profile } = await supabase
               .from("profiles")
-              .select("username, avatar_url")
+              .select("username")
               .eq("user_id", rant.user_id)
               .single();
             
@@ -397,27 +395,17 @@ const Rant = () => {
             ) : (
               publicRants.map((rant) => (
                 <Card key={rant.id} className="p-6 bg-card shadow-soft hover:shadow-glow transition-all duration-300 border-border animate-fade-in">
-                  <div className="flex items-start gap-3 mb-3">
-                    <Avatar className="w-10 h-10 border-2 border-primary/20">
-                      <AvatarImage src={rant.profiles?.avatar_url || ""} />
-                      <AvatarFallback className="bg-primary/10 text-foreground text-sm">
-                        {rant.privacy === "public" && rant.profiles?.username 
-                          ? rant.profiles.username[0]?.toUpperCase() 
-                          : "A"}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-start mb-2">
-                        <p className="text-sm text-primary font-medium">
-                          {rant.privacy === "public" && rant.profiles?.username 
-                            ? rant.profiles.username 
-                            : "Anonymous"}
-                        </p>
-                        <span className="text-xs text-muted-foreground">{formatTimestamp(rant.created_at)}</span>
-                      </div>
-                      <p className="text-foreground mb-4 whitespace-pre-wrap">{rant.content}</p>
-                    </div>
+                  <div className="flex justify-between items-start mb-3">
+                    <p className="text-sm text-primary font-medium">
+                      {rant.privacy === "public" && rant.profiles?.username 
+                        ? rant.profiles.username 
+                        : "Anonymous"}
+                    </p>
+                    <span className="text-xs text-muted-foreground">{formatTimestamp(rant.created_at)}</span>
                   </div>
+                  
+                  <p className="text-foreground mb-4 whitespace-pre-wrap">{rant.content}</p>
+
                   <div className="flex items-center gap-4 pt-3 border-t border-border">
                     <button 
                       onClick={() => handleOpenComments(rant.id)}
