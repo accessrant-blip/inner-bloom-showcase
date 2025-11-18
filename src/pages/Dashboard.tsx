@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   Video,
   Mic,
@@ -28,6 +29,7 @@ const Dashboard = () => {
   const [selectedMood, setSelectedMood] = useState<{ emoji: string; label: string } | null>(null);
   const [isMoodModalOpen, setIsMoodModalOpen] = useState(false);
   const [username, setUsername] = useState<string>("friend");
+  const [avatarUrl, setAvatarUrl] = useState<string>("");
 
   useEffect(() => {
     getCurrentUser();
@@ -38,15 +40,18 @@ const Dashboard = () => {
     setCurrentUserId(user?.id || null);
     
     if (user) {
-      // Fetch username from profile
+      // Fetch username and avatar from profile
       const { data: profile } = await supabase
         .from('profiles')
-        .select('username')
+        .select('username, avatar_url')
         .eq('user_id', user.id)
         .single();
       
       if (profile?.username) {
         setUsername(profile.username);
+      }
+      if (profile?.avatar_url) {
+        setAvatarUrl(profile.avatar_url);
       }
     }
   };
@@ -255,7 +260,12 @@ const Dashboard = () => {
           {/* Post Rant Section */}
           <div className="bg-card rounded-2xl p-8 shadow-soft border border-border animate-fade-in">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-primary/20 rounded-full"></div>
+              <Avatar className="w-10 h-10 border-2 border-primary/20">
+                <AvatarImage src={avatarUrl} />
+                <AvatarFallback className="bg-primary/10 text-foreground">
+                  {username?.[0]?.toUpperCase() || "U"}
+                </AvatarFallback>
+              </Avatar>
               <p className="text-muted-foreground">What's on your mind? Share your thoughts...</p>
             </div>
 
