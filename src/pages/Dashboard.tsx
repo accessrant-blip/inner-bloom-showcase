@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import MoodTrackerModal from "@/components/mood/MoodTrackerModal";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const Dashboard = () => {
   const [selectedMood, setSelectedMood] = useState<{ emoji: string; label: string } | null>(null);
   const [isMoodModalOpen, setIsMoodModalOpen] = useState(false);
   const [username, setUsername] = useState<string>("friend");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   useEffect(() => {
     getCurrentUser();
@@ -38,15 +40,16 @@ const Dashboard = () => {
     setCurrentUserId(user?.id || null);
     
     if (user) {
-      // Fetch username from profile
+      // Fetch username and avatar from profile
       const { data: profile } = await supabase
         .from('profiles')
-        .select('username')
+        .select('username, avatar_url')
         .eq('user_id', user.id)
         .single();
       
-      if (profile?.username) {
-        setUsername(profile.username);
+      if (profile) {
+        if (profile.username) setUsername(profile.username);
+        if (profile.avatar_url) setAvatarUrl(profile.avatar_url);
       }
     }
   };
@@ -255,7 +258,12 @@ const Dashboard = () => {
           {/* Post Rant Section */}
           <div className="bg-card rounded-2xl p-8 shadow-soft border border-border animate-fade-in">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-primary/20 rounded-full"></div>
+              <Avatar className="w-10 h-10">
+                <AvatarImage src={avatarUrl || undefined} alt={username} />
+                <AvatarFallback className="bg-primary/20 text-primary">
+                  {username.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
               <p className="text-muted-foreground">What's on your mind? Share your thoughts...</p>
             </div>
 
@@ -437,9 +445,16 @@ const Dashboard = () => {
           <div className="absolute top-4 right-4">
             <button
               onClick={() => navigate("/profile")}
-              className="w-10 h-10 bg-primary/20 rounded-full hover:bg-primary/30 transition-all duration-300 cursor-pointer shadow-soft"
+              className="hover:opacity-80 transition-all duration-300 cursor-pointer"
               title="Go to Profile"
-            />
+            >
+              <Avatar className="w-10 h-10 shadow-soft">
+                <AvatarImage src={avatarUrl || undefined} alt={username} />
+                <AvatarFallback className="bg-primary/20 text-primary">
+                  {username.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+            </button>
           </div>
         </div>
 
