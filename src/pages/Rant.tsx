@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface Rant {
   id: string;
@@ -20,6 +21,7 @@ interface Rant {
   mood?: string;
   profiles?: {
     username: string;
+    avatar_url: string | null;
   } | null;
 }
 
@@ -30,6 +32,7 @@ interface Comment {
   created_at: string;
   profiles?: {
     username: string;
+    avatar_url: string | null;
   } | null;
 }
 
@@ -71,13 +74,13 @@ const Rant = () => {
       console.error("Error fetching rants:", error);
       setPublicRants([]);
     } else {
-      // Fetch usernames for public posts
+      // Fetch usernames and avatars for public posts
       const rantsWithProfiles = await Promise.all(
         (data || []).map(async (rant) => {
           if (rant.user_id && rant.privacy === "public") {
             const { data: profile } = await supabase
               .from("profiles")
-              .select("username")
+              .select("username, avatar_url")
               .eq("user_id", rant.user_id)
               .single();
             
@@ -116,12 +119,12 @@ const Rant = () => {
       return;
     }
 
-    // Fetch usernames for comments
+    // Fetch usernames and avatars for comments
     const commentsWithProfiles = await Promise.all(
       (data || []).map(async (comment) => {
         const { data: profile } = await supabase
           .from("profiles")
-          .select("username")
+          .select("username, avatar_url")
           .eq("user_id", comment.user_id)
           .single();
         
@@ -395,18 +398,31 @@ const Rant = () => {
             ) : (
               publicRants.map((rant) => (
                 <Card key={rant.id} className="p-6 bg-card shadow-soft hover:shadow-glow transition-all duration-300 border-border animate-fade-in">
-                  <div className="flex justify-between items-start mb-3">
-                    <p className="text-sm text-primary font-medium">
-                      {rant.privacy === "public" && rant.profiles?.username 
-                        ? rant.profiles.username 
-                        : "Anonymous"}
-                    </p>
-                    <span className="text-xs text-muted-foreground">{formatTimestamp(rant.created_at)}</span>
-                  </div>
-                  
-                  <p className="text-foreground mb-4 whitespace-pre-wrap">{rant.content}</p>
+                  <div className="flex items-start gap-3 mb-3">
+                    <Avatar className="w-10 h-10 flex-shrink-0">
+                      <AvatarImage 
+                        src={rant.privacy === "public" && rant.profiles?.avatar_url ? rant.profiles.avatar_url : undefined} 
+                        alt={rant.privacy === "public" && rant.profiles?.username ? rant.profiles.username : "Anonymous"} 
+                      />
+                      <AvatarFallback className="bg-primary/20 text-primary">
+                        {rant.privacy === "public" && rant.profiles?.username 
+                          ? rant.profiles.username.charAt(0).toUpperCase() 
+                          : "A"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-start mb-2">
+                        <p className="text-sm text-primary font-medium">
+                          {rant.privacy === "public" && rant.profiles?.username 
+                            ? rant.profiles.username 
+                            : "Anonymous"}
+                        </p>
+                        <span className="text-xs text-muted-foreground whitespace-nowrap ml-2">{formatTimestamp(rant.created_at)}</span>
+                      </div>
+                      
+                      <p className="text-foreground mb-4 whitespace-pre-wrap">{rant.content}</p>
 
-                  <div className="flex items-center gap-4 pt-3 border-t border-border">
+                      <div className="flex items-center gap-4 pt-3 border-t border-border">
                     <button 
                       onClick={() => handleOpenComments(rant.id)}
                       className="flex items-center gap-1 text-sm text-primary hover:text-primary-hover hover:underline transition-colors duration-300"
@@ -430,12 +446,14 @@ const Rant = () => {
                       className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 ml-auto"
                     >
                       <Flag className="h-4 w-4" />
-                      <span>Report</span>
-                    </button>
+                       <span>Report</span>
+                      </button>
+                    </div>
                   </div>
-                </Card>
-              ))
-            )}
+                </div>
+              </Card>
+            ))
+          )}
           </div>
         </div>
 
@@ -468,27 +486,42 @@ const Rant = () => {
                 ) : (
                   comments.map((comment) => (
                     <Card key={comment.id} className="p-4">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <p className="text-sm font-medium text-primary">
-                            {comment.profiles?.username || "Anonymous"}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {formatTimestamp(comment.created_at)}
-                          </p>
+                      <div className="flex items-start gap-3">
+                        <Avatar className="w-8 h-8 flex-shrink-0">
+                          <AvatarImage 
+                            src={comment.profiles?.avatar_url || undefined} 
+                            alt={comment.profiles?.username || "Anonymous"} 
+                          />
+                          <AvatarFallback className="bg-primary/20 text-primary text-xs">
+                            {comment.profiles?.username 
+                              ? comment.profiles.username.charAt(0).toUpperCase() 
+                              : "A"}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex justify-between items-start mb-2">
+                            <div>
+                              <p className="text-sm font-medium text-primary">
+                                {comment.profiles?.username || "Anonymous"}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {formatTimestamp(comment.created_at)}
+                              </p>
+                            </div>
+                            {currentUserId === comment.user_id && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleDeleteComment(comment.id)}
+                                className="h-8 text-destructive hover:text-destructive/80"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
+                          <p className="text-sm text-foreground">{comment.content}</p>
                         </div>
-                        {currentUserId === comment.user_id && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteComment(comment.id)}
-                            className="h-8 text-destructive hover:text-destructive/80"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        )}
                       </div>
-                      <p className="text-sm text-foreground">{comment.content}</p>
                     </Card>
                   ))
                 )}
