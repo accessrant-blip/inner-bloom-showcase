@@ -8,6 +8,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import EmbeddedFormModal from "@/components/booking/EmbeddedFormModal";
 
 interface Professional {
   id: string;
@@ -31,6 +32,7 @@ const ProfessionalProfile = () => {
   const [professional, setProfessional] = useState<Professional | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedDuration, setSelectedDuration] = useState("30");
+  const [isFormModalOpen, setIsFormModalOpen] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -96,7 +98,7 @@ const ProfessionalProfile = () => {
       });
       return;
     }
-    window.open(formLink, "_blank", "noopener,noreferrer");
+    setIsFormModalOpen(true);
   };
 
   return (
@@ -256,6 +258,16 @@ const ProfessionalProfile = () => {
           )}
         </div>
       </div>
+
+      {/* Embedded Form Modal */}
+      {professional.google_form_link && (
+        <EmbeddedFormModal
+          isOpen={isFormModalOpen}
+          onClose={() => setIsFormModalOpen(false)}
+          formUrl={professional.google_form_link}
+          professionalName={displayName}
+        />
+      )}
     </div>
   );
 };
