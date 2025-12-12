@@ -35,7 +35,7 @@ const ProfessionalCard = ({ professional }: ProfessionalCardProps) => {
   };
 
   return (
-    <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-soft hover:shadow-glow transition-all duration-300 border border-border animate-fade-in">
+    <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-soft hover:shadow-glow transition-all duration-300 border border-border animate-fade-in h-full min-h-[320px] flex flex-col">
       <div className="flex items-start gap-4 mb-4">
         <Avatar className="w-16 h-16 border-2 border-success">
           <AvatarImage src={professional.profile_image_url || ""} alt={displayName} />
@@ -62,7 +62,7 @@ const ProfessionalCard = ({ professional }: ProfessionalCardProps) => {
         </div>
       </div>
 
-      <p className="text-muted-foreground text-sm mb-4 line-clamp-2 leading-relaxed">
+      <p className="text-muted-foreground text-sm mb-4 line-clamp-2 leading-relaxed flex-grow">
         {professional.bio}
       </p>
 
@@ -76,7 +76,7 @@ const ProfessionalCard = ({ professional }: ProfessionalCardProps) => {
         </div>
       )}
 
-      <div className="flex items-center justify-between pt-4 border-t border-border">
+      <div className="flex items-center justify-between pt-4 border-t border-border mt-auto">
         <div>
           <div className="text-2xl font-bold text-foreground">
             ₹{professional.rate_per_session}
