@@ -8,8 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
-import { BookingConfirmation } from "./BookingConfirmation";
-import { VoiceCallSession } from "./VoiceCallSession";
+import { PaymentRedirectModal } from "./PaymentRedirectModal";
+import { PaymentPendingModal } from "./PaymentPendingModal";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -39,9 +39,9 @@ const BookingModal = ({
     notes: "",
   });
   const [loading, setLoading] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [showCallSession, setShowCallSession] = useState(false);
-  const [currentBookingId, setCurrentBookingId] = useState<string>("");
+  const [showPaymentRedirect, setShowPaymentRedirect] = useState(false);
+  const [showPaymentPending, setShowPaymentPending] = useState(false);
+  const [currentBookingAmount, setCurrentBookingAmount] = useState<number>(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,7 +68,8 @@ const BookingModal = ({
         return;
       }
 
-      const calculatedAmount = amount || (bookingType === "listener" ? 250 : 1000);
+      const calculatedAmount = amount || (bookingType === "listener" ? 150 : 1000);
+      setCurrentBookingAmount(calculatedAmount);
 
       const { data: booking, error: bookingError } = await supabase
         .from("bookings")
@@ -84,14 +85,14 @@ const BookingModal = ({
           notes: formData.notes,
           duration: duration,
           amount: calculatedAmount,
-          status: 'pending'
+          status: 'pending_payment'
         })
         .select()
         .single();
 
       if (bookingError) throw bookingError;
 
-      // Create payment record
+      // Create payment record with pending status
       const { error: paymentError } = await supabase
         .from("payments")
         .insert({
@@ -100,28 +101,23 @@ const BookingModal = ({
           professional_id: professionalId,
           amount: calculatedAmount,
           currency: 'INR',
-          payment_method: 'pending',
+          payment_method: 'upi',
           payment_status: 'pending',
+          payment_gateway: 'google_form'
         });
 
       if (paymentError) throw paymentError;
 
-      // Update booking status to confirmed
-      await supabase
-        .from("bookings")
-        .update({ status: 'confirmed' })
-        .eq('id', booking.id);
-
-      // Create notification
+      // Create notification for pending payment
       await supabase.from('notifications').insert({
         user_id: user.id,
-        type: 'booking_confirmed',
-        title: 'Booking Confirmed',
-        message: `Your session with ${professionalName} has been confirmed.`,
+        type: 'booking_pending',
+        title: 'Booking Created - Payment Pending',
+        message: `Please complete your payment for the session with ${professionalName}.`,
       });
 
-      setCurrentBookingId(booking.id);
-      setShowConfirmation(true);
+      // Show payment redirect modal
+      setShowPaymentRedirect(true);
 
     } catch (error) {
       console.error("Error creating booking:", error);
@@ -135,14 +131,28 @@ const BookingModal = ({
     }
   };
 
-  const handleConfirmJoinCall = () => {
-    setShowConfirmation(false);
-    setShowCallSession(true);
+  const handlePaymentFormOpened = () => {
+    setShowPaymentRedirect(false);
+    setShowPaymentPending(true);
+  };
+
+  const handleClosePaymentRedirect = () => {
+    setShowPaymentRedirect(false);
+    resetForm();
     onClose();
   };
 
-  const handleCloseConfirmation = () => {
-    setShowConfirmation(false);
+  const handleClosePaymentPending = () => {
+    setShowPaymentPending(false);
+    resetForm();
+    onClose();
+    toast({
+      title: "Booking Submitted",
+      description: "You'll be notified once your payment is verified.",
+    });
+  };
+
+  const resetForm = () => {
     setFormData({
       name: "",
       email: "",
@@ -151,31 +161,7 @@ const BookingModal = ({
       mode: "audio",
       notes: "",
     });
-    onClose();
   };
-
-  const handleEndCall = () => {
-    setShowCallSession(false);
-    setFormData({
-      name: "",
-      email: "",
-      date: "",
-      time: "",
-      mode: "audio",
-      notes: "",
-    });
-  };
-
-  if (showCallSession && professionalId && professionalName) {
-    return (
-      <VoiceCallSession
-        bookingId={currentBookingId}
-        professionalId={professionalId}
-        professionalName={professionalName}
-        onEnd={handleEndCall}
-      />
-    );
-  }
 
   return (
     <>
@@ -297,10 +283,17 @@ const BookingModal = ({
       </DialogContent>
     </Dialog>
 
-    <BookingConfirmation
-      open={showConfirmation}
-      onClose={handleCloseConfirmation}
-      onConfirm={handleConfirmJoinCall}
+    <PaymentRedirectModal
+      open={showPaymentRedirect}
+      onClose={handleClosePaymentRedirect}
+      onOpenPaymentForm={handlePaymentFormOpened}
+      professionalName={professionalName || "Professional"}
+      amount={currentBookingAmount}
+    />
+
+    <PaymentPendingModal
+      open={showPaymentPending}
+      onClose={handleClosePaymentPending}
       professionalName={professionalName || "Professional"}
     />
   </>
