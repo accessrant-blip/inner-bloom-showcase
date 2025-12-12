@@ -65,6 +65,11 @@ export function EmergencyModal({ open, onClose }: EmergencyModalProps) {
     return null;
   };
 
+  const isMobileDevice = (): boolean => {
+    const userAgent = navigator.userAgent || navigator.vendor;
+    return /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+  };
+
   const handleSendAlert = (contact: EmergencyContact) => {
     if (!message.trim()) {
       toast({
@@ -80,19 +85,30 @@ export function EmergencyModal({ open, onClose }: EmergencyModalProps) {
     if (!phoneNumber) {
       toast({
         title: "Invalid Phone Number",
-        description: "This contact does not have a valid WhatsApp number.",
+        description: "Please add a valid phone number for this contact.",
         variant: "destructive",
       });
       return;
     }
     
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
     
-    window.open(whatsappUrl, '_blank');
+    // Use whatsapp:// for mobile, wa.me for desktop
+    let whatsappUrl: string;
+    if (isMobileDevice()) {
+      whatsappUrl = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
+    } else {
+      whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    }
+    
+    // Debug log
+    console.log('[WhatsApp Debug]', { phoneNumber, isMobile: isMobileDevice(), url: whatsappUrl });
+    
+    // Open in new tab with noopener for security
+    window.open(whatsappUrl, '_blank', 'noopener');
     
     toast({
-      title: "Opening WhatsApp 💚",
+      title: "Opening WhatsApp",
       description: `Sending alert to ${contact.name}`,
     });
   };
