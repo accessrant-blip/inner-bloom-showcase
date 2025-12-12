@@ -8,7 +8,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import BookingModal from "@/components/booking/BookingModal";
 
 interface Professional {
   id: string;
@@ -22,6 +21,7 @@ interface Professional {
   rate_per_session: number;
   currency: string;
   is_verified: boolean;
+  google_form_link: string | null;
 }
 
 const ProfessionalProfile = () => {
@@ -31,7 +31,6 @@ const ProfessionalProfile = () => {
   const [professional, setProfessional] = useState<Professional | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedDuration, setSelectedDuration] = useState("30");
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -85,6 +84,19 @@ const ProfessionalProfile = () => {
     online: "bg-green-500",
     offline: "bg-gray-400",
     busy: "bg-yellow-500"
+  };
+
+  const handleBookSession = () => {
+    const formLink = professional.google_form_link;
+    if (!formLink) {
+      toast({
+        title: "Booking Unavailable",
+        description: "Booking form is unavailable. Please try again later.",
+        variant: "destructive",
+      });
+      return;
+    }
+    window.open(formLink, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -229,7 +241,7 @@ const ProfessionalProfile = () => {
 
           {/* Book Now Button */}
           <Button
-            onClick={() => setIsBookingModalOpen(true)}
+            onClick={handleBookSession}
             disabled={professional.availability_status === 'offline'}
             className="w-full bg-gradient-to-r from-success to-success-hover hover:from-success-hover hover:to-success text-white font-bold py-6 rounded-2xl text-lg shadow-lg hover:shadow-glow transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
@@ -244,17 +256,6 @@ const ProfessionalProfile = () => {
           )}
         </div>
       </div>
-
-      {/* Booking Modal */}
-      <BookingModal
-        isOpen={isBookingModalOpen}
-        onClose={() => setIsBookingModalOpen(false)}
-        bookingType={professional.role as "listener" | "therapist"}
-        professionalId={professional.id}
-        professionalName={displayName}
-        duration={isListener ? 15 : isTherapist ? 35 : parseInt(selectedDuration)}
-        amount={calculatedAmount}
-      />
     </div>
   );
 };

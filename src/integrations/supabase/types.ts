@@ -680,6 +680,7 @@ export type Database = {
           bio: string
           created_at: string | null
           currency: string | null
+          google_form_link: string | null
           id: string
           is_active: boolean | null
           is_verified: boolean | null
@@ -699,6 +700,7 @@ export type Database = {
           bio: string
           created_at?: string | null
           currency?: string | null
+          google_form_link?: string | null
           id?: string
           is_active?: boolean | null
           is_verified?: boolean | null
@@ -718,6 +720,7 @@ export type Database = {
           bio?: string
           created_at?: string | null
           currency?: string | null
+          google_form_link?: string | null
           id?: string
           is_active?: boolean | null
           is_verified?: boolean | null
