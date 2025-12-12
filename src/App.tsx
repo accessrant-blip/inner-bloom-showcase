@@ -26,6 +26,7 @@ import Kai from "./pages/Kai";
 import InstantRelief from "./pages/InstantRelief";
 import Connect from "./pages/Connect";
 import Rant from "./pages/Rant";
+import BookingConfirmed from "./pages/BookingConfirmed";
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient());
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/emergency-support" element={<EmergencySupport />} />
+          <Route path="/booking-confirmed" element={<BookingConfirmed />} />
           
           {/* App routes with persistent layout */}
           <Route path="/dashboard" element={<AppLayout><Dashboard /></AppLayout>} />
