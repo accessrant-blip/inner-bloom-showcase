@@ -78,8 +78,8 @@ const ProfessionalProfile = () => {
 
   const displayName = professional.alias || professional.name;
   const initials = displayName.split(" ").map(n => n[0]).join("").toUpperCase();
-  const calculatedAmount = (professional.rate_per_session / 30) * parseInt(selectedDuration);
-
+  const isListener = professional.role === 'listener';
+  const calculatedAmount = isListener ? 150 : (professional.rate_per_session / 30) * parseInt(selectedDuration);
   const statusColors = {
     online: "bg-green-500",
     offline: "bg-gray-400",
@@ -167,47 +167,56 @@ const ProfessionalProfile = () => {
           <div className="mb-8 p-6 bg-gradient-to-br from-[#fff8f2] to-white rounded-2xl">
             <h2 className="text-xl font-bold text-[#5c2c2c] mb-4 flex items-center gap-2">
               <Clock className="w-5 h-5" />
-              Select Session Duration
+              {isListener ? 'Session Duration' : 'Select Session Duration'}
             </h2>
-            <RadioGroup value={selectedDuration} onValueChange={setSelectedDuration}>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-4 border-2 border-border rounded-xl hover:border-success transition-colors">
-                  <div className="flex items-center space-x-3">
-                    <RadioGroupItem value="15" id="duration-15" />
-                    <Label htmlFor="duration-15" className="text-foreground font-medium cursor-pointer">
-                      15 minutes
-                    </Label>
-                  </div>
-                  <span className="text-foreground font-semibold">
-                    ₹{((professional.rate_per_session / 30) * 15).toFixed(0)}
-                  </span>
+            {isListener ? (
+              <div className="flex items-center justify-between p-4 border-2 border-success rounded-xl bg-success/5">
+                <div className="flex items-center space-x-3">
+                  <span className="text-foreground font-medium">15 minutes</span>
                 </div>
-
-                <div className="flex items-center justify-between p-4 border-2 border-border rounded-xl hover:border-success transition-colors">
-                  <div className="flex items-center space-x-3">
-                    <RadioGroupItem value="30" id="duration-30" />
-                    <Label htmlFor="duration-30" className="text-foreground font-medium cursor-pointer">
-                      30 minutes
-                    </Label>
-                  </div>
-                  <span className="text-foreground font-semibold">
-                    ₹{professional.rate_per_session}
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between p-4 border-2 border-border rounded-xl hover:border-success transition-colors">
-                  <div className="flex items-center space-x-3">
-                    <RadioGroupItem value="60" id="duration-60" />
-                    <Label htmlFor="duration-60" className="text-foreground font-medium cursor-pointer">
-                      60 minutes
-                    </Label>
-                  </div>
-                  <span className="text-foreground font-semibold">
-                    ₹{(professional.rate_per_session * 2).toFixed(0)}
-                  </span>
-                </div>
+                <span className="text-foreground font-semibold">₹150</span>
               </div>
-            </RadioGroup>
+            ) : (
+              <RadioGroup value={selectedDuration} onValueChange={setSelectedDuration}>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-4 border-2 border-border rounded-xl hover:border-success transition-colors">
+                    <div className="flex items-center space-x-3">
+                      <RadioGroupItem value="15" id="duration-15" />
+                      <Label htmlFor="duration-15" className="text-foreground font-medium cursor-pointer">
+                        15 minutes
+                      </Label>
+                    </div>
+                    <span className="text-foreground font-semibold">
+                      ₹{((professional.rate_per_session / 30) * 15).toFixed(0)}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between p-4 border-2 border-border rounded-xl hover:border-success transition-colors">
+                    <div className="flex items-center space-x-3">
+                      <RadioGroupItem value="30" id="duration-30" />
+                      <Label htmlFor="duration-30" className="text-foreground font-medium cursor-pointer">
+                        30 minutes
+                      </Label>
+                    </div>
+                    <span className="text-foreground font-semibold">
+                      ₹{professional.rate_per_session}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between p-4 border-2 border-border rounded-xl hover:border-success transition-colors">
+                    <div className="flex items-center space-x-3">
+                      <RadioGroupItem value="60" id="duration-60" />
+                      <Label htmlFor="duration-60" className="text-foreground font-medium cursor-pointer">
+                        60 minutes
+                      </Label>
+                    </div>
+                    <span className="text-foreground font-semibold">
+                      ₹{(professional.rate_per_session * 2).toFixed(0)}
+                    </span>
+                  </div>
+                </div>
+              </RadioGroup>
+            )}
           </div>
 
           {/* Book Now Button */}
@@ -235,7 +244,7 @@ const ProfessionalProfile = () => {
         bookingType={professional.role as "listener" | "therapist"}
         professionalId={professional.id}
         professionalName={displayName}
-        duration={parseInt(selectedDuration)}
+        duration={isListener ? 15 : parseInt(selectedDuration)}
         amount={calculatedAmount}
       />
     </div>
