@@ -67,12 +67,14 @@ export function EmergencyModal({ open, onClose }: EmergencyModalProps) {
       phoneNumber = '91' + phoneNumber;
     }
     
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    
+    // Use location.href to avoid popup blockers
+    window.location.href = whatsappUrl;
     
     toast({
-      title: "Alert Sent 💚",
-      description: `Opening WhatsApp to send alert to ${contact.name}`,
+      title: "Opening WhatsApp 💚",
+      description: `Sending alert to ${contact.name}`,
     });
   };
 
