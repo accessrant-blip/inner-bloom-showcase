@@ -79,7 +79,8 @@ const ProfessionalProfile = () => {
   const displayName = professional.alias || professional.name;
   const initials = displayName.split(" ").map(n => n[0]).join("").toUpperCase();
   const isListener = professional.role === 'listener';
-  const calculatedAmount = isListener ? 150 : (professional.rate_per_session / 30) * parseInt(selectedDuration);
+  const isTherapist = professional.role === 'therapist';
+  const calculatedAmount = isListener ? 150 : isTherapist ? 1000 : (professional.rate_per_session / 30) * parseInt(selectedDuration);
   const statusColors = {
     online: "bg-green-500",
     offline: "bg-gray-400",
@@ -176,6 +177,13 @@ const ProfessionalProfile = () => {
                 </div>
                 <span className="text-foreground font-semibold">₹150</span>
               </div>
+            ) : isTherapist ? (
+              <div className="flex items-center justify-between p-4 border-2 border-success rounded-xl bg-success/5">
+                <div className="flex items-center space-x-3">
+                  <span className="text-foreground font-medium">35 minutes</span>
+                </div>
+                <span className="text-foreground font-semibold">₹1000</span>
+              </div>
             ) : (
               <RadioGroup value={selectedDuration} onValueChange={setSelectedDuration}>
                 <div className="space-y-3">
@@ -244,7 +252,7 @@ const ProfessionalProfile = () => {
         bookingType={professional.role as "listener" | "therapist"}
         professionalId={professional.id}
         professionalName={displayName}
-        duration={isListener ? 15 : parseInt(selectedDuration)}
+        duration={isListener ? 15 : isTherapist ? 35 : parseInt(selectedDuration)}
         amount={calculatedAmount}
       />
     </div>
