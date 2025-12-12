@@ -83,7 +83,7 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
       <DialogContent className="sm:max-w-md bg-card border-border animate-scale-in">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-foreground">
-            {isLogin ? "Welcome Back 💛" : "Join RANT 🌸"}
+            {isLogin ? "Welcome Back 💛" : "Join RANT"}
           </DialogTitle>
           <DialogDescription className="text-muted-foreground">
             {isLogin 
