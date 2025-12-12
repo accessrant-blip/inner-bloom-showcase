@@ -26,17 +26,40 @@ export type AuthFormData = z.infer<typeof authSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type SignupFormData = z.infer<typeof signupSchema>;
 
+export type ValidationResult = 
+  | { success: true; data: { email: string; password: string; username?: string } }
+  | { success: false; error: string };
+
 export function validateAuth(
   data: { email: string; password: string; username?: string },
   isLogin: boolean
-): { success: true; data: AuthFormData } | { success: false; error: string } {
-  const schema = isLogin ? loginSchema : signupSchema;
-  const result = schema.safeParse(data);
-  
-  if (!result.success) {
-    const firstError = result.error.errors[0];
-    return { success: false, error: firstError.message };
+): ValidationResult {
+  if (isLogin) {
+    const result = loginSchema.safeParse(data);
+    if (!result.success) {
+      const firstError = result.error.errors[0];
+      return { success: false, error: firstError.message };
+    }
+    return { 
+      success: true, 
+      data: { 
+        email: result.data.email, 
+        password: result.data.password
+      } 
+    };
+  } else {
+    const result = signupSchema.safeParse(data);
+    if (!result.success) {
+      const firstError = result.error.errors[0];
+      return { success: false, error: firstError.message };
+    }
+    return { 
+      success: true, 
+      data: { 
+        email: result.data.email, 
+        password: result.data.password,
+        username: result.data.username || undefined
+      } 
+    };
   }
-  
-  return { success: true, data: result.data as AuthFormData };
 }
