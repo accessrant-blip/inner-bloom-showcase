@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Users } from "lucide-react";
+
 import CircleChat from "@/components/connect/CircleChat";
 
 interface Circle {
@@ -140,11 +140,7 @@ const Connect = () => {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-muted-foreground">
-                          <Users className="h-4 w-4" />
-                          <span className="text-sm">{circle.member_count} members</span>
-                        </div>
+                      <div className="flex items-center justify-end">
                         <Button
                           variant={isMember ? "secondary" : "wellness"}
                           size="sm"
