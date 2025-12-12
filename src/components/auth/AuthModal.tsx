@@ -5,8 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Mail } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { validateAuth } from "@/lib/authValidation";
 
 interface AuthModalProps {
   open: boolean;
@@ -20,18 +21,32 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string; username?: string }>({});
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFieldErrors({});
+
+    // Validate with zod schema
+    const validation = validateAuth({ email, password, username }, isLogin);
+    if (!validation.success) {
+      toast({
+        title: "Validation Error",
+        description: validation.error,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
       if (isLogin) {
         const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
+          email: validation.data.email,
+          password: validation.data.password,
         });
 
         if (error) throw error;
@@ -47,12 +62,12 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
         const redirectUrl = `${window.location.origin}/dashboard`;
         
         const { error } = await supabase.auth.signUp({
-          email,
-          password,
+          email: validation.data.email,
+          password: validation.data.password,
           options: {
             emailRedirectTo: redirectUrl,
             data: {
-              username: username || email.split('@')[0],
+              username: validation.data.username || validation.data.email.split('@')[0],
             }
           }
         });
