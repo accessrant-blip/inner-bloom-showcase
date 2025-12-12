@@ -50,6 +50,21 @@ export function EmergencyModal({ open, onClose }: EmergencyModalProps) {
     }
   };
 
+  const sanitizePhoneNumber = (phone: string): string | null => {
+    const cleaned = phone.replace(/\D/g, '');
+    
+    // If 10 digits, prepend India country code
+    if (cleaned.length === 10) {
+      return '91' + cleaned;
+    }
+    // If already has country code (11+ digits), use as is
+    if (cleaned.length >= 11) {
+      return cleaned;
+    }
+    // Invalid phone number
+    return null;
+  };
+
   const handleSendAlert = (contact: EmergencyContact) => {
     if (!message.trim()) {
       toast({
@@ -60,22 +75,31 @@ export function EmergencyModal({ open, onClose }: EmergencyModalProps) {
       return;
     }
 
-    let phoneNumber = contact.phone.replace(/\D/g, '');
+    const phoneNumber = sanitizePhoneNumber(contact.phone);
     
-    // Add country code if not present (default to India +91 for 10-digit numbers)
-    if (phoneNumber.length === 10) {
-      phoneNumber = '91' + phoneNumber;
+    if (!phoneNumber) {
+      toast({
+        title: "Invalid Phone Number",
+        description: "This contact does not have a valid WhatsApp number.",
+        variant: "destructive",
+      });
+      return;
     }
     
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
     
-    // Use location.href to avoid popup blockers
-    window.location.href = whatsappUrl;
+    window.open(whatsappUrl, '_blank');
     
     toast({
       title: "Opening WhatsApp 💚",
       description: `Sending alert to ${contact.name}`,
     });
+  };
+
+  const isValidPhone = (phone: string): boolean => {
+    const cleaned = phone.replace(/\D/g, '');
+    return cleaned.length >= 10;
   };
 
   const handleAddContact = () => {
@@ -197,6 +221,7 @@ export function EmergencyModal({ open, onClose }: EmergencyModalProps) {
                         variant="default"
                         size="sm"
                         className="rounded-xl"
+                        disabled={!isValidPhone(contact.phone)}
                       >
                         <Send className="h-4 w-4 mr-2" />
                         Send via WhatsApp
