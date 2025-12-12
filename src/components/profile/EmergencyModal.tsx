@@ -60,8 +60,14 @@ export function EmergencyModal({ open, onClose }: EmergencyModalProps) {
       return;
     }
 
-    const phoneNumber = contact.phone.replace(/\D/g, '');
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    let phoneNumber = contact.phone.replace(/\D/g, '');
+    
+    // Add country code if not present (default to India +91 for 10-digit numbers)
+    if (phoneNumber.length === 10) {
+      phoneNumber = '91' + phoneNumber;
+    }
+    
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
     
     toast({
