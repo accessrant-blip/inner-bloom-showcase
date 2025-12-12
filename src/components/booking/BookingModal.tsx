@@ -85,7 +85,7 @@ const BookingModal = ({
           notes: formData.notes,
           duration: duration,
           amount: calculatedAmount,
-          status: 'pending_payment'
+          status: 'pending'
         })
         .select()
         .single();
