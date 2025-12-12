@@ -2,9 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Send, MoreVertical, Heart, ThumbsUp, Smile } from "lucide-react";
+import { ArrowLeft, Send, MoreVertical, Users, LogOut, User } from "lucide-react";
 import { generateAlias } from "@/lib/aliasGenerator";
 import { checkSafetyKeywords } from "@/lib/safetyKeywords";
 import {
@@ -22,6 +23,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 interface Circle {
   id: string;
@@ -36,11 +44,19 @@ interface Message {
   sender_alias: string;
   created_at: string;
   user_id: string;
+  is_system_message?: boolean;
 }
 
 interface MessageWithReactions extends Message {
   reactions: { [key: string]: number };
   userReaction?: string;
+}
+
+interface Member {
+  user_id: string;
+  username: string;
+  avatar_url: string | null;
+  joined_at: string;
 }
 
 interface CircleChatProps {
@@ -55,18 +71,27 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [userAlias, setUserAlias] = useState<string>("");
   const [showSafetyAlert, setShowSafetyAlert] = useState(false);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [memberCount, setMemberCount] = useState(0);
+  const [showMembersPanel, setShowMembersPanel] = useState(false);
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const channelRef = useRef<any>(null);
+  const membersChannelRef = useRef<any>(null);
 
   useEffect(() => {
     initializeUser();
     fetchMessages();
+    fetchMembers();
     setupRealtimeSubscription();
+    setupMembersRealtimeSubscription();
 
     return () => {
       if (channelRef.current) {
         supabase.removeChannel(channelRef.current);
+      }
+      if (membersChannelRef.current) {
+        supabase.removeChannel(membersChannelRef.current);
       }
     };
   }, [circle.id]);
@@ -80,6 +105,85 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
     if (user) {
       setCurrentUserId(user.id);
       setUserAlias(generateAlias());
+      await joinCircleIfNeeded(user.id);
+    }
+  };
+
+  const joinCircleIfNeeded = async (userId: string) => {
+    // Check if user is already a member
+    const { data: existingMembership } = await supabase
+      .from("user_circles")
+      .select("id")
+      .eq("circle_id", circle.id)
+      .eq("user_id", userId)
+      .single();
+
+    if (!existingMembership) {
+      // Join the circle
+      const { error } = await supabase
+        .from("user_circles")
+        .insert({
+          circle_id: circle.id,
+          user_id: userId,
+        });
+
+      if (!error) {
+        // Get user's profile for the system message
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("username")
+          .eq("user_id", userId)
+          .single();
+
+        // Send system message
+        await supabase.from("messages").insert({
+          circle_id: circle.id,
+          user_id: userId,
+          sender_alias: "System",
+          content: `${profile?.username || "A new member"} joined the group`,
+          is_system_message: true,
+        });
+
+        toast({
+          title: "Welcome!",
+          description: `You've joined ${circle.name}`,
+        });
+      }
+    }
+  };
+
+  const handleLeaveCircle = async () => {
+    if (!currentUserId) return;
+
+    // Get user's profile for the system message
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("username")
+      .eq("user_id", currentUserId)
+      .single();
+
+    // Send system message before leaving
+    await supabase.from("messages").insert({
+      circle_id: circle.id,
+      user_id: currentUserId,
+      sender_alias: "System",
+      content: `${profile?.username || "A member"} left the group`,
+      is_system_message: true,
+    });
+
+    // Leave the circle
+    const { error } = await supabase
+      .from("user_circles")
+      .delete()
+      .eq("circle_id", circle.id)
+      .eq("user_id", currentUserId);
+
+    if (!error) {
+      toast({
+        title: "Left group",
+        description: `You've left ${circle.name}`,
+      });
+      onBack();
     }
   };
 
@@ -115,6 +219,69 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
         }
       )
       .subscribe();
+  };
+
+  const setupMembersRealtimeSubscription = () => {
+    membersChannelRef.current = supabase
+      .channel(`circle-members-${circle.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "user_circles",
+          filter: `circle_id=eq.${circle.id}`,
+        },
+        () => {
+          fetchMembers();
+        }
+      )
+      .subscribe();
+  };
+
+  const fetchMembers = async () => {
+    // Fetch user_circles for this circle
+    const { data: circleMembers, error: membersError } = await supabase
+      .from("user_circles")
+      .select("user_id, joined_at")
+      .eq("circle_id", circle.id);
+
+    if (membersError || !circleMembers) {
+      console.error("Error fetching members:", membersError);
+      return;
+    }
+
+    if (circleMembers.length === 0) {
+      setMembers([]);
+      setMemberCount(0);
+      return;
+    }
+
+    // Fetch profiles for these users
+    const userIds = circleMembers.map(m => m.user_id);
+    const { data: profiles, error: profilesError } = await supabase
+      .from("profiles")
+      .select("user_id, username, avatar_url")
+      .in("user_id", userIds);
+
+    if (profilesError) {
+      console.error("Error fetching profiles:", profilesError);
+      return;
+    }
+
+    // Combine the data
+    const formattedMembers: Member[] = circleMembers.map((member) => {
+      const profile = profiles?.find(p => p.user_id === member.user_id);
+      return {
+        user_id: member.user_id,
+        username: profile?.username || "Unknown",
+        avatar_url: profile?.avatar_url || null,
+        joined_at: member.joined_at,
+      };
+    });
+
+    setMembers(formattedMembers);
+    setMemberCount(formattedMembers.length);
   };
 
   const fetchMessages = async () => {
@@ -179,10 +346,6 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
       });
     } else {
       setNewMessage("");
-      toast({
-        title: "Message sent",
-        description: "Your message has been shared with the circle.",
-      });
     }
 
     setIsLoading(false);
@@ -191,7 +354,6 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
   const handleReaction = async (messageId: string, reaction: string, currentReaction?: string) => {
     if (!currentUserId) return;
 
-    // If user already reacted with the same emoji, remove it
     if (currentReaction === reaction) {
       await supabase
         .from("message_reactions")
@@ -200,7 +362,6 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
         .eq("user_id", currentUserId)
         .eq("reaction", reaction);
     } else {
-      // Remove old reaction if exists, then add new one
       if (currentReaction) {
         await supabase
           .from("message_reactions")
@@ -256,20 +417,72 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
     }
   };
 
+  const getInitials = (name: string) => {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  };
+
   return (
     <div className="min-h-screen bg-[#F5EFE6] flex flex-col">
       {/* Header */}
       <div className="bg-white border-b border-[#E8DCC4] p-4">
-        <div className="container mx-auto flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={onBack}>
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div className="flex items-center gap-3">
-            <span className="text-3xl">{circle.icon}</span>
-            <div>
-              <h1 className="text-xl font-bold text-[#4A4A4A]">{circle.name}</h1>
-              <p className="text-sm text-[#6B6B6B]">{circle.description}</p>
+        <div className="container mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="icon" onClick={onBack}>
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <div className="flex items-center gap-3">
+              <span className="text-3xl">{circle.icon}</span>
+              <div>
+                <h1 className="text-xl font-bold text-[#4A4A4A]">{circle.name}</h1>
+                <p className="text-sm text-[#6B6B6B]">{memberCount} Members</p>
+              </div>
             </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Sheet open={showMembersPanel} onOpenChange={setShowMembersPanel}>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-2">
+                  <Users className="h-4 w-4" />
+                  Members
+                </Button>
+              </SheetTrigger>
+              <SheetContent className="bg-white">
+                <SheetHeader>
+                  <SheetTitle className="text-[#4A4A4A]">Members ({memberCount})</SheetTitle>
+                </SheetHeader>
+                <div className="mt-6 space-y-3">
+                  {members.map((member) => (
+                    <div key={member.user_id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#F5EFE6] transition-colors">
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage src={member.avatar_url || undefined} />
+                        <AvatarFallback className="bg-primary/10 text-primary">
+                          {getInitials(member.username)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <p className="font-medium text-[#4A4A4A]">{member.username}</p>
+                        <p className="text-xs text-[#6B6B6B]">
+                          Joined {formatTimestamp(member.joined_at)}
+                        </p>
+                      </div>
+                      {member.user_id === currentUserId && (
+                        <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">You</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-6 pt-4 border-t border-[#E8DCC4]">
+                  <Button
+                    variant="outline"
+                    className="w-full text-destructive border-destructive hover:bg-destructive/10"
+                    onClick={handleLeaveCircle}
+                  >
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Leave Group
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>
@@ -279,6 +492,18 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
         <div className="container mx-auto max-w-4xl space-y-4">
           {messages.map((message) => {
             const isOwnMessage = message.user_id === currentUserId;
+            const isSystemMessage = message.is_system_message;
+            
+            if (isSystemMessage) {
+              return (
+                <div key={message.id} className="flex justify-center animate-fade-in">
+                  <div className="bg-[#E8DCC4]/50 px-4 py-2 rounded-full">
+                    <p className="text-xs text-[#6B6B6B] italic">{message.content}</p>
+                  </div>
+                </div>
+              );
+            }
+
             return (
               <div
                 key={message.id}
@@ -296,7 +521,7 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
                   <div
                     className={`rounded-2xl px-4 py-3 ${
                       isOwnMessage
-                        ? "bg-[#FF6B35] text-white"
+                        ? "bg-primary text-primary-foreground"
                         : "bg-white text-[#4A4A4A] border border-[#E8DCC4]"
                     }`}
                   >
@@ -366,7 +591,7 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
           <Button
             onClick={handleSendMessage}
             disabled={!newMessage.trim() || isLoading}
-            className="bg-[#FF6B35] hover:bg-[#FF6B35]/90"
+            className="bg-primary hover:bg-primary/90"
             size="icon"
           >
             <Send className="h-5 w-5" />
@@ -394,7 +619,7 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
             </div>
           </div>
           <AlertDialogFooter>
-            <AlertDialogAction className="bg-[#FF6B35] hover:bg-[#FF6B35]/90">
+            <AlertDialogAction className="bg-primary hover:bg-primary/90">
               I understand
             </AlertDialogAction>
           </AlertDialogFooter>
