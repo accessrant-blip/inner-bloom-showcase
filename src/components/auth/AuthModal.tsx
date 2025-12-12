@@ -31,7 +31,7 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
 
     // Validate with zod schema
     const validation = validateAuth({ email, password, username }, isLogin);
-    if (!validation.success) {
+    if (validation.success === false) {
       toast({
         title: "Validation Error",
         description: validation.error,
