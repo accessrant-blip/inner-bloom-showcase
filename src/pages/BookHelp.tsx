@@ -100,9 +100,11 @@ const BookHelp = () => {
                   </p>
                 </div>
                 {listeners.length > 0 ? (
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="flex flex-wrap justify-center gap-6">
                     {listeners.map((professional) => (
-                      <ProfessionalCard key={professional.id} professional={professional} />
+                      <div key={professional.id} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-md">
+                        <ProfessionalCard professional={professional} />
+                      </div>
                     ))}
                   </div>
                 ) : (
@@ -120,9 +122,11 @@ const BookHelp = () => {
                   </p>
                 </div>
                 {therapists.length > 0 ? (
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="flex flex-wrap justify-center gap-6">
                     {therapists.map((professional) => (
-                      <ProfessionalCard key={professional.id} professional={professional} />
+                      <div key={professional.id} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-md">
+                        <ProfessionalCard professional={professional} />
+                      </div>
                     ))}
                   </div>
                 ) : (
