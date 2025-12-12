@@ -50,72 +50,86 @@ export function EmergencyModal({ open, onClose }: EmergencyModalProps) {
     }
   };
 
-  const sanitizePhoneNumber = (phone: string): string | null => {
-    const cleaned = phone.replace(/\D/g, '');
-    
-    // If 10 digits, prepend India country code
-    if (cleaned.length === 10) {
-      return '91' + cleaned;
-    }
-    // If already has country code (11+ digits), use as is
-    if (cleaned.length >= 11) {
-      return cleaned;
-    }
-    // Invalid phone number
-    return null;
+  const sanitizePhone = (raw: string | null): string | null => {
+    if (!raw) return null;
+    // Remove non-digits
+    let digits = raw.replace(/\D/g, '');
+    // If 10 digits assume Indian number and prepend 91
+    if (digits.length === 10) digits = '91' + digits;
+    // Minimal sanity: must be >=11 digits now
+    if (digits.length < 11) return null;
+    return digits;
   };
 
-  const isMobileDevice = (): boolean => {
-    const userAgent = navigator.userAgent || navigator.vendor;
-    return /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+  const isValidPhone = (phone: string): boolean => {
+    return sanitizePhone(phone) !== null;
   };
 
   const handleSendAlert = (contact: EmergencyContact) => {
     if (!message.trim()) {
       toast({
         title: "Message Required",
-        description: "Please enter a message to send.",
+        description: "Please enter an emergency message before sending.",
         variant: "destructive",
       });
       return;
     }
 
-    const phoneNumber = sanitizePhoneNumber(contact.phone);
+    const phoneSanitized = sanitizePhone(contact.phone);
     
-    if (!phoneNumber) {
+    if (!phoneSanitized) {
       toast({
         title: "Invalid Phone Number",
-        description: "Please add a valid phone number for this contact.",
+        description: "This contact does not have a valid phone number. Please update their phone (include country code).",
         variant: "destructive",
       });
       return;
     }
     
-    const encodedMessage = encodeURIComponent(message);
+    const encoded = encodeURIComponent(message);
     
-    // Use whatsapp:// for mobile, wa.me for desktop
-    let whatsappUrl: string;
-    if (isMobileDevice()) {
-      whatsappUrl = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
+    // Determine URL: prefer whatsapp:// on mobile, wa.me on web
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    let url = '';
+    
+    if (isMobile) {
+      // Attempt app deep link first
+      url = `whatsapp://send?phone=${phoneSanitized}&text=${encoded}`;
     } else {
-      whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+      // Desktop / fallback to web
+      url = `https://wa.me/${phoneSanitized}?text=${encoded}`;
     }
     
-    // Debug log
-    console.log('[WhatsApp Debug]', { phoneNumber, isMobile: isMobileDevice(), url: whatsappUrl });
+    console.log('WhatsApp URL:', url);
     
-    // Open in new tab with noopener for security
-    window.open(whatsappUrl, '_blank', 'noopener');
-    
-    toast({
-      title: "Opening WhatsApp",
-      description: `Sending alert to ${contact.name}`,
-    });
-  };
-
-  const isValidPhone = (phone: string): boolean => {
-    const cleaned = phone.replace(/\D/g, '');
-    return cleaned.length >= 10;
+    try {
+      // Open in a new tab/window (not inside iframe)
+      const win = window.open(url, '_blank', 'noopener,noreferrer');
+      if (!win) {
+        // Window blocked by popup blocker
+        toast({
+          title: "Popup Blocked",
+          description: "Please allow popups or copy the link to open WhatsApp manually.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      toast({
+        title: "Opening WhatsApp",
+        description: `Sending alert to ${contact.name}`,
+      });
+    } catch (err) {
+      console.error('Failed to open WhatsApp URL:', err);
+      // Fallback to web link
+      const webUrl = `https://wa.me/${phoneSanitized}?text=${encoded}`;
+      window.open(webUrl, '_blank', 'noopener,noreferrer');
+      
+      toast({
+        title: "Opening WhatsApp Web",
+        description: `Sending alert to ${contact.name}`,
+      });
+    }
   };
 
   const handleAddContact = () => {
