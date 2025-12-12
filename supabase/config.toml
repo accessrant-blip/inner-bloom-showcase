@@ -2,3 +2,9 @@ project_id = "izfvkmqtwrgpncxmjbhe"
 
 [functions.generate-reflection]
 verify_jwt = true
+
+[functions.kai-chat]
+verify_jwt = true
+
+[functions.transcribe-audio]
+verify_jwt = true
