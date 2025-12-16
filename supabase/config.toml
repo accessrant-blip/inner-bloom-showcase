@@ -8,3 +8,9 @@ verify_jwt = true
 
 [functions.transcribe-audio]
 verify_jwt = true
+
+[functions.manage-call]
+verify_jwt = true
+
+[functions.twilio-token]
+verify_jwt = true
