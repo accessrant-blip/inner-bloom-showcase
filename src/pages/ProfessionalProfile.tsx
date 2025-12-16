@@ -43,7 +43,7 @@ const ProfessionalProfile = () => {
       setLoading(true);
       const { data, error } = await supabase
         .from('professionals')
-        .select('*')
+        .select('id, name, alias, role, bio, specialties, profile_image_url, availability_status, rate_per_session, currency, is_verified, google_form_link')
         .eq('id', id)
         .eq('is_active', true)
         .single();
