@@ -1,9 +1,21 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+// Input validation schema
+const messageSchema = z.object({
+  role: z.enum(["user", "assistant", "system"]),
+  content: z.string().min(1, "Message content cannot be empty").max(4000, "Message content too long"),
+});
+
+const kaiChatSchema = z.object({
+  messages: z.array(messageSchema).min(1, "At least one message required").max(50, "Too many messages"),
+  userMood: z.string().max(50, "Mood string too long").optional(),
+});
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -11,7 +23,26 @@ serve(async (req) => {
   }
 
   try {
-    const { messages, userMood } = await req.json();
+    // Parse and validate input
+    let input;
+    try {
+      const body = await req.json();
+      input = kaiChatSchema.parse(body);
+    } catch (validationError) {
+      if (validationError instanceof z.ZodError) {
+        console.error("Validation error:", validationError.errors);
+        return new Response(
+          JSON.stringify({ error: "Invalid input", details: validationError.errors }),
+          {
+            status: 400,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
+      }
+      throw validationError;
+    }
+
+    const { messages, userMood } = input;
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
     if (!LOVABLE_API_KEY) {

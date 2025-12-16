@@ -1,10 +1,16 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.74.0";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Input validation schema
+const twilioTokenSchema = z.object({
+  callId: z.string().min(1, "Call ID required").max(100, "Call ID too long"),
+});
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -22,7 +28,10 @@ serve(async (req) => {
 
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
-      throw new Error('No authorization header');
+      return new Response(
+        JSON.stringify({ error: 'No authorization header' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     const supabase = createClient(
@@ -33,10 +42,29 @@ serve(async (req) => {
 
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     if (userError || !user) {
-      throw new Error('Unauthorized');
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    const { callId } = await req.json();
+    // Parse and validate input
+    let input;
+    try {
+      const body = await req.json();
+      input = twilioTokenSchema.parse(body);
+    } catch (validationError) {
+      if (validationError instanceof z.ZodError) {
+        console.error("Validation error:", validationError.errors);
+        return new Response(
+          JSON.stringify({ error: "Invalid input", details: validationError.errors }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      throw validationError;
+    }
+
+    const { callId } = input;
 
     // Generate Twilio token
     const tokenUrl = `https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Tokens.json`;
