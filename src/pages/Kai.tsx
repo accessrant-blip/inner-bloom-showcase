@@ -71,6 +71,17 @@ const Kai = () => {
     const mood = detectMood(userMessage);
     setDetectedMood(mood);
 
+    // SECURITY: Get user session for authenticated API call
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to chat with Kai.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const conversationHistory = messages.map(({ role, content }) => ({
       role,
       content,
@@ -80,7 +91,7 @@ const Kai = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        Authorization: `Bearer ${session.access_token}`,
       },
       body: JSON.stringify({
         messages: [...conversationHistory, { role: "user", content: userMessage }],
