@@ -33,7 +33,7 @@ const BookHelp = () => {
       const {
         data,
         error
-      } = await supabase.from('professionals').select('*').eq('is_active', true).order('availability_status', {
+      } = await supabase.from('professionals').select('id, name, alias, role, bio, specialties, profile_image_url, availability_status, rate_per_session, currency, is_verified, google_form_link').eq('is_active', true).order('availability_status', {
         ascending: false
       }).order('created_at', {
         ascending: false
