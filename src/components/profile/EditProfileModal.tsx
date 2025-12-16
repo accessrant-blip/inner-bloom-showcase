@@ -25,6 +25,9 @@ export function EditProfileModal({ open, onClose, profile, onUpdate }: EditProfi
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+  const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
   const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setUploading(true);
@@ -34,6 +37,27 @@ export function EditProfileModal({ open, onClose, profile, onUpdate }: EditProfi
       }
 
       const file = event.target.files[0];
+
+      // Validate file size
+      if (file.size > MAX_FILE_SIZE) {
+        toast({
+          title: "File too large",
+          description: "Please select an image under 5MB.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Validate file type
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        toast({
+          title: "Invalid file type",
+          description: "Please select a JPEG, PNG, GIF, or WebP image.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const fileExt = file.name.split('.').pop();
       const fileName = `${profile.user_id}/${Math.random()}.${fileExt}`;
 
