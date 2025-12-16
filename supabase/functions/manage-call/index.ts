@@ -114,9 +114,52 @@ serve(async (req) => {
     }
 
     if (action === 'update') {
+      // SECURITY: First fetch the call to verify user ownership
+      const { data: existingCall, error: fetchError } = await supabase
+        .from('calls')
+        .select('id, user_id, professional_id, booking_id')
+        .eq('call_id', callId)
+        .single();
+
+      if (fetchError || !existingCall) {
+        console.error('Call not found or fetch error:', fetchError);
+        return new Response(
+          JSON.stringify({ error: 'Call not found or access denied' }),
+          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // SECURITY: Verify user is either the client or the professional
+      const { data: professional } = await supabase
+        .from('professionals')
+        .select('user_id')
+        .eq('id', existingCall.professional_id)
+        .single();
+
+      const isAuthorized = 
+        user.id === existingCall.user_id || 
+        user.id === professional?.user_id;
+
+      if (!isAuthorized) {
+        console.error('Authorization failed: user', user.id, 'tried to update call owned by', existingCall.user_id);
+        return new Response(
+          JSON.stringify({ error: 'Unauthorized to update this call' }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // SECURITY: Verify bookingId matches the call's booking_id if provided
+      if (bookingId && bookingId !== existingCall.booking_id) {
+        console.error('Booking ID mismatch:', bookingId, 'vs', existingCall.booking_id);
+        return new Response(
+          JSON.stringify({ error: 'Booking ID mismatch' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
       const updates: Record<string, unknown> = { status };
       
-      console.log('Updating call:', callId, 'with status:', status);
+      console.log('Updating call:', callId, 'with status:', status, 'by authorized user:', user.id);
       
       if (status === 'connected') {
         // Notify both parties
@@ -134,11 +177,11 @@ serve(async (req) => {
         updates.ended_at = new Date().toISOString();
         updates.duration = duration;
 
-        // Update booking status
+        // Update booking status - using the verified booking_id from the call record
         await supabase
           .from('bookings')
           .update({ status: 'completed' })
-          .eq('id', bookingId);
+          .eq('id', existingCall.booking_id);
 
         // Notify completion
         await supabase.from('notifications').insert([
@@ -161,14 +204,6 @@ serve(async (req) => {
       if (updateError) {
         console.error('Update error:', updateError);
         throw updateError;
-      }
-      
-      if (!call) {
-        console.error('Call not found with call_id:', callId);
-        return new Response(
-          JSON.stringify({ error: 'Call not found' }),
-          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
       }
 
       console.log('Call updated successfully:', callId, status);
