@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, Heart, Users, Shield, Smartphone, Calendar } from "lucide-react";
+import { Brain, Heart, Users, Shield, MessageCircle, Calendar } from "lucide-react";
 import featuresImage from "@/assets/features-illustration.jpg";
 
 const features = [
@@ -24,9 +24,9 @@ const features = [
     description: "Your data is encrypted and secure. We never share your personal information."
   },
   {
-    icon: Smartphone,
-    title: "Mobile Ready",
-    description: "Access your wellness tools anywhere with our responsive design."
+    icon: MessageCircle,
+    title: "Community Support",
+    description: "Join supportive communities and connect with others on similar wellness journeys."
   },
   {
     icon: Calendar,
