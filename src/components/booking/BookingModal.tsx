@@ -108,13 +108,7 @@ const BookingModal = ({
 
       if (paymentError) throw paymentError;
 
-      // Create notification for pending payment
-      await supabase.from('notifications').insert({
-        user_id: user.id,
-        type: 'booking_pending',
-        title: 'Booking Created - Payment Pending',
-        message: `Please complete your payment for the session with ${professionalName}.`,
-      });
+      // Notification is created automatically by database trigger on booking insert
 
       // Show payment redirect modal
       setShowPaymentRedirect(true);

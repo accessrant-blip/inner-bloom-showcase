@@ -887,7 +887,7 @@ export type Database = {
           name: string
           scheduled_at: string | null
           session_type: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           calendly_event_id?: string | null
@@ -897,7 +897,7 @@ export type Database = {
           name: string
           scheduled_at?: string | null
           session_type: string
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           calendly_event_id?: string | null
@@ -907,7 +907,7 @@ export type Database = {
           name?: string
           scheduled_at?: string | null
           session_type?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
