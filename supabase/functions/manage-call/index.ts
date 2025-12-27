@@ -90,21 +90,7 @@ serve(async (req) => {
 
       if (callError) throw callError;
 
-      // Create notifications
-      await supabase.from('notifications').insert([
-        {
-          user_id: user.id,
-          type: 'call_started',
-          title: 'Call Started',
-          message: 'Your session is connecting...',
-        },
-        {
-          user_id: professionalId,
-          type: 'call_started',
-          title: 'Incoming Call',
-          message: 'A client is calling you.',
-        }
-      ]);
+      // Notifications are created automatically by database trigger on call insert
 
       console.log('Call started:', call.id);
       return new Response(
@@ -161,17 +147,7 @@ serve(async (req) => {
       
       console.log('Updating call:', callId, 'with status:', status, 'by authorized user:', user.id);
       
-      if (status === 'connected') {
-        // Notify both parties
-        await supabase.from('notifications').insert([
-          {
-            user_id: user.id,
-            type: 'call_connected',
-            title: 'Connected',
-            message: 'You are now connected 🌿',
-          }
-        ]);
-      }
+      // Notification for 'connected' status is created automatically by database trigger
 
       if (status === 'completed') {
         updates.ended_at = new Date().toISOString();
@@ -183,15 +159,7 @@ serve(async (req) => {
           .update({ status: 'completed' })
           .eq('id', existingCall.booking_id);
 
-        // Notify completion
-        await supabase.from('notifications').insert([
-          {
-            user_id: user.id,
-            type: 'call_completed',
-            title: 'Session Completed',
-            message: 'Your session has ended. Please share your feedback!',
-          }
-        ]);
+        // Notification for 'completed' status is created automatically by database trigger
       }
 
       const { data: call, error: updateError } = await supabase
