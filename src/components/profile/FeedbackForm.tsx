@@ -46,6 +46,7 @@ const FeedbackForm = () => {
       setLoading(true);
       const { data: { user } } = await supabase.auth.getUser();
 
+      // Save to database
       const { error } = await supabase
         .from('feedback_form')
         .insert({
@@ -58,6 +59,22 @@ const FeedbackForm = () => {
         });
 
       if (error) throw error;
+
+      // Send email notification
+      const emailResponse = await supabase.functions.invoke('send-feedback-email', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          responsiveness: formData.responsiveness,
+          recommend: formData.recommend,
+          suggestions: formData.suggestions
+        }
+      });
+
+      if (emailResponse.error) {
+        console.error('Email notification failed:', emailResponse.error);
+        // Still show success since feedback was saved
+      }
 
       toast({
         title: "Thank you for your feedback 🌿",
