@@ -173,7 +173,7 @@ const SoulStream = () => {
         },
         {
           id: "ziOus5-1kXw",
-          title: "Jazzy But Not Too Jazzy",
+          title: "Jazz Selection",
           description: "The perfect balance of jazz vibes.",
           thumbnail: "https://img.youtube.com/vi/ziOus5-1kXw/hqdefault.jpg"
         }
