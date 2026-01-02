@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, HeartHandshake } from "lucide-react";
 import { useState } from "react";
 import AuthModal from "@/components/auth/AuthModal";
-import logo from "@/assets/logo.svg";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,7 +34,9 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <img src={logo} alt="RantFree Logo" className="h-8 w-8" />
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <HeartHandshake className="text-primary-foreground" size={20} />
+            </div>
             <span className="font-bold text-xl text-foreground">Rant</span>
           </div>
           
