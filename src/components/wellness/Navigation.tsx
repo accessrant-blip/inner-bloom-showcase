@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import AuthModal from "@/components/auth/AuthModal";
-import rantfreeLogo from "@/assets/rantfree-logo.jpg";
+import rantfreeLogo from "@/assets/rantfree-logo.svg";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
