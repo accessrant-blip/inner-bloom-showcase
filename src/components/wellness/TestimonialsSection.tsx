@@ -30,12 +30,12 @@ const TestimonialsSection = () => {
     <section id="testimonials" className="py-24 bg-background">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16 animate-fade-up">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-balance">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-balance">
             Trusted by Thousands
             <span className="text-primary block">Improving Daily</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto text-balance">
-            Real stories from people who have transformed their mental wellness journey with our platform.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-balance">
+            Real stories from people who have transformed their mental wellness journey with RantFree.
           </p>
         </div>
         

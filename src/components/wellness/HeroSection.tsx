@@ -15,8 +15,10 @@ const HeroSection = () => {
       <div className="absolute inset-0">
         <img 
           src={heroImage} 
-          alt="Peaceful meditation scene representing mental wellness"
+          alt="Person in peaceful meditation representing mental wellness and self-care with RantFree app"
           className="w-full h-full object-cover animate-fade-in"
+          loading="eager"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-background/90 to-background/60"></div>
       </div>
