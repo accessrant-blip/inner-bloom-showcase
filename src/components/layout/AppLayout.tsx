@@ -141,12 +141,12 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         <div className="p-4 border-b border-border flex items-center justify-between">
           {sidebarOpen && (
             <div className="flex items-center space-x-2">
-              <img src={rantfreeLogo} alt="Rant logo" className="w-8 h-8 rounded-lg object-cover" />
-              <h2 className="font-semibold text-lg text-foreground">Rant</h2>
+              <img src={rantfreeLogo} alt="RantFree mental wellness app logo" className="w-8 h-8 rounded-lg object-cover" />
+              <span className="font-semibold text-lg text-foreground">RantFree</span>
             </div>
           )}
           {!sidebarOpen && (
-            <img src={rantfreeLogo} alt="Rant logo" className="w-8 h-8 rounded-lg object-cover mx-auto" />
+            <img src={rantfreeLogo} alt="RantFree logo" className="w-8 h-8 rounded-lg object-cover mx-auto" />
           )}
           <Button
             variant="ghost"

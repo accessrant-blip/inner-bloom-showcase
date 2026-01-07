@@ -40,11 +40,11 @@ const FeaturesSection = () => {
     <section id="features" className="py-24 gradient-soft">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16 animate-fade-up">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-balance">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-balance">
             Everything You Need for
             <span className="text-primary block">Better Mental Health</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-balance">
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto text-balance">
             Our comprehensive platform combines evidence-based techniques with modern technology 
             to support your mental wellness journey.
           </p>
@@ -74,7 +74,8 @@ const FeaturesSection = () => {
           <div className="max-w-md mx-auto animate-float">
             <img 
               src={featuresImage} 
-              alt="Mental health app features illustration"
+              alt="RantFree app features showing AI insights, mood tracking, and professional support tools for mental wellness"
+              loading="lazy"
               className="w-full h-auto rounded-2xl shadow-glow"
             />
           </div>
