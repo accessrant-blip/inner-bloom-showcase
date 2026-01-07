@@ -882,9 +882,7 @@ export type Database = {
         Row: {
           calendly_event_id: string | null
           created_at: string | null
-          email: string
           id: string
-          name: string
           scheduled_at: string | null
           session_type: string
           user_id: string
@@ -892,9 +890,7 @@ export type Database = {
         Insert: {
           calendly_event_id?: string | null
           created_at?: string | null
-          email: string
           id?: string
-          name: string
           scheduled_at?: string | null
           session_type: string
           user_id: string
@@ -902,9 +898,7 @@ export type Database = {
         Update: {
           calendly_event_id?: string | null
           created_at?: string | null
-          email?: string
           id?: string
-          name?: string
           scheduled_at?: string | null
           session_type?: string
           user_id?: string
