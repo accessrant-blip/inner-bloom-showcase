@@ -52,7 +52,7 @@ const DemoModal = ({ open, onOpenChange }: DemoModalProps) => {
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center">
-            How Rant Works - Interactive Demo
+            How RantFree Works - Interactive Demo
           </DialogTitle>
         </DialogHeader>
         
