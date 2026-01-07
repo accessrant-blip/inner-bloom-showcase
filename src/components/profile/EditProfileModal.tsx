@@ -16,6 +16,28 @@ interface EditProfileModalProps {
   onUpdate: () => void;
 }
 
+// Sanitize username: allow only alphanumeric, underscore, hyphen, spaces
+const sanitizeUsername = (input: string): string => {
+  return input
+    .replace(/[^a-zA-Z0-9_\- ]/g, '')  // Remove invalid chars
+    .replace(/\s+/g, ' ')               // Collapse multiple spaces
+    .slice(0, 50);                      // Limit length
+};
+
+const validateUsername = (input: string): { valid: boolean; error?: string } => {
+  const sanitized = sanitizeUsername(input).trim();
+  if (sanitized.length < 3) {
+    return { valid: false, error: "Username must be at least 3 characters" };
+  }
+  if (sanitized.length > 50) {
+    return { valid: false, error: "Username must be less than 50 characters" };
+  }
+  if (!/^[a-zA-Z0-9_\- ]+$/.test(sanitized)) {
+    return { valid: false, error: "Username can only contain letters, numbers, underscores, hyphens, and spaces" };
+  }
+  return { valid: true };
+};
+
 export function EditProfileModal({ open, onClose, profile, onUpdate }: EditProfileModalProps) {
   const [username, setUsername] = useState(profile?.username || "");
   const [bio, setBio] = useState(profile?.bio || "");
@@ -91,12 +113,25 @@ export function EditProfileModal({ open, onClose, profile, onUpdate }: EditProfi
   };
 
   const handleSave = async () => {
+    // Sanitize and validate username before saving
+    const sanitizedUsername = sanitizeUsername(username).trim();
+    const validation = validateUsername(sanitizedUsername);
+    
+    if (!validation.valid) {
+      toast({
+        title: "Invalid username",
+        description: validation.error,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
     try {
       const { error } = await supabase
         .from('profiles')
         .update({ 
-          username, 
+          username: sanitizedUsername, 
           bio,
           avatar_url: avatarUrl 
         })
