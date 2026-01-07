@@ -35,8 +35,8 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <img src={rantfreeLogo} alt="Rant logo" className="w-8 h-8 rounded-lg object-cover" />
-            <span className="font-bold text-xl text-foreground">Rant</span>
+            <img src={rantfreeLogo} alt="RantFree logo" className="w-8 h-8 rounded-lg object-cover" />
+            <span className="font-bold text-xl text-foreground">RantFree</span>
           </div>
           
           {/* Desktop Navigation */}
