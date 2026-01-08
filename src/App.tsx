@@ -28,6 +28,7 @@ import Connect from "./pages/Connect";
 import Rant from "./pages/Rant";
 import BookingConfirmed from "./pages/BookingConfirmed";
 import Blog from "./pages/Blog";
+import BlogPostPage from "./pages/BlogPost";
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient());
@@ -45,6 +46,7 @@ const App = () => {
           <Route path="/emergency-support" element={<EmergencySupport />} />
           <Route path="/booking-confirmed" element={<BookingConfirmed />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<BlogPostPage />} />
           
           {/* App routes with persistent layout */}
           <Route path="/dashboard" element={<AppLayout><Dashboard /></AppLayout>} />

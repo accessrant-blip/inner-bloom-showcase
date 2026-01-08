@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { blogPosts } from "./BlogPost";
 
 interface BlogPost {
   id: string;
@@ -18,64 +19,6 @@ interface BlogPost {
   tags: string[];
   featured: boolean;
 }
-
-// Blog posts
-const blogPosts: BlogPost[] = [
-  {
-    id: "1",
-    title: "Day 1: Why Getting Stuff Off Your Chest Is Good for You 💭",
-    excerpt: "We all have stuff we're dealing with—work stress, personal problems, thoughts we can't shake. When you keep it all inside, it just builds up. Talking about it, if you do it right, can really take the pressure off.",
-    content: `We all have stuff we're dealing with—work stress, personal problems, thoughts we can't shake. When you keep it all inside, it just builds up. Talking about it, if you do it right, can really take the pressure off.
-
-## 🤔 Why Does It Work?
-
-Turns out, talking about your feelings can:
-
-- ✅ **Lower stress and worry**
-- ✅ **Help you understand your feelings better**
-- ✅ **Stop you from burning out emotionally**
-- ✅ **Help you know yourself better**
-
-Writing or talking things out helps your brain deal with stuff instead of just ignoring it.
-
-## ⚖️ Good Venting vs. Bad Venting
-
-### 👍 Good venting:
-
-- Is about saying how you feel, **not blaming others**
-- Makes you feel **better afterward**
-- Makes you **think about things**
-
-### 👎 Bad venting:
-
-- Just keeps going over the same angry stuff without helping
-- Makes things seem even worse
-
-That's why having a **safe place** to vent matters.
-
-## 🌟 How RantFree.in Can Help?
-
-RantFree.in gives you a safe space where you can:
-
-- 🔒 **Vent without anyone knowing it's you**
-- 💬 **Say how you feel without being judged**
-- 😮‍💨 **Let off steam without worrying about what people think**
-
-It's not just about complaining—it's about **getting it out**.
-
-## 💡 One Last Thing!
-
-You don't have to handle everything by yourself. Venting isn't a weakness—it's just **taking care of yourself**.
-
-👉 **Got a lot on your mind? Try writing an anonymous rant on RantFree.in today.**`,
-    author: "RantFree Team",
-    date: "2026-01-08",
-    readTime: "4 min read",
-    category: "Self Improvement",
-    tags: ["venting", "mental health", "self-care", "emotional wellness"],
-    featured: true,
-  },
-];
 
 const categories = ["All", "Wellness Tips", "Mental Health", "Self Improvement", "Community"];
 
@@ -165,49 +108,51 @@ const Blog = () => {
             <div className="grid md:grid-cols-2 gap-6">
               {featuredPosts.map((post) => (
                 <article key={post.id}>
-                  <Card className="h-full hover:shadow-lg transition-shadow duration-300 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
-                    <CardHeader className="pb-3">
-                      <Badge variant="secondary" className="w-fit mb-2">
-                        {post.category}
-                      </Badge>
-                      <h4 className="text-xl font-semibold text-foreground leading-tight hover:text-primary transition-colors cursor-pointer">
-                        {post.title}
-                      </h4>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground mb-4 line-clamp-3">
-                        {post.excerpt}
-                      </p>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
-                        <span className="flex items-center gap-1">
-                          <User className="h-4 w-4" />
-                          {post.author}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
-                          <time dateTime={post.date}>
-                            {new Date(post.date).toLocaleDateString('en-US', { 
-                              month: 'short', 
-                              day: 'numeric', 
-                              year: 'numeric' 
-                            })}
-                          </time>
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-4 w-4" />
-                          {post.readTime}
-                        </span>
-                      </div>
-                      <div className="flex gap-2 mt-4 flex-wrap">
-                        {post.tags.map((tag) => (
-                          <Badge key={tag} variant="outline" className="text-xs">
-                            <Tag className="h-3 w-3 mr-1" />
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <Link to={`/blog/${post.id}`}>
+                    <Card className="h-full hover:shadow-lg transition-all duration-300 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent hover:border-primary/40">
+                      <CardHeader className="pb-3">
+                        <Badge variant="secondary" className="w-fit mb-2">
+                          {post.category}
+                        </Badge>
+                        <h4 className="text-xl font-semibold text-foreground leading-tight hover:text-primary transition-colors">
+                          {post.title}
+                        </h4>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-muted-foreground mb-4 line-clamp-3">
+                          {post.excerpt}
+                        </p>
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+                          <span className="flex items-center gap-1">
+                            <User className="h-4 w-4" />
+                            {post.author}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Calendar className="h-4 w-4" />
+                            <time dateTime={post.date}>
+                              {new Date(post.date).toLocaleDateString('en-US', { 
+                                month: 'short', 
+                                day: 'numeric', 
+                                year: 'numeric' 
+                              })}
+                            </time>
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Clock className="h-4 w-4" />
+                            {post.readTime}
+                          </span>
+                        </div>
+                        <div className="flex gap-2 mt-4 flex-wrap">
+                          {post.tags.map((tag) => (
+                            <Badge key={tag} variant="outline" className="text-xs">
+                              <Tag className="h-3 w-3 mr-1" />
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 </article>
               ))}
             </div>
@@ -224,36 +169,38 @@ const Blog = () => {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {regularPosts.map((post) => (
                 <article key={post.id}>
-                  <Card className="h-full hover:shadow-lg transition-shadow duration-300">
-                    <CardHeader className="pb-3">
-                      <Badge variant="secondary" className="w-fit mb-2">
-                        {post.category}
-                      </Badge>
-                      <h4 className="text-lg font-semibold text-foreground leading-tight hover:text-primary transition-colors cursor-pointer">
-                        {post.title}
-                      </h4>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                        {post.excerpt}
-                      </p>
-                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          <time dateTime={post.date}>
-                            {new Date(post.date).toLocaleDateString('en-US', { 
-                              month: 'short', 
-                              day: 'numeric'
-                            })}
-                          </time>
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {post.readTime}
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <Link to={`/blog/${post.id}`}>
+                    <Card className="h-full hover:shadow-lg transition-all duration-300 hover:border-primary/30">
+                      <CardHeader className="pb-3">
+                        <Badge variant="secondary" className="w-fit mb-2">
+                          {post.category}
+                        </Badge>
+                        <h4 className="text-lg font-semibold text-foreground leading-tight hover:text-primary transition-colors">
+                          {post.title}
+                        </h4>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                          {post.excerpt}
+                        </p>
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                          <span className="flex items-center gap-1">
+                            <Calendar className="h-3 w-3" />
+                            <time dateTime={post.date}>
+                              {new Date(post.date).toLocaleDateString('en-US', { 
+                                month: 'short', 
+                                day: 'numeric'
+                              })}
+                            </time>
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Clock className="h-3 w-3" />
+                            {post.readTime}
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 </article>
               ))}
             </div>

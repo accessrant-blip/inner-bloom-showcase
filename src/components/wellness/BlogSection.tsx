@@ -50,36 +50,38 @@ const BlogSection = () => {
               className="animate-scale-in"
               style={{ animationDelay: `${index * 150}ms` }}
             >
-              <Card className="h-full hover:shadow-glow transition-all duration-300 border-0 shadow-card group">
-                <CardHeader className="pb-3">
-                  <Badge variant="secondary" className="w-fit mb-2 text-xs">
-                    {post.category}
-                  </Badge>
-                  <h3 className="text-lg font-semibold text-foreground leading-tight group-hover:text-primary transition-colors">
-                    {post.title}
-                  </h3>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                    {post.excerpt}
-                  </p>
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
-                      <time dateTime={post.date}>
-                        {new Date(post.date).toLocaleDateString('en-US', { 
-                          month: 'short', 
-                          day: 'numeric'
-                        })}
-                      </time>
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      {post.readTime}
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
+              <Link to={`/blog/${post.id}`}>
+                <Card className="h-full hover:shadow-glow transition-all duration-300 border-0 shadow-card group hover:border-primary/30">
+                  <CardHeader className="pb-3">
+                    <Badge variant="secondary" className="w-fit mb-2 text-xs">
+                      {post.category}
+                    </Badge>
+                    <h3 className="text-lg font-semibold text-foreground leading-tight group-hover:text-primary transition-colors">
+                      {post.title}
+                    </h3>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                      {post.excerpt}
+                    </p>
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        <time dateTime={post.date}>
+                          {new Date(post.date).toLocaleDateString('en-US', { 
+                            month: 'short', 
+                            day: 'numeric'
+                          })}
+                        </time>
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        {post.readTime}
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             </article>
           ))}
         </div>
