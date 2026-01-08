@@ -13,32 +13,8 @@ interface BlogPreview {
   category: string;
 }
 
-const blogPreviews: BlogPreview[] = [
-  {
-    id: "1",
-    title: "5 Simple Breathing Techniques to Calm Your Mind",
-    excerpt: "Discover proven breathing exercises that can help reduce anxiety and bring peace to your daily life.",
-    date: "2026-01-08",
-    readTime: "5 min",
-    category: "Wellness Tips",
-  },
-  {
-    id: "2",
-    title: "Understanding the Power of Journaling",
-    excerpt: "Learn how putting your thoughts on paper can transform your emotional well-being.",
-    date: "2026-01-06",
-    readTime: "7 min",
-    category: "Mental Health",
-  },
-  {
-    id: "3",
-    title: "Building Healthy Habits: A Step-by-Step Guide",
-    excerpt: "Creating lasting positive habits doesn't have to be overwhelming. Here's a practical approach.",
-    date: "2026-01-04",
-    readTime: "6 min",
-    category: "Self Improvement",
-  },
-];
+// Blog previews - add your content here
+const blogPreviews: BlogPreview[] = [];
 
 const BlogSection = () => {
   return (

@@ -19,81 +19,8 @@ interface BlogPost {
   featured: boolean;
 }
 
-// Sample blog posts - these would typically come from a database
-const blogPosts: BlogPost[] = [
-  {
-    id: "1",
-    title: "5 Simple Breathing Techniques to Calm Your Mind",
-    excerpt: "Discover proven breathing exercises that can help reduce anxiety and bring peace to your daily life. These techniques are backed by science and easy to practice anywhere.",
-    content: "",
-    author: "RantFree Team",
-    date: "2026-01-08",
-    readTime: "5 min read",
-    category: "Wellness Tips",
-    tags: ["breathing", "anxiety", "mindfulness"],
-    featured: true,
-  },
-  {
-    id: "2",
-    title: "Understanding the Power of Journaling for Mental Health",
-    excerpt: "Learn how putting your thoughts on paper can transform your emotional well-being and help you process difficult experiences.",
-    content: "",
-    author: "RantFree Team",
-    date: "2026-01-06",
-    readTime: "7 min read",
-    category: "Mental Health",
-    tags: ["journaling", "self-care", "therapy"],
-    featured: false,
-  },
-  {
-    id: "3",
-    title: "Building Healthy Habits: A Step-by-Step Guide",
-    excerpt: "Creating lasting positive habits doesn't have to be overwhelming. Here's a practical approach to building routines that stick.",
-    content: "",
-    author: "RantFree Team",
-    date: "2026-01-04",
-    readTime: "6 min read",
-    category: "Self Improvement",
-    tags: ["habits", "productivity", "wellness"],
-    featured: false,
-  },
-  {
-    id: "4",
-    title: "The Science Behind Gratitude and Happiness",
-    excerpt: "Explore the research that shows how practicing gratitude can rewire your brain for positivity and improve your overall life satisfaction.",
-    content: "",
-    author: "RantFree Team",
-    date: "2026-01-02",
-    readTime: "8 min read",
-    category: "Mental Health",
-    tags: ["gratitude", "happiness", "neuroscience"],
-    featured: true,
-  },
-  {
-    id: "5",
-    title: "Dealing with Stress in a Fast-Paced World",
-    excerpt: "Modern life can be overwhelming. Learn practical strategies to manage stress and maintain your mental equilibrium.",
-    content: "",
-    author: "RantFree Team",
-    date: "2025-12-30",
-    readTime: "6 min read",
-    category: "Wellness Tips",
-    tags: ["stress", "work-life balance", "relaxation"],
-    featured: false,
-  },
-  {
-    id: "6",
-    title: "Why Connection Matters: The Importance of Community",
-    excerpt: "Humans are social beings. Discover why building meaningful connections is essential for your mental health and how to nurture relationships.",
-    content: "",
-    author: "RantFree Team",
-    date: "2025-12-28",
-    readTime: "5 min read",
-    category: "Community",
-    tags: ["connection", "relationships", "support"],
-    featured: false,
-  },
-];
+// Blog posts - add your content here
+const blogPosts: BlogPost[] = [];
 
 const categories = ["All", "Wellness Tips", "Mental Health", "Self Improvement", "Community"];
 
