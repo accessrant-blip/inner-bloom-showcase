@@ -1,0 +1,343 @@
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { ArrowLeft, Calendar, Clock, User, Tag, Share2, BookOpen } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
+
+interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  date: string;
+  readTime: string;
+  category: string;
+  tags: string[];
+  featured: boolean;
+}
+
+// Blog posts data - shared with Blog.tsx
+export const blogPosts: BlogPost[] = [
+  {
+    id: "1",
+    title: "Day 1: Why Getting Stuff Off Your Chest Is Good for You 💭",
+    excerpt: "We all have stuff we're dealing with—work stress, personal problems, thoughts we can't shake. When you keep it all inside, it just builds up. Talking about it, if you do it right, can really take the pressure off.",
+    content: `We all have stuff we're dealing with—work stress, personal problems, thoughts we can't shake. When you keep it all inside, it just builds up. Talking about it, if you do it right, can really take the pressure off.
+
+## 🤔 Why Does It Work?
+
+Turns out, talking about your feelings can:
+
+- ✅ **Lower stress and worry**
+- ✅ **Help you understand your feelings better**
+- ✅ **Stop you from burning out emotionally**
+- ✅ **Help you know yourself better**
+
+Writing or talking things out helps your brain deal with stuff instead of just ignoring it.
+
+## ⚖️ Good Venting vs. Bad Venting
+
+### 👍 Good venting:
+
+- Is about saying how you feel, **not blaming others**
+- Makes you feel **better afterward**
+- Makes you **think about things**
+
+### 👎 Bad venting:
+
+- Just keeps going over the same angry stuff without helping
+- Makes things seem even worse
+
+That's why having a **safe place** to vent matters.
+
+## 🌟 How RantFree.in Can Help?
+
+RantFree.in gives you a safe space where you can:
+
+- 🔒 **Vent without anyone knowing it's you**
+- 💬 **Say how you feel without being judged**
+- 😮‍💨 **Let off steam without worrying about what people think**
+
+It's not just about complaining—it's about **getting it out**.
+
+## 💡 One Last Thing!
+
+You don't have to handle everything by yourself. Venting isn't a weakness—it's just **taking care of yourself**.
+
+👉 **Got a lot on your mind? Try writing an anonymous rant on RantFree.in today.**`,
+    author: "RantFree Team",
+    date: "2026-01-08",
+    readTime: "4 min read",
+    category: "Self Improvement",
+    tags: ["venting", "mental health", "self-care", "emotional wellness"],
+    featured: true,
+  },
+];
+
+// Markdown-like content renderer
+const renderContent = (content: string) => {
+  const lines = content.split('\n');
+  const elements: JSX.Element[] = [];
+  let listItems: string[] = [];
+  let listKey = 0;
+
+  const flushList = () => {
+    if (listItems.length > 0) {
+      elements.push(
+        <ul key={`list-${listKey++}`} className="space-y-2 my-4 ml-4">
+          {listItems.map((item, idx) => (
+            <li key={idx} className="flex items-start gap-2 text-foreground/90 leading-relaxed">
+              <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+              <span dangerouslySetInnerHTML={{ __html: formatInlineText(item) }} />
+            </li>
+          ))}
+        </ul>
+      );
+      listItems = [];
+    }
+  };
+
+  const formatInlineText = (text: string): string => {
+    // Bold text
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>');
+    return text;
+  };
+
+  lines.forEach((line, index) => {
+    const trimmedLine = line.trim();
+
+    // Empty line
+    if (!trimmedLine) {
+      flushList();
+      return;
+    }
+
+    // H2 heading
+    if (trimmedLine.startsWith('## ')) {
+      flushList();
+      const headingText = trimmedLine.replace('## ', '');
+      elements.push(
+        <h2 key={index} className="text-2xl font-bold text-foreground mt-8 mb-4">
+          {headingText}
+        </h2>
+      );
+      return;
+    }
+
+    // H3 heading
+    if (trimmedLine.startsWith('### ')) {
+      flushList();
+      const headingText = trimmedLine.replace('### ', '');
+      elements.push(
+        <h3 key={index} className="text-xl font-semibold text-foreground mt-6 mb-3">
+          {headingText}
+        </h3>
+      );
+      return;
+    }
+
+    // List item
+    if (trimmedLine.startsWith('- ')) {
+      const itemText = trimmedLine.replace('- ', '');
+      listItems.push(itemText);
+      return;
+    }
+
+    // Regular paragraph
+    flushList();
+    elements.push(
+      <p 
+        key={index} 
+        className="text-foreground/90 leading-relaxed my-4"
+        dangerouslySetInnerHTML={{ __html: formatInlineText(trimmedLine) }}
+      />
+    );
+  });
+
+  flushList();
+  return elements;
+};
+
+const BlogPostPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const post = blogPosts.find(p => p.id === id);
+
+  if (!post) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <BookOpen className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-foreground mb-2">Post Not Found</h1>
+          <p className="text-muted-foreground mb-6">The blog post you're looking for doesn't exist.</p>
+          <Button onClick={() => navigate('/blog')}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Blog
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: post.title,
+          text: post.excerpt,
+          url: url,
+        });
+      } catch (err) {
+        // User cancelled or error
+      }
+    } else {
+      await navigator.clipboard.writeText(url);
+      toast({
+        title: "Link copied!",
+        description: "The article link has been copied to your clipboard.",
+      });
+    }
+  };
+
+  // Related posts (excluding current)
+  const relatedPosts = blogPosts
+    .filter(p => p.id !== post.id && (p.category === post.category || p.tags.some(t => post.tags.includes(t))))
+    .slice(0, 3);
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="bg-card/50 backdrop-blur-sm border-b border-border sticky top-0 z-40">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <Link to="/blog" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+              <ArrowLeft className="h-5 w-5" />
+              <span className="hidden sm:inline">Back to Blog</span>
+            </Link>
+            <Button variant="outline" size="sm" onClick={handleShare} className="rounded-full">
+              <Share2 className="h-4 w-4 mr-2" />
+              Share
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <main className="container mx-auto px-4 py-8 md:py-12">
+        <article className="max-w-3xl mx-auto">
+          {/* Article Header */}
+          <header className="mb-8">
+            <Badge variant="secondary" className="mb-4">
+              {post.category}
+            </Badge>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight">
+              {post.title}
+            </h1>
+            <p className="text-xl text-muted-foreground mb-6 leading-relaxed">
+              {post.excerpt}
+            </p>
+            
+            {/* Meta info */}
+            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground pb-6 border-b border-border">
+              <span className="flex items-center gap-1.5">
+                <User className="h-4 w-4" />
+                {post.author}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Calendar className="h-4 w-4" />
+                <time dateTime={post.date}>
+                  {new Date(post.date).toLocaleDateString('en-US', { 
+                    month: 'long', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                  })}
+                </time>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Clock className="h-4 w-4" />
+                {post.readTime}
+              </span>
+            </div>
+          </header>
+
+          {/* Article Content */}
+          <div className="prose prose-lg max-w-none">
+            {renderContent(post.content)}
+          </div>
+
+          {/* Tags */}
+          <div className="mt-8 pt-6 border-t border-border">
+            <div className="flex items-center gap-2 flex-wrap">
+              <Tag className="h-4 w-4 text-muted-foreground" />
+              {post.tags.map((tag) => (
+                <Badge key={tag} variant="outline" className="rounded-full">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="mt-12 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 text-center border border-primary/20">
+            <h3 className="text-2xl font-bold text-foreground mb-3">
+              Ready to Let It Out? 💬
+            </h3>
+            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+              Join thousands who've found relief through anonymous venting on RantFree.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button size="lg" className="rounded-full" onClick={() => navigate('/rant')}>
+                Start Ranting Now
+              </Button>
+              <Button size="lg" variant="outline" className="rounded-full" onClick={() => navigate('/auth')}>
+                Create Free Account
+              </Button>
+            </div>
+          </div>
+        </article>
+
+        {/* Related Posts */}
+        {relatedPosts.length > 0 && (
+          <section className="max-w-3xl mx-auto mt-16">
+            <h3 className="text-2xl font-bold text-foreground mb-6">
+              Related Articles
+            </h3>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {relatedPosts.map((relatedPost) => (
+                <Link 
+                  key={relatedPost.id} 
+                  to={`/blog/${relatedPost.id}`}
+                  className="group"
+                >
+                  <div className="bg-card rounded-xl p-5 border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300">
+                    <Badge variant="secondary" className="mb-2 text-xs">
+                      {relatedPost.category}
+                    </Badge>
+                    <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-2">
+                      {relatedPost.title}
+                    </h4>
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      {relatedPost.excerpt}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-border mt-16 py-8">
+        <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
+          <p>&copy; {new Date().getFullYear()} RantFree. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default BlogPostPage;
