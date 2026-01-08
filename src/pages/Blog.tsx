@@ -19,8 +19,63 @@ interface BlogPost {
   featured: boolean;
 }
 
-// Blog posts - add your content here
-const blogPosts: BlogPost[] = [];
+// Blog posts
+const blogPosts: BlogPost[] = [
+  {
+    id: "1",
+    title: "Day 1: Why Getting Stuff Off Your Chest Is Good for You 💭",
+    excerpt: "We all have stuff we're dealing with—work stress, personal problems, thoughts we can't shake. When you keep it all inside, it just builds up. Talking about it, if you do it right, can really take the pressure off.",
+    content: `We all have stuff we're dealing with—work stress, personal problems, thoughts we can't shake. When you keep it all inside, it just builds up. Talking about it, if you do it right, can really take the pressure off.
+
+## 🤔 Why Does It Work?
+
+Turns out, talking about your feelings can:
+
+- ✅ **Lower stress and worry**
+- ✅ **Help you understand your feelings better**
+- ✅ **Stop you from burning out emotionally**
+- ✅ **Help you know yourself better**
+
+Writing or talking things out helps your brain deal with stuff instead of just ignoring it.
+
+## ⚖️ Good Venting vs. Bad Venting
+
+### 👍 Good venting:
+
+- Is about saying how you feel, **not blaming others**
+- Makes you feel **better afterward**
+- Makes you **think about things**
+
+### 👎 Bad venting:
+
+- Just keeps going over the same angry stuff without helping
+- Makes things seem even worse
+
+That's why having a **safe place** to vent matters.
+
+## 🌟 How RantFree.in Can Help?
+
+RantFree.in gives you a safe space where you can:
+
+- 🔒 **Vent without anyone knowing it's you**
+- 💬 **Say how you feel without being judged**
+- 😮‍💨 **Let off steam without worrying about what people think**
+
+It's not just about complaining—it's about **getting it out**.
+
+## 💡 One Last Thing!
+
+You don't have to handle everything by yourself. Venting isn't a weakness—it's just **taking care of yourself**.
+
+👉 **Got a lot on your mind? Try writing an anonymous rant on RantFree.in today.**`,
+    author: "RantFree Team",
+    date: "2026-01-08",
+    readTime: "4 min read",
+    category: "Self Improvement",
+    tags: ["venting", "mental health", "self-care", "emotional wellness"],
+    featured: true,
+  },
+];
 
 const categories = ["All", "Wellness Tips", "Mental Health", "Self Improvement", "Community"];
 

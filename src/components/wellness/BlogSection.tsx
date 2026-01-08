@@ -13,8 +13,17 @@ interface BlogPreview {
   category: string;
 }
 
-// Blog previews - add your content here
-const blogPreviews: BlogPreview[] = [];
+// Blog previews
+const blogPreviews: BlogPreview[] = [
+  {
+    id: "1",
+    title: "Day 1: Why Getting Stuff Off Your Chest Is Good for You 💭",
+    excerpt: "We all have stuff we're dealing with—work stress, personal problems, thoughts we can't shake. When you keep it all inside, it just builds up.",
+    date: "2026-01-08",
+    readTime: "4 min",
+    category: "Self Improvement",
+  },
+];
 
 const BlogSection = () => {
   return (
