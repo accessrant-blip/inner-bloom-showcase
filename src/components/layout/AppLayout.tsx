@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { 
   Home, MessageSquare, BookOpen, Heart, Brain, 
-  Sparkles, Wind, Users, LogOut, Menu, X, User
+  Sparkles, Wind, Users, LogOut, Menu, X, User, FileText
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -41,6 +41,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     { path: "/soul-stream", icon: Wind, label: "Soul Stream" },
     { path: "/connect", icon: Users, label: "Connect" },
     { path: "/learn-grow", icon: BookOpen, label: "Learn & Grow" },
+    { path: "/blog", icon: FileText, label: "Blog" },
   ];
 
   const handleSignOut = async () => {

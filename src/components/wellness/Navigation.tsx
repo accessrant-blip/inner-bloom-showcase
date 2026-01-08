@@ -12,7 +12,8 @@ const Navigation = () => {
   const navLinks = [
     { name: "Features", href: "#features" },
     { name: "How it Works", href: "#how-it-works" },
-    { name: "Testimonials", href: "#testimonials" }
+    { name: "Testimonials", href: "#testimonials" },
+    { name: "Blog", href: "#blog" }
   ];
 
   const handleNavClick = (href: string) => {
