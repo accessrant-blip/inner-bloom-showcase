@@ -73,6 +73,61 @@ You don't have to handle everything by yourself. Venting isn't a weakness—it's
     tags: ["venting", "mental health", "self-care", "emotional wellness"],
     featured: true,
   },
+  {
+    id: "2",
+    title: "Day 2: Should You Vent or Keep It In? 🤷‍♀️",
+    excerpt: "Keeping emotions bottled up can cause bad mood, tiredness, and worry. But venting the right way helps you feel understood and think clearer. Find the balance!",
+    content: `## 🚫 Keeping Emotions Bottled Up
+
+If you don't deal with your feelings, they might cause:
+
+- 😔 **Bad mood**
+- 😴 **Tiredness**
+- 😰 **Worry**
+- 💥 **Unexpected angry reactions**
+
+Pretending feelings aren't there **doesn't make them vanish**.
+
+## 💬 Why It's Better to Vent
+
+Venting helps you:
+
+- 🤗 **Feel understood**
+- 🧠 **Think clearer**
+- 😌 **Feel less stressed**
+
+Just make sure you vent in a way that **doesn't hurt yourself or others**.
+
+## 🔐 How Anonymous Venting Can Help
+
+Some people don't vent because they:
+
+- 😟 **Worry about being judged**
+- 😨 **Are scared of what others will think**
+- 😕 **Feel misunderstood**
+
+Sites like **RantFree.in** fix this by letting you express yourself without anyone knowing who you are, which makes it easier to be **honest**.
+
+## ⚖️ Finding the Middle Ground
+
+The best way to deal with feelings is to:
+
+- 🗣️ **Say how you feel**
+- 🤔 **Think about why you feel that way**
+- 📚 **Learn from your feelings**
+
+## 💡 In Conclusion
+
+If holding in your emotions feels like **holding your breath**, venting is like **finally breathing out**.
+
+👉 **Need a safe place to rant? Check out RantFree.in.**`,
+    author: "RantFree Team",
+    date: "2026-01-09",
+    readTime: "3 min read",
+    category: "Wellness Tips",
+    tags: ["venting", "emotional health", "self-expression", "mental wellness"],
+    featured: false,
+  },
 ];
 
 // Markdown-like content renderer

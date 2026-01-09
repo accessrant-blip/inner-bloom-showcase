@@ -23,6 +23,14 @@ const blogPreviews: BlogPreview[] = [
     readTime: "4 min",
     category: "Self Improvement",
   },
+  {
+    id: "2",
+    title: "Day 2: Should You Vent or Keep It In? 🤷‍♀️",
+    excerpt: "Keeping emotions bottled up can cause bad mood, tiredness, and worry. But venting the right way helps you feel understood and think clearer.",
+    date: "2026-01-09",
+    readTime: "3 min",
+    category: "Wellness Tips",
+  },
 ];
 
 const BlogSection = () => {
