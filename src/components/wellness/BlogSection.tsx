@@ -31,6 +31,14 @@ const blogPreviews: BlogPreview[] = [
     readTime: "3 min",
     category: "Wellness Tips",
   },
+  {
+    id: "3",
+    title: "📝 Day 3: Does Venting Anonymously Help Your Mental Health?",
+    excerpt: "Being anonymous lets you be emotionally free without worrying about judgment. Discover how anonymous venting can help your mental wellness.",
+    date: "2026-01-10",
+    readTime: "3 min",
+    category: "Community",
+  },
 ];
 
 const BlogSection = () => {
