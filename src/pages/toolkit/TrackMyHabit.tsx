@@ -60,7 +60,7 @@ export default function TrackMyHabit() {
       completed_dates: []
     });
 
-    toast.success("Habit added! 🌱");
+    toast.success("Habit added!");
     setIsDialogOpen(false);
     setHabitName("");
     setTargetDays(30);
@@ -116,7 +116,7 @@ export default function TrackMyHabit() {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="text-3xl text-warm-brown">
-                Track My Habits 📈
+                Track My Habits
               </CardTitle>
               <Button
                 onClick={() => setIsDialogOpen(true)}

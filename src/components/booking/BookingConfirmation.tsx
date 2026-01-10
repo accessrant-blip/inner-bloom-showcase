@@ -20,10 +20,10 @@ export const BookingConfirmation = ({ open, onClose, onConfirm, professionalName
             </div>
           </div>
           <AlertDialogTitle className="text-center text-2xl">
-            ✅ Booking Confirmed
+            Booking Confirmed
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center text-lg pt-4">
-            🌿 {professionalName} will connect with you shortly via voice call.
+            {professionalName} will connect with you shortly via voice call.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="flex gap-3 mt-6">

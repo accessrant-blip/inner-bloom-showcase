@@ -100,7 +100,7 @@ export default function EmergencySupport() {
       });
     } else {
       toast({
-        title: "Contact added 💚",
+        title: "Contact added",
         description: "Your emergency contact has been saved",
       });
       setShowAddModal(false);
@@ -173,7 +173,7 @@ export default function EmergencySupport() {
     try {
       window.open(whatsappUrl, '_blank');
       toast({
-        title: "Opening WhatsApp 💚",
+        title: "Opening WhatsApp",
         description: "Your emergency alert is ready to send",
       });
     } catch (error) {

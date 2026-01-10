@@ -61,7 +61,7 @@ export default function Auth() {
         if (error) throw error;
 
         toast({
-          title: "Welcome back! 💛",
+          title: "Welcome back!",
           description: "You've successfully logged in.",
         });
       } else {
@@ -81,7 +81,7 @@ export default function Auth() {
         if (error) throw error;
 
         toast({
-          title: "Welcome to RANT! 🌸",
+          title: "Welcome to RANT!",
           description: "Your account has been created. You can now log in.",
         });
         
@@ -105,7 +105,7 @@ export default function Auth() {
         <div className="bg-card rounded-3xl shadow-soft p-8 border border-border/50">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-warm-brown mb-2">
-              {isLogin ? "Welcome Back 💛" : "Join RANT 🌸"}
+              {isLogin ? "Welcome Back" : "Join RANT"}
             </h1>
             <p className="text-muted-foreground">
               {isLogin 
@@ -185,7 +185,7 @@ export default function Auth() {
           </div>
 
           <p className="text-center text-sm text-muted-foreground mt-6">
-            This space is yours — take a moment to breathe 🌿
+            This space is yours — take a moment to breathe
           </p>
         </div>
       </div>

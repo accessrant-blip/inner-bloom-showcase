@@ -52,7 +52,7 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
         if (error) throw error;
 
         toast({
-          title: "Welcome back! 💛",
+          title: "Welcome back!",
           description: "You've successfully logged in.",
         });
         
@@ -75,7 +75,7 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
         if (error) throw error;
 
         toast({
-          title: "Welcome to RANT! 🌸",
+          title: "Welcome to RANT!",
           description: "Your account has been created. You can now log in.",
         });
         
@@ -179,7 +179,7 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
         </div>
 
         <p className="text-center text-xs text-muted-foreground mt-4">
-          This space is yours — take a moment to breathe 🌿
+          This space is yours — take a moment to breathe
         </p>
       </DialogContent>
     </Dialog>

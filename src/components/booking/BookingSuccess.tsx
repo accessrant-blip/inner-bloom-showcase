@@ -53,7 +53,7 @@ const BookingSuccess = ({ booking }: BookingSuccessProps) => {
             <CheckCircle className="w-12 h-12 text-green-600" />
           </div>
           <h1 className="text-4xl font-bold text-[#5c2c2c] mb-2">
-            Booking Confirmed 🌿
+            Booking Confirmed
           </h1>
           <p className="text-[#7d5a5a] text-lg">
             Your session has been successfully booked!
