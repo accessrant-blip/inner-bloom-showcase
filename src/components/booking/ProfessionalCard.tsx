@@ -76,7 +76,7 @@ const ProfessionalCard = ({ professional }: ProfessionalCardProps) => {
           <div className="flex items-center gap-2 text-sm">
             {isTherapist ? (
               <span className="text-muted-foreground font-medium">
-                📅 {getAvailabilityLabel()}
+                {getAvailabilityLabel()}
               </span>
             ) : (
               <>

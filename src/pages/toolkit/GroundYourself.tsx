@@ -82,7 +82,7 @@ export default function GroundYourself() {
 
     setTotalCompletions(prev => prev + 1);
     setCompletedSteps([]);
-    toast.success("Grounding exercise completed! 🌱");
+    toast.success("Grounding exercise completed!");
   };
 
   return (
@@ -100,7 +100,7 @@ export default function GroundYourself() {
         <Card className="rounded-3xl shadow-soft border-warm-brown/20">
           <CardHeader>
             <CardTitle className="text-3xl text-warm-brown text-center">
-              Ground Yourself 🌿
+              Ground Yourself
             </CardTitle>
             <p className="text-center text-muted-foreground mt-2">
               The 5-4-3-2-1 Technique • Completed {totalCompletions} times

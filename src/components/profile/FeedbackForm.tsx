@@ -60,7 +60,7 @@ const FeedbackForm = () => {
       if (error) throw error;
 
       toast({
-        title: "Thank you for your feedback 🌿",
+        title: "Thank you for your feedback",
         description: "Your thoughts help us make Rant better.",
       });
 

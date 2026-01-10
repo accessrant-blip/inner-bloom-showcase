@@ -270,7 +270,7 @@ const Kai = () => {
         path: "/book-help"
       },
       happy: {
-        text: "Share this positive moment 🌸",
+        text: "Share this positive moment",
         action: "Post to Soul Stream and spread joy",
         icon: <Heart className="h-5 w-5" />,
         path: "/soul-stream"

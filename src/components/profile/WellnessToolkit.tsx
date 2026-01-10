@@ -49,7 +49,7 @@ export function WellnessToolkit() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-warm-brown">
           <Sprout className="h-5 w-5" />
-          Wellness Toolkit 🌿
+          Wellness Toolkit
         </CardTitle>
       </CardHeader>
       <CardContent>

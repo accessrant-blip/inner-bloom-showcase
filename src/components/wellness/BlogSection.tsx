@@ -17,7 +17,7 @@ interface BlogPreview {
 const blogPreviews: BlogPreview[] = [
   {
     id: "1",
-    title: "Day 1: Why Getting Stuff Off Your Chest Is Good for You 💭",
+    title: "Day 1: Why Getting Stuff Off Your Chest Is Good for You",
     excerpt: "We all have stuff we're dealing with—work stress, personal problems, thoughts we can't shake. When you keep it all inside, it just builds up.",
     date: "2026-01-08",
     readTime: "4 min",
@@ -25,7 +25,7 @@ const blogPreviews: BlogPreview[] = [
   },
   {
     id: "2",
-    title: "Day 2: Should You Vent or Keep It In? 🤷‍♀️",
+    title: "Day 2: Should You Vent or Keep It In?",
     excerpt: "Keeping emotions bottled up can cause bad mood, tiredness, and worry. But venting the right way helps you feel understood and think clearer.",
     date: "2026-01-09",
     readTime: "3 min",
@@ -33,7 +33,7 @@ const blogPreviews: BlogPreview[] = [
   },
   {
     id: "3",
-    title: "📝 Day 3: Does Venting Anonymously Help Your Mental Health?",
+    title: "Day 3: Does Venting Anonymously Help Your Mental Health?",
     excerpt: "Being anonymous lets you be emotionally free without worrying about judgment. Discover how anonymous venting can help your mental wellness.",
     date: "2026-01-10",
     readTime: "3 min",

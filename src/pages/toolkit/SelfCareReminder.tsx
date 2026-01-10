@@ -58,7 +58,7 @@ export default function SelfCareReminder() {
       is_active: true
     });
 
-    toast.success("Reminder added! 💛");
+    toast.success("Reminder added!");
     setIsDialogOpen(false);
     setTime("");
     setMessage("");
@@ -97,7 +97,7 @@ export default function SelfCareReminder() {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="text-3xl text-warm-brown">
-                Self Care Reminders 🔔
+                Self Care Reminders
               </CardTitle>
               <Button
                 onClick={() => setIsDialogOpen(true)}
@@ -152,7 +152,7 @@ export default function SelfCareReminder() {
             {reminders.length > 0 && (
               <div className="mt-6 p-4 rounded-2xl bg-warm-peach/20 border border-warm-orange/20">
                 <p className="text-sm text-warm-brown text-center">
-                  Browser notifications require permission. Click "Allow" when prompted 💛
+                  Browser notifications require permission. Click "Allow" when prompted.
                 </p>
               </div>
             )}
