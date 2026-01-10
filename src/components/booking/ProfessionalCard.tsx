@@ -26,29 +26,47 @@ const ProfessionalCard = ({ professional }: ProfessionalCardProps) => {
   const navigate = useNavigate();
   const displayName = professional.alias || professional.name;
   const initials = displayName.split(" ").map(n => n[0]).join("").toUpperCase();
+  const isTherapist = professional.role === "therapist";
 
   const statusColors = {
-    online: "bg-green-500",
+    online: "bg-emerald-500",
     offline: "bg-gray-400",
-    busy: "bg-yellow-500"
+    busy: "bg-amber-500"
+  };
+
+  const getAvailabilityLabel = () => {
+    if (isTherapist) {
+      return "Availability";
+    }
+    return professional.availability_status;
   };
 
   return (
     <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 md:p-6 shadow-soft hover:shadow-glow transition-all duration-300 border border-border animate-fade-in h-full min-h-[280px] md:min-h-[320px] flex flex-col">
       {/* Header with Avatar */}
       <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
-        <Avatar className="w-12 h-12 md:w-16 md:h-16 border-2 border-success flex-shrink-0">
-          <AvatarImage src={professional.profile_image_url || ""} alt={displayName} />
-          <AvatarFallback className="bg-gradient-to-br from-success to-success-hover text-white font-semibold text-sm md:text-base">
-            {initials}
-          </AvatarFallback>
-        </Avatar>
+        <div className="relative flex-shrink-0">
+          <Avatar className="w-14 h-14 md:w-18 md:h-18 ring-2 ring-success/30 ring-offset-2 ring-offset-background shadow-md">
+            <AvatarImage 
+              src={professional.profile_image_url || ""} 
+              alt={displayName}
+              className="object-cover"
+            />
+            <AvatarFallback className="bg-gradient-to-br from-muted to-muted-foreground/20 text-foreground font-semibold text-sm md:text-base">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+          {/* Online indicator dot */}
+          {professional.availability_status === 'online' && !isTherapist && (
+            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-background rounded-full animate-pulse" />
+          )}
+        </div>
         
         <div className="flex-1 min-w-0">
-          <div className="flex items-start flex-wrap gap-1.5 md:gap-2 mb-1">
+          <div className="flex items-start flex-wrap gap-1.5 md:gap-2 mb-1.5">
             <h3 className="text-lg md:text-xl font-bold text-foreground truncate">{displayName}</h3>
             {professional.is_verified && (
-              <Badge className="bg-success text-white border-none text-xs flex-shrink-0">
+              <Badge className="bg-success text-white border-none text-xs flex-shrink-0 shadow-sm">
                 <Check className="w-2.5 h-2.5 md:w-3 md:h-3 mr-0.5 md:mr-1" />
                 Verified
               </Badge>
@@ -56,8 +74,16 @@ const ProfessionalCard = ({ professional }: ProfessionalCardProps) => {
           </div>
           
           <div className="flex items-center gap-2 text-sm">
-            <span className={`inline-block w-2 h-2 rounded-full flex-shrink-0 ${statusColors[professional.availability_status as keyof typeof statusColors]} ${professional.availability_status === 'online' ? 'animate-pulse' : ''}`}></span>
-            <span className="text-muted-foreground capitalize">{professional.availability_status}</span>
+            {isTherapist ? (
+              <span className="text-muted-foreground font-medium">
+                📅 {getAvailabilityLabel()}
+              </span>
+            ) : (
+              <>
+                <span className={`inline-block w-2 h-2 rounded-full flex-shrink-0 ${statusColors[professional.availability_status as keyof typeof statusColors]} ${professional.availability_status === 'online' ? 'animate-pulse' : ''}`}></span>
+                <span className="text-muted-foreground capitalize">{getAvailabilityLabel()}</span>
+              </>
+            )}
           </div>
         </div>
       </div>
