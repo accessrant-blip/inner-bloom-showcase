@@ -1,7 +1,7 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { Check, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface Professional {
@@ -46,14 +46,14 @@ const ProfessionalCard = ({ professional }: ProfessionalCardProps) => {
       {/* Header with Avatar */}
       <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
         <div className="relative flex-shrink-0">
-          <Avatar className="w-14 h-14 md:w-18 md:h-18 ring-2 ring-success/30 ring-offset-2 ring-offset-background shadow-md">
+          <Avatar className="w-16 h-16 md:w-[72px] md:h-[72px] ring-2 ring-success/30 ring-offset-2 ring-offset-background shadow-md">
             <AvatarImage 
               src={professional.profile_image_url || ""} 
               alt={displayName}
               className="object-cover"
             />
-            <AvatarFallback className="bg-gradient-to-br from-muted to-muted-foreground/20 text-foreground font-semibold text-sm md:text-base">
-              {initials}
+            <AvatarFallback className="bg-gradient-to-br from-muted to-muted/50">
+              <User className="w-7 h-7 md:w-8 md:h-8 text-muted-foreground/60" />
             </AvatarFallback>
           </Avatar>
           {/* Online indicator dot */}
