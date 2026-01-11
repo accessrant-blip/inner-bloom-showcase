@@ -252,7 +252,7 @@ Ready to turn your frustrations into fuel for growth?
   },
   {
     id: "5",
-    title: "💔 Day 5: Feeling Lonely Can Seriously Hurt Your Health",
+    title: "💔 Feeling Lonely Can Seriously Hurt Your Health",
     excerpt: "We usually think of loneliness as just feeling down. But research shows it could be a bigger deal than that—it might actually shorten your life.",
     content: `We usually think of loneliness as just **feeling down**. But research shows it could be a **bigger deal** than that.
 
