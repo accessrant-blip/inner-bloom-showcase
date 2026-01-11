@@ -39,6 +39,14 @@ const blogPreviews: BlogPreview[] = [
     readTime: "3 min",
     category: "Community",
   },
+  {
+    id: "4",
+    title: "Day 4: Turn Your Rants Into Something Useful",
+    excerpt: "Every rant has something to teach you – maybe about your limits, what stresses you out, or what you really need. Transform venting into growth.",
+    date: "2026-01-11",
+    readTime: "4 min",
+    category: "Self Improvement",
+  },
 ];
 
 const BlogSection = () => {
@@ -66,7 +74,7 @@ const BlogSection = () => {
               className="animate-scale-in"
               style={{ animationDelay: `${index * 150}ms` }}
             >
-              <Link to={`/blog/${post.id}`}>
+              <Link to={`/blog/${post.id}`} target="_blank" rel="noopener noreferrer">
                 <Card className="h-full hover:shadow-glow transition-all duration-300 border-0 shadow-card group hover:border-primary/30">
                   <CardHeader className="pb-3">
                     <Badge variant="secondary" className="w-fit mb-2 text-xs">
@@ -104,7 +112,7 @@ const BlogSection = () => {
 
         <div className="text-center">
           <Button asChild variant="outline" size="lg" className="rounded-full group">
-            <Link to="/blog">
+            <Link to="/blog" target="_blank" rel="noopener noreferrer">
               View All Articles
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
