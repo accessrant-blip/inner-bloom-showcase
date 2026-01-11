@@ -49,9 +49,9 @@ const Blog = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="sm" asChild className="gap-2">
-              <Link to="/">
+              <Link to="/dashboard">
                 <ArrowLeft className="h-5 w-5" />
-                <span className="hidden sm:inline">Back to Home</span>
+                <span className="hidden sm:inline">Back to Dashboard</span>
               </Link>
             </Button>
             <h1 className="text-xl font-bold text-foreground">RantFree Blog</h1>
