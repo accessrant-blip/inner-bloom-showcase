@@ -13,7 +13,7 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import rantfreeLogo from "@/assets/rantfree-logo.svg";
+import rantfreeLogo from "@/assets/rantfree-logo.jpg";
 
 interface AppLayoutProps {
   children: React.ReactNode;
