@@ -100,11 +100,11 @@ export default function Auth() {
 
 
   return (
-    <div className="min-h-screen gradient-warm flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="bg-card rounded-3xl shadow-soft p-8 border border-border/50">
+        <div className="bg-card rounded-3xl shadow-soft p-8 border border-border">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-warm-brown mb-2">
+            <h1 className="text-4xl font-bold text-foreground mb-2">
               {isLogin ? "Welcome Back" : "Join RANT"}
             </h1>
             <p className="text-muted-foreground">
@@ -176,7 +176,7 @@ export default function Auth() {
           <div className="mt-6 text-center">
             <button
               onClick={() => setIsLogin(!isLogin)}
-              className="text-warm-orange hover:text-warm-salmon transition-colors"
+              className="text-primary hover:text-primary/80 transition-colors"
             >
               {isLogin 
                 ? "Don't have an account? Sign up" 

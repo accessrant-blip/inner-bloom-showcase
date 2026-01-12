@@ -110,12 +110,11 @@ export default function MoodTrackerModal({ isOpen, onClose, selectedMood }: Mood
 
   if (!selectedMood) return null;
 
-  const gradient = "from-pink-50 to-rose-50";
   const suggestion = moodSuggestions[selectedMood.label];
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className={`sm:max-w-md bg-gradient-to-br ${gradient} border-none`}>
+      <DialogContent className="sm:max-w-md bg-card border-border">
         {stage === "input" && (
           <>
             <DialogHeader>
@@ -132,20 +131,20 @@ export default function MoodTrackerModal({ isOpen, onClose, selectedMood }: Mood
                 placeholder="I'm feeling this way because..."
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                className="min-h-[120px] bg-white/80 backdrop-blur-sm border-warm-brown/20 focus:border-warm-orange resize-none"
+                className="min-h-[120px] bg-input border-border focus:border-primary resize-none"
               />
               
               <div className="flex gap-3 justify-end">
                 <Button
                   variant="outline"
                   onClick={() => saveMood(true)}
-                  className="border-warm-brown/30 hover:bg-white/50"
+                  className="border-border hover:bg-muted"
                 >
                   Skip
                 </Button>
                 <Button
                   onClick={() => saveMood(false)}
-                  className="bg-[#FF8C42] hover:bg-[#FF8C42]/90 text-white font-semibold"
+                  variant="wellness"
                 >
                   Save Note
                 </Button>
@@ -157,7 +156,7 @@ export default function MoodTrackerModal({ isOpen, onClose, selectedMood }: Mood
         {stage === "acknowledgment" && (
           <div className="py-8 text-center animate-fade-in">
             <div className="text-6xl mb-4">🌿</div>
-            <h3 className="text-xl font-semibold text-warm-brown mb-2">
+            <h3 className="text-xl font-semibold text-foreground mb-2">
               Thanks for checking in with yourself.
             </h3>
             <p className="text-muted-foreground">
@@ -169,7 +168,7 @@ export default function MoodTrackerModal({ isOpen, onClose, selectedMood }: Mood
         {stage === "suggestion" && suggestion && (
           <div className="space-y-6 py-4 animate-fade-in">
             <div className="text-center">
-              <h3 className="text-xl font-semibold text-warm-brown mb-3">
+              <h3 className="text-xl font-semibold text-foreground mb-3">
                 {suggestion.title}
               </h3>
               <p className="text-muted-foreground mb-6">
@@ -181,13 +180,13 @@ export default function MoodTrackerModal({ isOpen, onClose, selectedMood }: Mood
               <Button
                 variant="outline"
                 onClick={handleClose}
-                className="border-warm-brown/30 hover:bg-white/50"
+                className="border-border hover:bg-muted"
               >
                 Skip for now
               </Button>
               <Button
                 onClick={handleSuggestionAction}
-                className="bg-[#FF8C42] hover:bg-[#FF8C42]/90 text-white font-semibold"
+                variant="wellness"
               >
                 {suggestion.action}
               </Button>

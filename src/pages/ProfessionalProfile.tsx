@@ -67,8 +67,8 @@ const ProfessionalProfile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-success-soft to-success/10 flex items-center justify-center p-4">
-        <Loader2 className="w-10 h-10 animate-spin text-success" />
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Loader2 className="w-10 h-10 animate-spin text-primary" />
       </div>
     );
   }
@@ -109,26 +109,26 @@ const ProfessionalProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-success-soft to-success/10 font-['Poppins',_sans-serif] pb-32 md:pb-24">
+    <div className="min-h-screen bg-background pb-32 md:pb-24">
       <div className="max-w-4xl mx-auto px-4 md:px-6 pt-8 md:pt-16">
         {/* Back Button */}
         <Button
           onClick={() => navigate('/book-help')}
           variant="ghost"
-          className="mb-4 md:mb-6 text-foreground hover:text-success min-h-[44px]"
+          className="mb-4 md:mb-6 text-foreground hover:text-primary min-h-[44px]"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Listings
         </Button>
 
         {/* Profile Card */}
-        <div className="bg-success-soft/50 backdrop-blur-sm rounded-2xl md:rounded-3xl p-4 md:p-8 lg:p-12 shadow-2xl border border-success/30 animate-scale-in hover:shadow-glow transition-all">
+        <div className="bg-card backdrop-blur-sm rounded-2xl md:rounded-3xl p-4 md:p-8 lg:p-12 shadow-soft border border-border animate-scale-in hover:shadow-glow transition-all">
           {/* Header - Mobile: Centered, Desktop: Row */}
-          <div className="flex flex-col items-center md:flex-row md:items-start gap-4 md:gap-6 mb-6 md:mb-8 pb-6 md:pb-8 border-b border-[#5c2c2c]/10">
+          <div className="flex flex-col items-center md:flex-row md:items-start gap-4 md:gap-6 mb-6 md:mb-8 pb-6 md:pb-8 border-b border-border">
             {/* Avatar - Centered on mobile */}
-            <Avatar className="w-20 h-20 md:w-24 md:h-24 border-4 border-success">
+            <Avatar className="w-20 h-20 md:w-24 md:h-24 border-4 border-primary">
               <AvatarImage src={professional.profile_image_url || ""} alt={displayName} />
-              <AvatarFallback className="bg-gradient-to-br from-success to-success-hover text-white font-bold text-xl md:text-2xl">
+              <AvatarFallback className="bg-gradient-to-br from-primary to-primary-hover text-primary-foreground font-bold text-xl md:text-2xl">
                 {initials}
               </AvatarFallback>
             </Avatar>
@@ -136,11 +136,11 @@ const ProfessionalProfile = () => {
             {/* Info - Centered on mobile */}
             <div className="flex-1 text-center md:text-left">
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-2">
-                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#5c2c2c]">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground">
                   {displayName}
                 </h1>
                 {professional.is_verified && (
-                  <Badge className="bg-success text-white border-none text-xs md:text-sm">
+                  <Badge className="bg-primary text-primary-foreground border-none text-xs md:text-sm">
                     <Check className="w-3 h-3 mr-1" />
                     Verified {professional.role === 'therapist' ? 'Therapist' : 'Listener'}
                   </Badge>
@@ -149,16 +149,16 @@ const ProfessionalProfile = () => {
 
               <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
                 <span className={`inline-block w-3 h-3 rounded-full ${statusColors[professional.availability_status as keyof typeof statusColors]} ${professional.availability_status === 'online' ? 'animate-pulse' : ''}`}></span>
-                <span className="text-[#7d5a5a] capitalize font-medium">
+                <span className="text-muted-foreground capitalize font-medium">
                   {professional.availability_status}
                 </span>
               </div>
 
               {/* Price Card - Full width on mobile */}
-              <div className="bg-white/50 rounded-xl p-3 md:p-0 md:bg-transparent">
-                <div className="text-xl md:text-2xl font-bold text-[#5c2c2c]">
+              <div className="bg-muted/50 rounded-xl p-3 md:p-0 md:bg-transparent">
+                <div className="text-xl md:text-2xl font-bold text-foreground">
                   ₹{professional.rate_per_session}
-                  <span className="text-sm font-normal text-[#7d5a5a] ml-2">per session</span>
+                  <span className="text-sm font-normal text-muted-foreground ml-2">per session</span>
                 </div>
               </div>
             </div>
@@ -166,8 +166,8 @@ const ProfessionalProfile = () => {
 
           {/* Bio Section */}
           <div className="mb-6 md:mb-8">
-            <h2 className="text-lg md:text-xl font-bold text-[#5c2c2c] mb-2 md:mb-3">About</h2>
-            <p className="text-[#7d5a5a] leading-relaxed text-base md:text-lg">
+            <h2 className="text-lg md:text-xl font-bold text-foreground mb-2 md:mb-3">About</h2>
+            <p className="text-muted-foreground leading-relaxed text-base md:text-lg">
               {professional.bio}
             </p>
           </div>
@@ -175,13 +175,13 @@ const ProfessionalProfile = () => {
           {/* Specialties - Wrap properly */}
           {professional.specialties && professional.specialties.length > 0 && (
             <div className="mb-6 md:mb-8">
-              <h2 className="text-lg md:text-xl font-bold text-[#5c2c2c] mb-2 md:mb-3">Specialties</h2>
+              <h2 className="text-lg md:text-xl font-bold text-foreground mb-2 md:mb-3">Specialties</h2>
               <div className="flex flex-wrap gap-2">
                 {professional.specialties.map((specialty, index) => (
                   <Badge
                     key={index}
                     variant="outline"
-                    className="text-xs md:text-sm py-1.5 md:py-2 px-3 md:px-4 border-[#5c2c2c]/20 text-[#7d5a5a] bg-white/50"
+                    className="text-xs md:text-sm py-1.5 md:py-2 px-3 md:px-4 border-border text-muted-foreground bg-muted/50"
                   >
                     {specialty}
                   </Badge>
@@ -191,8 +191,8 @@ const ProfessionalProfile = () => {
           )}
 
           {/* Duration Selection - Full width tappable options */}
-          <div className="mb-6 md:mb-8 p-4 md:p-6 bg-gradient-to-br from-[#fff8f2] to-white rounded-xl md:rounded-2xl">
-            <h2 className="text-lg md:text-xl font-bold text-[#5c2c2c] mb-3 md:mb-4 flex items-center gap-2">
+          <div className="mb-6 md:mb-8 p-4 md:p-6 bg-muted/30 rounded-xl md:rounded-2xl">
+            <h2 className="text-lg md:text-xl font-bold text-foreground mb-3 md:mb-4 flex items-center gap-2">
               <Clock className="w-5 h-5" />
               {isListener ? 'Session Duration' : 'Select Session Duration'}
             </h2>

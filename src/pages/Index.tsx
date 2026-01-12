@@ -7,7 +7,7 @@ import BlogSection from "@/components/wellness/BlogSection";
 
 const Index = () => {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-background text-foreground">
       <Navigation />
       <HeroSection />
       <FeaturesSection />
