@@ -422,9 +422,9 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5EFE6] flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <div className="bg-white border-b border-[#E8DCC4] p-4">
+      <div className="bg-card border-b border-border p-4">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon" onClick={onBack}>
@@ -433,8 +433,8 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
             <div className="flex items-center gap-3">
               <span className="text-3xl">{circle.icon}</span>
               <div>
-                <h1 className="text-xl font-bold text-[#4A4A4A]">{circle.name}</h1>
-                <p className="text-sm text-[#6B6B6B]">{memberCount} Members</p>
+                <h1 className="text-xl font-bold text-foreground">{circle.name}</h1>
+                <p className="text-sm text-muted-foreground">{memberCount} Members</p>
               </div>
             </div>
           </div>
@@ -446,13 +446,13 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
                   Members
                 </Button>
               </SheetTrigger>
-              <SheetContent className="bg-white">
+              <SheetContent className="bg-card">
                 <SheetHeader>
-                  <SheetTitle className="text-[#4A4A4A]">Members ({memberCount})</SheetTitle>
+                  <SheetTitle className="text-foreground">Members ({memberCount})</SheetTitle>
                 </SheetHeader>
                 <div className="mt-6 space-y-3">
                   {members.map((member) => (
-                    <div key={member.user_id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#F5EFE6] transition-colors">
+                    <div key={member.user_id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted transition-colors">
                       <Avatar className="h-10 w-10">
                         <AvatarImage src={member.avatar_url || undefined} />
                         <AvatarFallback className="bg-primary/10 text-primary">
@@ -460,8 +460,8 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
-                        <p className="font-medium text-[#4A4A4A]">{member.username}</p>
-                        <p className="text-xs text-[#6B6B6B]">
+                        <p className="font-medium text-foreground">{member.username}</p>
+                        <p className="text-xs text-muted-foreground">
                           Joined {formatTimestamp(member.joined_at)}
                         </p>
                       </div>
@@ -471,7 +471,7 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 pt-4 border-t border-[#E8DCC4]">
+                <div className="mt-6 pt-4 border-t border-border">
                   <Button
                     variant="outline"
                     className="w-full text-destructive border-destructive hover:bg-destructive/10"
@@ -497,8 +497,8 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
             if (isSystemMessage) {
               return (
                 <div key={message.id} className="flex justify-center animate-fade-in">
-                  <div className="bg-[#E8DCC4]/50 px-4 py-2 rounded-full">
-                    <p className="text-xs text-[#6B6B6B] italic">{message.content}</p>
+                  <div className="bg-muted/50 px-4 py-2 rounded-full">
+                    <p className="text-xs text-muted-foreground italic">{message.content}</p>
                   </div>
                 </div>
               );
@@ -511,10 +511,10 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
               >
                 <div className={`max-w-[70%] ${isOwnMessage ? "items-end" : "items-start"} flex flex-col`}>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-medium text-[#6B6B6B]">
+                    <span className="text-xs font-medium text-muted-foreground">
                       {message.sender_alias}
                     </span>
-                    <span className="text-xs text-[#6B6B6B]">
+                    <span className="text-xs text-muted-foreground">
                       {formatTimestamp(message.created_at)}
                     </span>
                   </div>
@@ -522,7 +522,7 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
                     className={`rounded-2xl px-4 py-3 ${
                       isOwnMessage
                         ? "bg-primary text-primary-foreground"
-                        : "bg-white text-[#4A4A4A] border border-[#E8DCC4]"
+                        : "bg-card text-foreground border border-border"
                     }`}
                   >
                     <p className="text-sm whitespace-pre-wrap break-words">{message.content}</p>
@@ -531,21 +531,21 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
                   {/* Reactions */}
                   <div className="flex items-center gap-2 mt-2">
                     <div className="flex gap-1">
-                      {["👍", "👏", "💭"].map((emoji) => (
-                        <Button
-                          key={emoji}
-                          variant="ghost"
-                          size="sm"
-                          className={`h-8 px-2 text-sm ${
-                            message.userReaction === emoji ? "bg-[#FDFBF7]" : ""
-                          }`}
-                          onClick={() => handleReaction(message.id, emoji, message.userReaction)}
-                        >
-                          {emoji}
-                          {message.reactions[emoji] && (
-                            <span className="ml-1 text-xs">{message.reactions[emoji]}</span>
-                          )}
-                        </Button>
+                        {["👍", "👏", "💭"].map((emoji) => (
+                          <Button
+                            key={emoji}
+                            variant="ghost"
+                            size="sm"
+                            className={`h-8 px-2 text-sm ${
+                              message.userReaction === emoji ? "bg-muted" : ""
+                            }`}
+                            onClick={() => handleReaction(message.id, emoji, message.userReaction)}
+                          >
+                            {emoji}
+                            {message.reactions[emoji] && (
+                              <span className="ml-1 text-xs">{message.reactions[emoji]}</span>
+                            )}
+                          </Button>
                       ))}
                     </div>
 
@@ -573,7 +573,7 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
       </div>
 
       {/* Input Area */}
-      <div className="bg-white border-t border-[#E8DCC4] p-4">
+      <div className="bg-card border-t border-border p-4">
         <div className="container mx-auto max-w-4xl flex gap-2">
           <Textarea
             value={newMessage}
@@ -601,21 +601,21 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
 
       {/* Safety Alert Dialog */}
       <AlertDialog open={showSafetyAlert} onOpenChange={setShowSafetyAlert}>
-        <AlertDialogContent className="bg-white">
+        <AlertDialogContent className="bg-card">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-[#4A4A4A]">We're here for you</AlertDialogTitle>
-            <AlertDialogDescription className="text-[#6B6B6B]">
+            <AlertDialogTitle className="text-foreground">We're here for you</AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground">
               It sounds like you might be struggling deeply. You're not alone. Here's someone who can help:
             </AlertDialogDescription>
           </AlertDialogHeader>
           <div className="space-y-2 my-4">
-            <div className="p-4 bg-[#FDFBF7] rounded-lg">
-              <p className="font-semibold text-[#4A4A4A]">Crisis Text Line</p>
-              <p className="text-sm text-[#6B6B6B]">Text HOME to 741741</p>
+            <div className="p-4 bg-muted rounded-lg">
+              <p className="font-semibold text-foreground">Crisis Text Line</p>
+              <p className="text-sm text-muted-foreground">Text HOME to 741741</p>
             </div>
-            <div className="p-4 bg-[#FDFBF7] rounded-lg">
-              <p className="font-semibold text-[#4A4A4A]">National Suicide Prevention Lifeline</p>
-              <p className="text-sm text-[#6B6B6B]">Call 988</p>
+            <div className="p-4 bg-muted rounded-lg">
+              <p className="font-semibold text-foreground">National Suicide Prevention Lifeline</p>
+              <p className="text-sm text-muted-foreground">Call 988</p>
             </div>
           </div>
           <AlertDialogFooter>

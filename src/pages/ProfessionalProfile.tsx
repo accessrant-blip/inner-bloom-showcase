@@ -83,9 +83,9 @@ const ProfessionalProfile = () => {
   const isTherapist = professional.role === 'therapist';
   const calculatedAmount = isListener ? 150 : isTherapist ? 1000 : (professional.rate_per_session / 30) * parseInt(selectedDuration);
   const statusColors = {
-    online: "bg-green-500",
-    offline: "bg-gray-400",
-    busy: "bg-yellow-500"
+    online: "bg-success",
+    offline: "bg-muted-foreground",
+    busy: "bg-warning"
   };
 
   const handleBookSession = () => {

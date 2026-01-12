@@ -169,8 +169,16 @@ All colors MUST be HSL format for consistent theming.
     @apply border-border;
   }
 
+  html {
+    @apply h-full;
+  }
+
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply h-full bg-background text-foreground font-sans antialiased transition-colors duration-300;
+  }
+
+  #root {
+    @apply h-full;
   }
 }
 

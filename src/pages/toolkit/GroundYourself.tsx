@@ -114,8 +114,8 @@ export default function GroundYourself() {
                     onClick={() => handleStepToggle(step.id)}
                     className={`w-full p-6 rounded-2xl border transition-all text-left ${
                       completedSteps.includes(step.id)
-                        ? "border-green-400 bg-green-50"
-                        : "border-warm-brown/20 bg-white hover:border-warm-orange/40"
+                        ? "border-success bg-success/10 dark:bg-success/20"
+                        : "border-border bg-card hover:border-primary/40"
                     }`}
                   >
                     <div className="flex items-center justify-between">

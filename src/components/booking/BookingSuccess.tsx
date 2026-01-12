@@ -46,16 +46,16 @@ const BookingSuccess = ({ booking }: BookingSuccessProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fff8f2] to-[#fef5ed] flex items-center justify-center p-6">
-      <div className="max-w-2xl w-full bg-white/90 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-2xl border border-[#5c2c2c]/10 animate-scale-in">
+    <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <div className="max-w-2xl w-full bg-card backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-2xl border border-border animate-scale-in">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4">
-            <CheckCircle className="w-12 h-12 text-green-600" />
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-success/10 rounded-full mb-4">
+            <CheckCircle className="w-12 h-12 text-success" />
           </div>
-          <h1 className="text-4xl font-bold text-[#5c2c2c] mb-2">
+          <h1 className="text-4xl font-bold text-foreground mb-2">
             Booking Confirmed
           </h1>
-          <p className="text-[#7d5a5a] text-lg">
+          <p className="text-muted-foreground text-lg">
             Your session has been successfully booked!
           </p>
         </div>
