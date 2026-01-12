@@ -121,7 +121,7 @@ export default function SelfCareReminder() {
               reminders.map((reminder) => (
                 <div
                   key={reminder.id}
-                  className="p-6 rounded-2xl border border-warm-brown/20 bg-white hover:border-warm-orange/40 transition-all"
+                  className="p-6 rounded-2xl border border-border bg-card hover:border-primary/40 transition-all"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex-1">

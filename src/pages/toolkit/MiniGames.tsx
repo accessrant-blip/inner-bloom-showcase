@@ -94,7 +94,7 @@ export default function MiniGames() {
                   <button
                     key={game.id}
                     onClick={() => handleGameClick(game.id)}
-                    className="group p-8 rounded-2xl border border-warm-brown/20 hover:border-warm-orange/40 transition-all bg-white hover:scale-105"
+                    className="group p-8 rounded-2xl border border-border hover:border-primary/40 transition-all bg-card hover:scale-105"
                   >
                     <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${game.gradient} flex items-center justify-center mb-4 group-hover:shadow-glow transition-shadow`}>
                       <game.icon className="h-8 w-8 text-warm-brown" />

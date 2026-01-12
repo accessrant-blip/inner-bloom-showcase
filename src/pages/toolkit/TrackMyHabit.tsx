@@ -140,7 +140,7 @@ export default function TrackMyHabit() {
               habits.map((habit) => (
                 <div
                   key={habit.id}
-                  className="p-6 rounded-2xl border border-warm-brown/20 bg-white hover:border-warm-orange/40 transition-all"
+                  className="p-6 rounded-2xl border border-border bg-card hover:border-primary/40 transition-all"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div>
@@ -167,9 +167,9 @@ export default function TrackMyHabit() {
                     </Button>
                   </div>
 
-                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                  <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
                     <div
-                      className="bg-gradient-to-r from-amber-400 to-orange-500 h-full transition-all duration-500 rounded-full"
+                      className="bg-gradient-to-r from-primary to-primary-glow h-full transition-all duration-500 rounded-full"
                       style={{ width: `${getProgress(habit)}%` }}
                     />
                   </div>

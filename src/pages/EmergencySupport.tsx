@@ -194,18 +194,18 @@ export default function EmergencySupport() {
   }
 
   return (
-    <div className="min-h-screen gradient-warm pb-24">
+    <div className="min-h-screen bg-background pb-24">
       {/* Header */}
-      <div className="bg-white/50 backdrop-blur-sm border-b border-warm-brown/10 sticky top-0 z-40">
+      <div className="bg-card/50 backdrop-blur-sm border-b border-border sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
           <Button
             variant="ghost"
             onClick={() => navigate("/dashboard")}
-            className="rounded-xl hover:bg-warm-brown/10"
+            className="rounded-xl hover:bg-muted"
           >
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <h1 className="text-2xl font-bold text-warm-brown">Emergency Support</h1>
+          <h1 className="text-2xl font-bold text-foreground">Emergency Support</h1>
         </div>
       </div>
 

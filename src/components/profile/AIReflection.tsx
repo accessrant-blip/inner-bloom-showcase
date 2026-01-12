@@ -54,11 +54,11 @@ export function AIReflection({ userId }: AIReflectionProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         {reflection ? (
-          <div className="p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-warm-orange/20">
-            <p className="text-warm-brown leading-relaxed">{reflection}</p>
+          <div className="p-6 rounded-2xl bg-card backdrop-blur-sm border border-primary/20">
+            <p className="text-foreground leading-relaxed">{reflection}</p>
           </div>
         ) : (
-          <div className="p-6 rounded-2xl bg-white/40 backdrop-blur-sm border border-warm-brown/10 text-center">
+          <div className="p-6 rounded-2xl bg-muted/40 backdrop-blur-sm border border-border text-center">
             <p className="text-muted-foreground">
               Get a gentle AI-powered reflection on your emotional journey
             </p>

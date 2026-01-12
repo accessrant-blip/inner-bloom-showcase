@@ -74,7 +74,7 @@ export const MandalaColoring = () => {
 
         <svg
           viewBox="0 0 400 400"
-          className="w-full max-w-md mx-auto border-2 border-border rounded-2xl bg-white"
+          className="w-full max-w-md mx-auto border-2 border-border rounded-2xl bg-card"
         >
           {mandalaSegments.map((segment) => (
             <path
