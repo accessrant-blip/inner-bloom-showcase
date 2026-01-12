@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import AppLayout from "./components/layout/AppLayout";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
@@ -35,44 +36,46 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<Index />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/emergency-support" element={<EmergencySupport />} />
-          <Route path="/booking-confirmed" element={<BookingConfirmed />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:id" element={<BlogPostPage />} />
-          
-          {/* App routes with persistent layout */}
-          <Route path="/dashboard" element={<AppLayout><Dashboard /></AppLayout>} />
-          <Route path="/profile" element={<AppLayout><Profile /></AppLayout>} />
-          <Route path="/soul-stream" element={<AppLayout><SoulStream /></AppLayout>} />
-          <Route path="/learn-grow" element={<AppLayout><LearnAndGrow /></AppLayout>} />
-          <Route path="/book-help" element={<AppLayout><BookHelp /></AppLayout>} />
-          <Route path="/book-help/professional/:id" element={<AppLayout><ProfessionalProfile /></AppLayout>} />
-          <Route path="/kai" element={<AppLayout><Kai /></AppLayout>} />
-          <Route path="/instant-relief" element={<AppLayout><InstantRelief /></AppLayout>} />
-          <Route path="/connect" element={<AppLayout><Connect /></AppLayout>} />
-          <Route path="/rant" element={<AppLayout><Rant /></AppLayout>} />
-          <Route path="/wellness-toolkit" element={<AppLayout><WellnessToolkit /></AppLayout>} />
-          <Route path="/wellness-toolkit/breathe" element={<AppLayout><BreatheWithMe /></AppLayout>} />
-          <Route path="/wellness-toolkit/ground" element={<AppLayout><GroundYourself /></AppLayout>} />
-          <Route path="/wellness-toolkit/journal" element={<AppLayout><JournalSpace /></AppLayout>} />
-          <Route path="/wellness-toolkit/reminder" element={<AppLayout><SelfCareReminder /></AppLayout>} />
-          <Route path="/wellness-toolkit/habit" element={<AppLayout><TrackMyHabit /></AppLayout>} />
-          <Route path="/wellness-toolkit/games" element={<AppLayout><MiniGames /></AppLayout>} />
-          
-          {/* Catch-all */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+      <ThemeProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/emergency-support" element={<EmergencySupport />} />
+              <Route path="/booking-confirmed" element={<BookingConfirmed />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:id" element={<BlogPostPage />} />
+              
+              {/* App routes with persistent layout */}
+              <Route path="/dashboard" element={<AppLayout><Dashboard /></AppLayout>} />
+              <Route path="/profile" element={<AppLayout><Profile /></AppLayout>} />
+              <Route path="/soul-stream" element={<AppLayout><SoulStream /></AppLayout>} />
+              <Route path="/learn-grow" element={<AppLayout><LearnAndGrow /></AppLayout>} />
+              <Route path="/book-help" element={<AppLayout><BookHelp /></AppLayout>} />
+              <Route path="/book-help/professional/:id" element={<AppLayout><ProfessionalProfile /></AppLayout>} />
+              <Route path="/kai" element={<AppLayout><Kai /></AppLayout>} />
+              <Route path="/instant-relief" element={<AppLayout><InstantRelief /></AppLayout>} />
+              <Route path="/connect" element={<AppLayout><Connect /></AppLayout>} />
+              <Route path="/rant" element={<AppLayout><Rant /></AppLayout>} />
+              <Route path="/wellness-toolkit" element={<AppLayout><WellnessToolkit /></AppLayout>} />
+              <Route path="/wellness-toolkit/breathe" element={<AppLayout><BreatheWithMe /></AppLayout>} />
+              <Route path="/wellness-toolkit/ground" element={<AppLayout><GroundYourself /></AppLayout>} />
+              <Route path="/wellness-toolkit/journal" element={<AppLayout><JournalSpace /></AppLayout>} />
+              <Route path="/wellness-toolkit/reminder" element={<AppLayout><SelfCareReminder /></AppLayout>} />
+              <Route path="/wellness-toolkit/habit" element={<AppLayout><TrackMyHabit /></AppLayout>} />
+              <Route path="/wellness-toolkit/games" element={<AppLayout><MiniGames /></AppLayout>} />
+              
+              {/* Catch-all */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 };
 
