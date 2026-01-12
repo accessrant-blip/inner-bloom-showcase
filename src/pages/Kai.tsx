@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, Loader2, Heart, Wind, BookOpen, Users, AlertCircle, Save, Trash2, Sparkles, MessageCircle } from "lucide-react";
+import { Send, Loader2, Heart, Wind, BookOpen, Users, AlertCircle, Save, Trash2, Sparkles, MessageCircle, Volume2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTextToSpeech } from "@/hooks/useTextToSpeech";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from "@/components/ui/alert-dialog";
@@ -36,10 +37,15 @@ const Kai = () => {
   const [detectedMood, setDetectedMood] = useState<string>("");
   const [lastAnnouncement, setLastAnnouncement] = useState("");
   const [saveChatsEnabled, setSaveChatsEnabled] = useState(false);
+  const [autoReadEnabled, setAutoReadEnabled] = useState(false);
   const [hasLoadedPreference, setHasLoadedPreference] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [lastReadMessageIndex, setLastReadMessageIndex] = useState(-1);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/kai-chat`;
+
+  // TTS hook for auto-read
+  const { speak, stop: stopSpeaking, isSpeaking } = useTextToSpeech();
 
   // Load user preferences and saved chats
   useEffect(() => {
@@ -88,6 +94,25 @@ const Kai = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Auto-read new assistant messages
+  useEffect(() => {
+    if (!autoReadEnabled) return;
+    
+    const lastMessage = messages[messages.length - 1];
+    const lastIndex = messages.length - 1;
+    
+    // Only read if it's a new assistant message with content
+    if (
+      lastMessage?.role === "assistant" && 
+      lastMessage.content && 
+      lastIndex > lastReadMessageIndex &&
+      !isLoading
+    ) {
+      speak(lastMessage.content);
+      setLastReadMessageIndex(lastIndex);
+    }
+  }, [messages, autoReadEnabled, isLoading, lastReadMessageIndex, speak]);
 
   // Save chat when messages change (only if consent given)
   useEffect(() => {
@@ -472,6 +497,28 @@ const Kai = () => {
                     <Trash2 className="h-4 w-4" />
                     <span className="hidden sm:inline">Clear</span>
                   </Button>
+                  
+                  <div className="flex items-center gap-3 rounded-xl border border-border/50 bg-background/50 px-4 py-2 backdrop-blur-sm">
+                    <Switch
+                      id="auto-read"
+                      checked={autoReadEnabled}
+                      onCheckedChange={(enabled) => {
+                        setAutoReadEnabled(enabled);
+                        if (!enabled) stopSpeaking();
+                      }}
+                      aria-describedby="auto-read-description"
+                      className="data-[state=checked]:bg-primary"
+                    />
+                    <Label htmlFor="auto-read" className="cursor-pointer">
+                      <div className="flex items-center gap-1.5 text-sm font-medium">
+                        <Volume2 className="h-3.5 w-3.5 text-muted-foreground" />
+                        <span className="hidden sm:inline">Auto-Read</span>
+                      </div>
+                      <span id="auto-read-description" className="text-xs text-muted-foreground">
+                        {autoReadEnabled ? "On" : "Off"}
+                      </span>
+                    </Label>
+                  </div>
                   
                   <div className="flex items-center gap-3 rounded-xl border border-border/50 bg-background/50 px-4 py-2 backdrop-blur-sm">
                     <Switch
