@@ -84,7 +84,7 @@ const FeedbackForm = () => {
   };
 
   return (
-    <Card className="bg-[#F8FAF9] border-[#E4E4E4] p-6 md:p-8">
+    <Card className="bg-card border-border p-6 md:p-8">
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-foreground mb-2">Contact AccessRant</h2>
         <p className="text-muted-foreground">We'd love to hear from you.</p>
@@ -97,7 +97,7 @@ const FeedbackForm = () => {
             id="name"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="border-[#E4E4E4]"
+            className="border-border bg-input"
             required
           />
         </div>
@@ -109,7 +109,7 @@ const FeedbackForm = () => {
             type="email"
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="border-[#E4E4E4]"
+            className="border-border bg-input"
             required
           />
         </div>
@@ -120,7 +120,7 @@ const FeedbackForm = () => {
             value={formData.responsiveness}
             onValueChange={(value) => setFormData({ ...formData, responsiveness: value })}
           >
-            <SelectTrigger className="border-[#E4E4E4]">
+            <SelectTrigger className="border-border bg-input">
               <SelectValue placeholder="Select an option" />
             </SelectTrigger>
             <SelectContent>
@@ -159,7 +159,7 @@ const FeedbackForm = () => {
             id="suggestions"
             value={formData.suggestions}
             onChange={(e) => setFormData({ ...formData, suggestions: e.target.value })}
-            className="border-[#E4E4E4] min-h-[120px]"
+            className="border-border bg-input min-h-[120px]"
             placeholder="Share your ideas with us..."
           />
         </div>
