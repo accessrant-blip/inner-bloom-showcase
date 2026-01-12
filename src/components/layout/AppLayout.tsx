@@ -13,6 +13,7 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import rantfreeLogo from "@/assets/rantfree-logo.jpg";
 
 interface AppLayoutProps {
@@ -114,6 +115,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                   <User className="h-5 w-5 mr-3" />
                   Profile
                 </Button>
+                <ThemeToggle showLabel={true} className="min-h-[48px] text-base" />
                 <Button
                   variant="ghost"
                   onClick={handleSignOut}
@@ -190,6 +192,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             <User className={`h-5 w-5 ${sidebarOpen ? "mr-3" : ""}`} />
             {sidebarOpen && <span>Profile</span>}
           </Button>
+          <ThemeToggle showLabel={sidebarOpen} className={!sidebarOpen ? "justify-center" : ""} />
           <Button
             variant="ghost"
             onClick={handleSignOut}
