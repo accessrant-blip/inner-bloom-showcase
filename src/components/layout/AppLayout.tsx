@@ -209,13 +209,13 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   );
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-background text-foreground flex">
       {/* Desktop Sidebar */}
       {!isMobile && <DesktopSidebar />}
 
       {/* Main Content */}
       <main
-        className={`flex-1 transition-all duration-300 ${
+        className={`flex-1 min-h-screen bg-background transition-all duration-300 ${
           isMobile ? "pb-20" : sidebarOpen ? "ml-64" : "ml-16"
         }`}
       >
