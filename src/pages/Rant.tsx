@@ -17,9 +17,9 @@ interface Rant {
   id: string;
   content: string;
   privacy: string;
-  user_id: string;
   created_at: string;
   mood?: string;
+  is_owner?: boolean; // Computed client-side, not from DB
   profiles?: {
     username: string;
     avatar_url: string | null;
@@ -65,9 +65,10 @@ const Rant = () => {
   };
 
   const fetchPublicRants = async () => {
+    // Only select non-sensitive fields - exclude user_id to prevent identity linkage
     const { data, error } = await supabase
       .from("rants")
-      .select("*")
+      .select("id, content, privacy, created_at, mood, user_id")
       .in("privacy", ["public", "anonymous"])
       .order("created_at", { ascending: false });
 
@@ -75,19 +76,40 @@ const Rant = () => {
       console.error("Error fetching rants:", error);
       setPublicRants([]);
     } else {
-      // Fetch usernames and avatars for public posts
+      // Process rants: fetch profiles for public posts, mark ownership, then strip user_id
       const rantsWithProfiles = await Promise.all(
         (data || []).map(async (rant) => {
-          if (rant.user_id && rant.privacy === "public") {
+          const isOwner = currentUserId === rant.user_id;
+          
+          if (rant.privacy === "public" && rant.user_id) {
             const { data: profile } = await supabase
               .from("profiles")
               .select("username, avatar_url")
               .eq("user_id", rant.user_id)
               .single();
             
-            return { ...rant, profiles: profile };
+            // Return without user_id - only keep computed is_owner flag
+            return { 
+              id: rant.id,
+              content: rant.content,
+              privacy: rant.privacy,
+              created_at: rant.created_at,
+              mood: rant.mood,
+              is_owner: isOwner,
+              profiles: profile 
+            };
           }
-          return { ...rant, profiles: null };
+          
+          // Return without user_id for anonymous posts
+          return { 
+            id: rant.id,
+            content: rant.content,
+            privacy: rant.privacy,
+            created_at: rant.created_at,
+            mood: rant.mood,
+            is_owner: isOwner,
+            profiles: null 
+          };
         })
       );
       setPublicRants(rantsWithProfiles);
@@ -440,7 +462,7 @@ const Rant = () => {
                       <span>{commentCounts[rant.id] || 0} comments</span>
                     </button>
 
-                    {currentUserId === rant.user_id && (
+                    {rant.is_owner && (
                       <button
                         onClick={() => handleDeleteRant(rant.id)}
                         className="flex items-center gap-1 text-sm text-destructive hover:text-destructive/80 transition-colors duration-300"
