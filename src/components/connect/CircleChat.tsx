@@ -36,6 +36,10 @@ interface Circle {
   name: string;
   description: string;
   icon: string;
+  topic?: string;
+  capacity?: number;
+  next_session_at?: string;
+  member_count?: number;
 }
 
 interface Message {
