@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { VoiceInputButton } from "@/components/accessibility/VoiceInputButton";
 
 interface Rant {
   id: string;
@@ -335,12 +336,20 @@ const Rant = () => {
           <h2 className="text-xl font-semibold text-foreground mb-2">What's on your mind?</h2>
           <p className="text-primary text-sm mb-4">This is a safe space. Let it all out.</p>
 
-          <Textarea
-            value={rantText}
-            onChange={(e) => setRantText(e.target.value)}
-            placeholder="Share your feelings, frustrations, or anything else..."
-            className="min-h-[120px] resize-none border-border focus:border-primary rounded-xl bg-input"
-          />
+          <div className="relative">
+            <Textarea
+              value={rantText}
+              onChange={(e) => setRantText(e.target.value)}
+              placeholder="Share your feelings, frustrations, or anything else..."
+              className="min-h-[120px] resize-none border-border focus:border-primary rounded-xl bg-input pr-12"
+            />
+            <div className="absolute right-2 top-2">
+              <VoiceInputButton
+                onTranscript={(text) => setRantText((prev) => prev ? `${prev} ${text}` : text)}
+                size="sm"
+              />
+            </div>
+          </div>
 
           <div className="mt-4 flex items-center justify-between">
             <div>
@@ -466,12 +475,20 @@ const Rant = () => {
             <div className="space-y-4">
               {/* Add Comment */}
               <div className="space-y-2">
-                <Textarea
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  placeholder="Add a comment..."
-                  className="min-h-[80px]"
-                />
+                <div className="relative">
+                  <Textarea
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Add a comment..."
+                    className="min-h-[80px] pr-12"
+                  />
+                  <div className="absolute right-2 top-2">
+                    <VoiceInputButton
+                      onTranscript={(text) => setNewComment((prev) => prev ? `${prev} ${text}` : text)}
+                      size="sm"
+                    />
+                  </div>
+                </div>
                 <Button onClick={handleAddComment} size="sm">
                   Post Comment
                 </Button>
