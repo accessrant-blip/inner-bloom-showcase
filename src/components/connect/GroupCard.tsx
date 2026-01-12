@@ -69,27 +69,6 @@ const GroupCard = ({ circle, isMember, onJoin, onOpen }: GroupCardProps) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Member count with capacity bar */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-1.5 text-muted-foreground">
-              <Users className="h-4 w-4" />
-              <span>
-                {memberCount}/{capacity} members
-              </span>
-            </div>
-            {isFull && (
-              <Badge variant="destructive" className="text-xs">
-                Full
-              </Badge>
-            )}
-          </div>
-          <Progress 
-            value={capacityPercentage} 
-            className="h-2"
-            indicatorClassName={getCapacityColor()}
-          />
-        </div>
 
         {/* Next session time */}
         {circle.next_session_at && (

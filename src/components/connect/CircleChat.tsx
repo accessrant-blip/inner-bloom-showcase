@@ -438,7 +438,6 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
               <span className="text-3xl">{circle.icon}</span>
               <div>
                 <h1 className="text-xl font-bold text-foreground">{circle.name}</h1>
-                <p className="text-sm text-muted-foreground">{memberCount} Members</p>
               </div>
             </div>
           </div>
