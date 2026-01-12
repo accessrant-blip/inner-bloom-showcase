@@ -525,41 +525,51 @@ const Kai = () => {
                     </AvatarFallback>
                   </Avatar>
 
-                  {/* Message Bubble */}
-                  <div
-                    className={`group relative max-w-[75%] overflow-hidden rounded-2xl px-4 py-3 shadow-sm transition-all duration-300 ${
-                      message.role === "user"
-                        ? "rounded-br-md bg-gradient-to-br from-primary to-primary/90 text-primary-foreground shadow-primary/20"
-                        : "rounded-bl-md border border-border/50 bg-card/80 text-foreground backdrop-blur-sm"
-                    }`}
-                  >
-                    {message.role === "assistant" && (
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-                    )}
+                  {/* Message Content */}
+                  <div className="flex flex-col max-w-[75%]">
+                    {/* Sender Name */}
+                    <p className={`mb-1 text-xs font-medium tracking-wide ${
+                      message.role === "user" ? "text-right text-muted-foreground" : "text-left text-primary"
+                    }`}>
+                      {message.role === "assistant" ? "Kai" : "You"}
+                    </p>
                     
-                    <div className="relative">
-                      <div className="flex items-start justify-between gap-3">
-                        <p className="whitespace-pre-wrap text-[15px] leading-relaxed flex-1">{message.content}</p>
-                        {message.role === "assistant" && message.content && (
-                          <TextToSpeechButton
-                            text={message.content}
-                            size="icon"
-                            variant="ghost"
-                            className="h-7 w-7 shrink-0 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-primary/10"
-                          />
+                    {/* Message Bubble */}
+                    <div
+                      className={`group relative overflow-hidden rounded-2xl px-4 py-3 shadow-sm transition-all duration-300 ${
+                        message.role === "user"
+                          ? "rounded-br-md bg-gradient-to-br from-primary to-primary/90 text-primary-foreground shadow-primary/20"
+                          : "rounded-bl-md border border-border/50 bg-card/80 text-foreground backdrop-blur-sm"
+                      }`}
+                    >
+                      {message.role === "assistant" && (
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                      )}
+                      
+                      <div className="relative">
+                        <div className="flex items-start justify-between gap-3">
+                          <p className="whitespace-pre-wrap text-[15px] leading-relaxed flex-1">{message.content}</p>
+                          {message.role === "assistant" && message.content && (
+                            <TextToSpeechButton
+                              text={message.content}
+                              size="icon"
+                              variant="ghost"
+                              className="h-7 w-7 shrink-0 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-primary/10"
+                            />
+                          )}
+                        </div>
+                        
+                        {message.content && (
+                          <p className={`mt-2 text-[11px] tracking-wide ${
+                            message.role === "user" ? "text-primary-foreground/60" : "text-muted-foreground"
+                          }`}>
+                            {message.timestamp.toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </p>
                         )}
                       </div>
-                      
-                      {message.content && (
-                        <p className={`mt-2 text-[11px] tracking-wide ${
-                          message.role === "user" ? "text-primary-foreground/60" : "text-muted-foreground"
-                        }`}>
-                          {message.timestamp.toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </p>
-                      )}
                     </div>
                   </div>
                 </div>
