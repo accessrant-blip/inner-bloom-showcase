@@ -86,7 +86,7 @@ const FeedbackForm = () => {
   return (
     <Card className="bg-card border-border p-6 md:p-8">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-foreground mb-2">Contact AccessRant</h2>
+        <h2 className="text-2xl font-bold text-foreground mb-2">Contact RantFree</h2>
         <p className="text-muted-foreground">We'd love to hear from you.</p>
       </div>
 
