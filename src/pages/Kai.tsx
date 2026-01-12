@@ -13,7 +13,7 @@ import { TextToSpeechButton } from "@/components/accessibility/TextToSpeechButto
 import { LiveRegion } from "@/components/accessibility/LiveRegion";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Message {
   role: "user" | "assistant";
@@ -41,6 +41,7 @@ const Kai = () => {
   const [hasLoadedPreference, setHasLoadedPreference] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [lastReadMessageIndex, setLastReadMessageIndex] = useState(-1);
+  const [userProfile, setUserProfile] = useState<{ username: string; avatar_url: string | null } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/kai-chat`;
 
@@ -54,6 +55,17 @@ const Kai = () => {
       if (!user) return;
       
       setUserId(user.id);
+
+      // Load user profile
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('username, avatar_url')
+        .eq('user_id', user.id)
+        .single();
+
+      if (profileData) {
+        setUserProfile(profileData);
+      }
 
       // Load preference
       const { data: prefData } = await supabase
@@ -563,12 +575,15 @@ const Kai = () => {
                 >
                   {/* Avatar */}
                   <Avatar className={`h-9 w-9 shrink-0 shadow-md ${message.role === "assistant" ? "ring-2 ring-primary/20" : "ring-2 ring-muted"}`}>
+                    {message.role === "user" && userProfile?.avatar_url && (
+                      <AvatarImage src={userProfile.avatar_url} alt={userProfile.username || "User"} />
+                    )}
                     <AvatarFallback className={`text-sm font-semibold ${
                       message.role === "assistant" 
                         ? "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground" 
                         : "bg-muted text-muted-foreground"
                     }`}>
-                      {message.role === "assistant" ? "K" : "Y"}
+                      {message.role === "assistant" ? "K" : (userProfile?.username?.[0]?.toUpperCase() || "Y")}
                     </AvatarFallback>
                   </Avatar>
 
@@ -578,7 +593,7 @@ const Kai = () => {
                     <p className={`mb-1 text-xs font-medium tracking-wide ${
                       message.role === "user" ? "text-right text-muted-foreground" : "text-left text-primary"
                     }`}>
-                      {message.role === "assistant" ? "Kai" : "You"}
+                      {message.role === "assistant" ? "Kai" : (userProfile?.username || "You")}
                     </p>
                     
                     {/* Message Bubble */}
