@@ -8,6 +8,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from "@/components/ui/alert-dialog";
 import { checkSafetyKeywords } from "@/lib/safetyKeywords";
+import { VoiceInputButton } from "@/components/accessibility/VoiceInputButton";
+import { TextToSpeechButton } from "@/components/accessibility/TextToSpeechButton";
+import { LiveRegion } from "@/components/accessibility/LiveRegion";
 
 interface Message {
   role: "user" | "assistant";
@@ -29,6 +32,7 @@ const Kai = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showSafetyDialog, setShowSafetyDialog] = useState(false);
   const [detectedMood, setDetectedMood] = useState<string>("");
+  const [lastAnnouncement, setLastAnnouncement] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/kai-chat`;
 
@@ -174,6 +178,11 @@ const Kai = () => {
         }
       }
     }
+
+    // Announce the complete response for screen readers
+    if (assistantMessage) {
+      setLastAnnouncement(`Kai says: ${assistantMessage.slice(0, 200)}${assistantMessage.length > 200 ? '...' : ''}`);
+    }
   };
 
   const handleSendMessage = async () => {
@@ -312,8 +321,16 @@ const Kai = () => {
           <p className="text-muted-foreground">Your compassionate AI companion</p>
         </div>
 
+        {/* Screen Reader Announcements */}
+        <LiveRegion message={lastAnnouncement} priority="polite" />
+
         {/* Messages Container */}
-        <div className="flex-1 overflow-y-auto mb-4 px-2">
+        <div 
+          className="flex-1 overflow-y-auto mb-4 px-2"
+          role="log"
+          aria-label="Chat messages"
+          aria-live="polite"
+        >
           <div className="space-y-6">
             {messages.map((message, index) => (
               <div
@@ -327,7 +344,17 @@ const Kai = () => {
                       : "bg-card text-foreground"
                   } shadow-soft animate-fade-in border-border rounded-2xl`}
                 >
-                  <p className="whitespace-pre-wrap">{message.content}</p>
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="whitespace-pre-wrap flex-1">{message.content}</p>
+                    {message.role === "assistant" && message.content && (
+                      <TextToSpeechButton
+                        text={message.content}
+                        size="icon"
+                        variant="ghost"
+                        className="h-6 w-6 shrink-0"
+                      />
+                    )}
+                  </div>
                   {message.content && (
                     <p
                       className={`text-xs mt-2 ${
@@ -368,22 +395,30 @@ const Kai = () => {
               placeholder="Share what's on your mind..."
               className="min-h-[60px] max-h-[120px] resize-none border-border rounded-xl bg-background"
               disabled={isLoading}
+              aria-label="Message to Kai"
             />
-            <Button
-              onClick={handleSendMessage}
-              disabled={!inputText.trim() || isLoading}
-              variant="wellness"
-              className="px-6 rounded-xl"
-            >
-              {isLoading ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-              ) : (
-                <Send className="h-5 w-5" />
-              )}
-            </Button>
+            <div className="flex flex-col gap-2">
+              <VoiceInputButton
+                onTranscript={(text) => setInputText((prev) => prev + text)}
+                disabled={isLoading}
+              />
+              <Button
+                onClick={handleSendMessage}
+                disabled={!inputText.trim() || isLoading}
+                variant="wellness"
+                className="px-4 rounded-xl"
+                aria-label="Send message"
+              >
+                {isLoading ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <Send className="h-5 w-5" />
+                )}
+              </Button>
+            </div>
           </div>
           <p className="text-xs text-muted-foreground text-center mt-2">
-            Kai is here to listen and support. Press Enter to send, Shift+Enter for new line.
+            Kai is here to listen and support. Press Enter to send, Shift+Enter for new line. Use the mic for voice input.
           </p>
         </div>
       </div>

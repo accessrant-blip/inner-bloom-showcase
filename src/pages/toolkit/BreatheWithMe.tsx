@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { TextToSpeechButton } from "@/components/accessibility/TextToSpeechButton";
 
 type Mode = "normal" | "sos";
 
@@ -136,12 +137,19 @@ export default function BreatheWithMe() {
               )}
             </div>
 
-            <div className="text-center text-sm text-muted-foreground">
+            <div className="text-center text-sm text-muted-foreground space-y-3">
               <p className="mb-2">
                 {mode === "normal" 
                   ? "Follow the gentle rhythm: breathe in for 4, hold for 4, breathe out for 6"
                   : "Quick calming rhythm: breathe in for 3, hold for 2, breathe out for 4"}
               </p>
+              <TextToSpeechButton
+                text={mode === "normal" 
+                  ? "Follow the gentle rhythm. Breathe in for 4 seconds, hold for 4 seconds, breathe out for 6 seconds."
+                  : "Quick calming rhythm. Breathe in for 3 seconds, hold for 2 seconds, breathe out for 4 seconds."}
+                label="Read instructions aloud"
+                size="sm"
+              />
             </div>
           </CardContent>
         </Card>

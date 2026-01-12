@@ -8,6 +8,8 @@ import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Send, MoreVertical, Users, LogOut, User } from "lucide-react";
 import { generateAlias } from "@/lib/aliasGenerator";
 import { checkSafetyKeywords } from "@/lib/safetyKeywords";
+import { VoiceInputButton } from "@/components/accessibility/VoiceInputButton";
+import { LiveRegion } from "@/components/accessibility/LiveRegion";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -78,10 +80,12 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
   const [members, setMembers] = useState<Member[]>([]);
   const [memberCount, setMemberCount] = useState(0);
   const [showMembersPanel, setShowMembersPanel] = useState(false);
+  const [lastAnnouncement, setLastAnnouncement] = useState("");
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const channelRef = useRef<any>(null);
   const membersChannelRef = useRef<any>(null);
+  const previousMessagesLengthRef = useRef(0);
 
   useEffect(() => {
     initializeUser();
@@ -102,7 +106,15 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+    // Announce new messages from others
+    if (messages.length > previousMessagesLengthRef.current && messages.length > 0) {
+      const lastMsg = messages[messages.length - 1];
+      if (lastMsg.user_id !== currentUserId && !lastMsg.is_system_message) {
+        setLastAnnouncement(`${lastMsg.sender_alias} says: ${lastMsg.content.slice(0, 100)}`);
+      }
+    }
+    previousMessagesLengthRef.current = messages.length;
+  }, [messages, currentUserId]);
 
   const initializeUser = async () => {
     const { data: { user } } = await supabase.auth.getUser();
@@ -575,6 +587,9 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
         </div>
       </div>
 
+      {/* Screen Reader Announcements */}
+      <LiveRegion message={lastAnnouncement} priority="polite" />
+
       {/* Input Area */}
       <div className="bg-card border-t border-border p-4">
         <div className="container mx-auto max-w-4xl flex gap-2">
@@ -584,6 +599,7 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
             placeholder="Share what's on your mind…"
             className="resize-none"
             rows={2}
+            aria-label="Message to group"
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
@@ -591,11 +607,16 @@ const CircleChat = ({ circle, onBack }: CircleChatProps) => {
               }
             }}
           />
+          <VoiceInputButton
+            onTranscript={(text) => setNewMessage((prev) => prev + text)}
+            disabled={isLoading}
+          />
           <Button
             onClick={handleSendMessage}
             disabled={!newMessage.trim() || isLoading}
             className="bg-primary hover:bg-primary/90"
             size="icon"
+            aria-label="Send message"
           >
             <Send className="h-5 w-5" />
           </Button>
