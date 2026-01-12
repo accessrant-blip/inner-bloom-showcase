@@ -148,8 +148,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               <span className="font-semibold text-lg text-foreground">RantFree</span>
             </div>
           )}
-          {sidebarOpen && (
-            <img src={rantfreeLogo} alt="RantFree logo" className="w-8 h-8 rounded-lg object-cover" />
+          {!sidebarOpen && (
+            <img src={rantfreeLogo} alt="RantFree logo" className="w-8 h-8 rounded-lg object-cover mx-auto" />
           )}
           <Button
             variant="ghost"
