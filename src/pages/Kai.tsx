@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { Send, Loader2, Heart, Wind, BookOpen, Users, AlertCircle } from "lucide-react";
+import { Send, Loader2, Heart, Wind, BookOpen, Users, AlertCircle, Save, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -11,6 +11,8 @@ import { checkSafetyKeywords } from "@/lib/safetyKeywords";
 import { VoiceInputButton } from "@/components/accessibility/VoiceInputButton";
 import { TextToSpeechButton } from "@/components/accessibility/TextToSpeechButton";
 import { LiveRegion } from "@/components/accessibility/LiveRegion";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 interface Message {
   role: "user" | "assistant";
@@ -33,15 +35,151 @@ const Kai = () => {
   const [showSafetyDialog, setShowSafetyDialog] = useState(false);
   const [detectedMood, setDetectedMood] = useState<string>("");
   const [lastAnnouncement, setLastAnnouncement] = useState("");
+  const [saveChatsEnabled, setSaveChatsEnabled] = useState(false);
+  const [hasLoadedPreference, setHasLoadedPreference] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/kai-chat`;
+
+  // Load user preferences and saved chats
+  useEffect(() => {
+    const loadUserData = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      
+      setUserId(user.id);
+
+      // Load preference
+      const { data: prefData } = await supabase
+        .from('user_preferences')
+        .select('save_ai_chats')
+        .eq('user_id', user.id)
+        .single();
+
+      if (prefData) {
+        setSaveChatsEnabled(prefData.save_ai_chats);
+      }
+      setHasLoadedPreference(true);
+
+      // Only load saved chats if consent is given
+      if (prefData?.save_ai_chats) {
+        const { data: chatData } = await supabase
+          .from('ai_chat')
+          .select('messages')
+          .eq('user_id', user.id)
+          .order('updated_at', { ascending: false })
+          .limit(1)
+          .single();
+
+        if (chatData?.messages && Array.isArray(chatData.messages) && chatData.messages.length > 0) {
+          const loadedMessages = (chatData.messages as { role: string; content: string; timestamp: string }[]).map(m => ({
+            role: m.role as "user" | "assistant",
+            content: m.content,
+            timestamp: new Date(m.timestamp)
+          }));
+          setMessages(loadedMessages);
+        }
+      }
+    };
+
+    loadUserData();
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
+  // Save chat when messages change (only if consent given)
+  useEffect(() => {
+    if (!hasLoadedPreference || !userId || !saveChatsEnabled) return;
+    if (messages.length <= 1) return; // Don't save just the welcome message
+
+    const saveChat = async () => {
+      const messagesToSave = messages.map(m => ({
+        role: m.role,
+        content: m.content,
+        timestamp: m.timestamp.toISOString()
+      }));
+
+      // Upsert chat history
+      const { data: existingChat } = await supabase
+        .from('ai_chat')
+        .select('id')
+        .eq('user_id', userId)
+        .limit(1)
+        .single();
+
+      if (existingChat) {
+        await supabase
+          .from('ai_chat')
+          .update({ messages: messagesToSave })
+          .eq('id', existingChat.id);
+      } else {
+        await supabase
+          .from('ai_chat')
+          .insert({ user_id: userId, messages: messagesToSave });
+      }
+    };
+
+    const debounce = setTimeout(saveChat, 1000);
+    return () => clearTimeout(debounce);
+  }, [messages, saveChatsEnabled, hasLoadedPreference, userId]);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleSavePreferenceChange = async (enabled: boolean) => {
+    setSaveChatsEnabled(enabled);
+    
+    if (!userId) return;
+
+    // Upsert user preference
+    const { data: existing } = await supabase
+      .from('user_preferences')
+      .select('id')
+      .eq('user_id', userId)
+      .single();
+
+    if (existing) {
+      await supabase
+        .from('user_preferences')
+        .update({ save_ai_chats: enabled })
+        .eq('user_id', userId);
+    } else {
+      await supabase
+        .from('user_preferences')
+        .insert({ user_id: userId, save_ai_chats: enabled });
+    }
+
+    if (!enabled) {
+      // Delete saved chats when user revokes consent
+      await supabase
+        .from('ai_chat')
+        .delete()
+        .eq('user_id', userId);
+
+      toast({
+        title: "Chat history deleted",
+        description: "Your chat history has been removed and will no longer be saved.",
+      });
+    } else {
+      toast({
+        title: "Chat saving enabled",
+        description: "Your conversations will now be saved for future sessions.",
+      });
+    }
+  };
+
+  const handleClearChat = () => {
+    setMessages([
+      {
+        role: "assistant",
+        content: "Hey there 💛 I'm Kai, and I'm here to listen. How are you feeling right now?",
+        timestamp: new Date(),
+      },
+    ]);
+    setDetectedMood("");
   };
 
   const detectMood = (text: string): string => {
@@ -317,8 +455,40 @@ const Kai = () => {
       <div className="max-w-4xl mx-auto w-full flex-1 flex flex-col p-6">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Chat with Kai 💬</h1>
-          <p className="text-muted-foreground">Your compassionate AI companion</p>
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground mb-2">Chat with Kai 💬</h1>
+              <p className="text-muted-foreground">Your compassionate AI companion</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleClearChat}
+                className="gap-2 rounded-xl"
+              >
+                <Trash2 className="h-4 w-4" />
+                Clear Chat
+              </Button>
+              <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-border">
+                <Switch
+                  id="save-chats"
+                  checked={saveChatsEnabled}
+                  onCheckedChange={handleSavePreferenceChange}
+                  aria-describedby="save-chats-description"
+                />
+                <div className="flex flex-col">
+                  <Label htmlFor="save-chats" className="text-sm font-medium cursor-pointer flex items-center gap-1">
+                    <Save className="h-3.5 w-3.5" />
+                    Save Chats
+                  </Label>
+                  <span id="save-chats-description" className="text-xs text-muted-foreground">
+                    {saveChatsEnabled ? "History saved" : "Not saved"}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Screen Reader Announcements */}

@@ -1045,6 +1045,30 @@ export type Database = {
           },
         ]
       }
+      user_preferences: {
+        Row: {
+          created_at: string
+          id: string
+          save_ai_chats: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          save_ai_chats?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          save_ai_chats?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       wellness_sessions: {
         Row: {
           completed_at: string
