@@ -159,30 +159,42 @@ export type Database = {
       }
       circles: {
         Row: {
+          capacity: number | null
           created_at: string
           description: string
           icon: string | null
           id: string
+          is_active: boolean | null
           member_count: number | null
           name: string
+          next_session_at: string | null
+          topic: string | null
           updated_at: string
         }
         Insert: {
+          capacity?: number | null
           created_at?: string
           description: string
           icon?: string | null
           id?: string
+          is_active?: boolean | null
           member_count?: number | null
           name: string
+          next_session_at?: string | null
+          topic?: string | null
           updated_at?: string
         }
         Update: {
+          capacity?: number | null
           created_at?: string
           description?: string
           icon?: string | null
           id?: string
+          is_active?: boolean | null
           member_count?: number | null
           name?: string
+          next_session_at?: string | null
+          topic?: string | null
           updated_at?: string
         }
         Relationships: []
