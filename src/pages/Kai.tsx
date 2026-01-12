@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Card } from "@/components/ui/card";
-import { Send, Loader2, Heart, Wind, BookOpen, Users, AlertCircle, Save, Trash2 } from "lucide-react";
+import { Send, Loader2, Heart, Wind, BookOpen, Users, AlertCircle, Save, Trash2, Sparkles, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -13,6 +12,7 @@ import { TextToSpeechButton } from "@/components/accessibility/TextToSpeechButto
 import { LiveRegion } from "@/components/accessibility/LiveRegion";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 interface Message {
   role: "user" | "assistant";
@@ -26,7 +26,7 @@ const Kai = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hey there 💛 I'm Kai, and I'm here to listen. How are you feeling right now?",
+      content: "Hey there, I'm Kai, and I'm here to listen. How are you feeling right now?",
       timestamp: new Date(),
     },
   ]);
@@ -92,7 +92,7 @@ const Kai = () => {
   // Save chat when messages change (only if consent given)
   useEffect(() => {
     if (!hasLoadedPreference || !userId || !saveChatsEnabled) return;
-    if (messages.length <= 1) return; // Don't save just the welcome message
+    if (messages.length <= 1) return;
 
     const saveChat = async () => {
       const messagesToSave = messages.map(m => ({
@@ -101,7 +101,6 @@ const Kai = () => {
         timestamp: m.timestamp.toISOString()
       }));
 
-      // Upsert chat history
       const { data: existingChat } = await supabase
         .from('ai_chat')
         .select('id')
@@ -134,7 +133,6 @@ const Kai = () => {
     
     if (!userId) return;
 
-    // Upsert user preference
     const { data: existing } = await supabase
       .from('user_preferences')
       .select('id')
@@ -153,7 +151,6 @@ const Kai = () => {
     }
 
     if (!enabled) {
-      // Delete saved chats when user revokes consent
       await supabase
         .from('ai_chat')
         .delete()
@@ -175,7 +172,7 @@ const Kai = () => {
     setMessages([
       {
         role: "assistant",
-        content: "Hey there 💛 I'm Kai, and I'm here to listen. How are you feeling right now?",
+        content: "Hey there, I'm Kai, and I'm here to listen. How are you feeling right now?",
         timestamp: new Date(),
       },
     ]);
@@ -185,25 +182,12 @@ const Kai = () => {
   const detectMood = (text: string): string => {
     const lowerText = text.toLowerCase();
     
-    // Anger patterns
     if (lowerText.match(/angry|mad|furious|irritated|annoyed|pissed|rage|frustrated|hate|ugh/)) return "angry";
-    
-    // Sadness patterns
     if (lowerText.match(/sad|depressed|down|crying|tears|hopeless|helpless|worthless|tired of|give up|can't go on/)) return "sad";
-    
-    // Anxiety/Stress patterns
-    if (lowerText.match(/anxious|worried|nervous|scared|afraid|panic|stress|overwhelm|can't relax|freaking out|心配/)) return "anxious";
-    
-    // Loneliness patterns
+    if (lowerText.match(/anxious|worried|nervous|scared|afraid|panic|stress|overwhelm|can't relax|freaking out/)) return "anxious";
     if (lowerText.match(/lonely|alone|isolated|no one|nobody|ignored|left out|abandoned/)) return "lonely";
-    
-    // Stress/Overload patterns
     if (lowerText.match(/stressed|overwhelmed|too much|can't cope|burned out|exhausted|pressure/)) return "stressed";
-    
-    // Numbness patterns
     if (lowerText.match(/numb|empty|nothing|void|disconnected|detached|feel nothing/)) return "numb";
-    
-    // Happiness/Positive patterns
     if (lowerText.match(/happy|excited|great|good|wonderful|amazing|grateful|peaceful|better|relaxed|joyful|content/)) return "happy";
     
     return "";
@@ -213,7 +197,6 @@ const Kai = () => {
     const mood = detectMood(userMessage);
     setDetectedMood(mood);
 
-    // SECURITY: Get user session for authenticated API call
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
       toast({
@@ -269,7 +252,6 @@ const Kai = () => {
     let streamDone = false;
     let assistantMessage = "";
 
-    // Add assistant message placeholder
     setMessages((prev) => [
       ...prev,
       { role: "assistant", content: "", timestamp: new Date() },
@@ -317,7 +299,6 @@ const Kai = () => {
       }
     }
 
-    // Announce the complete response for screen readers
     if (assistantMessage) {
       setLastAnnouncement(`Kai says: ${assistantMessage.slice(0, 200)}${assistantMessage.length > 200 ? '...' : ''}`);
     }
@@ -326,7 +307,6 @@ const Kai = () => {
   const handleSendMessage = async () => {
     if (!inputText.trim() || isLoading) return;
 
-    // Check for safety keywords
     if (checkSafetyKeywords(inputText)) {
       setShowSafetyDialog(true);
     }
@@ -349,7 +329,6 @@ const Kai = () => {
         description: "Failed to get response. Please try again.",
         variant: "destructive",
       });
-      // Remove the placeholder assistant message on error
       setMessages((prev) => prev.slice(0, -1));
     } finally {
       setIsLoading(false);
@@ -381,37 +360,37 @@ const Kai = () => {
   const getSuggestionCard = () => {
     const suggestions: Record<string, { text: string; action: string; icon: JSX.Element; path: string }> = {
       angry: {
-        text: "Talk to a Compassionate Listener 💛",
+        text: "Talk to a Compassionate Listener",
         action: "Professional support can help process anger",
         icon: <Users className="h-5 w-5" />,
         path: "/book-help"
       },
       sad: {
-        text: "Write it out in your Journal ✍️",
+        text: "Write it out in your Journal",
         action: "Express your feelings through writing",
         icon: <BookOpen className="h-5 w-5" />,
         path: "/wellness-toolkit/journal"
       },
       anxious: {
-        text: "Try Instant Panic Relief 🫁",
+        text: "Try Instant Panic Relief",
         action: "Breathing exercises help reduce anxiety",
         icon: <Wind className="h-5 w-5" />,
         path: "/instant-relief"
       },
       lonely: {
-        text: "Join the Soul Stream 🌐",
+        text: "Join the Soul Stream",
         action: "Connect with others in a safe space",
         icon: <Users className="h-5 w-5" />,
         path: "/soul-stream"
       },
       stressed: {
-        text: "Try Instant Panic Relief 🫁",
+        text: "Try Instant Panic Relief",
         action: "Breathing exercises can help calm stress",
         icon: <Wind className="h-5 w-5" />,
         path: "/instant-relief"
       },
       numb: {
-        text: "Talk to a Compassionate Listener 💛",
+        text: "Talk to a Compassionate Listener",
         action: "Professional support can help",
         icon: <Users className="h-5 w-5" />,
         path: "/book-help"
@@ -435,15 +414,19 @@ const Kai = () => {
     return (
       <button
         onClick={handleClick}
-        className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-glow w-full text-left group"
+        className="group relative w-full overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-background to-primary/10 p-4 text-left backdrop-blur-xl transition-all duration-500 hover:border-primary/40 hover:shadow-[0_8px_32px_-8px_hsl(var(--primary)/0.3)]"
       >
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        <div className="relative flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 text-primary shadow-inner transition-transform duration-300 group-hover:scale-110">
             {suggestion.icon}
           </div>
-          <div className="flex-1">
-            <p className="font-medium text-foreground">{suggestion.text}</p>
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-foreground tracking-tight">{suggestion.text}</p>
             <p className="text-sm text-muted-foreground mt-0.5">{suggestion.action}</p>
+          </div>
+          <div className="shrink-0 text-primary/50 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-primary">
+            <Send className="h-4 w-4" />
           </div>
         </div>
       </button>
@@ -451,173 +434,241 @@ const Kai = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background/50 flex flex-col">
-      <div className="max-w-4xl mx-auto w-full flex-1 flex flex-col p-6">
-        {/* Header */}
-        <div className="mb-6">
-          <div className="flex items-start justify-between gap-4 flex-wrap">
-            <div>
-              <h1 className="text-3xl font-bold text-foreground mb-2">Chat with Kai 💬</h1>
-              <p className="text-muted-foreground">Your compassionate AI companion</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleClearChat}
-                className="gap-2 rounded-xl"
-              >
-                <Trash2 className="h-4 w-4" />
-                Clear Chat
-              </Button>
-              <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-border">
-                <Switch
-                  id="save-chats"
-                  checked={saveChatsEnabled}
-                  onCheckedChange={handleSavePreferenceChange}
-                  aria-describedby="save-chats-description"
-                />
-                <div className="flex flex-col">
-                  <Label htmlFor="save-chats" className="text-sm font-medium cursor-pointer flex items-center gap-1">
-                    <Save className="h-3.5 w-3.5" />
-                    Save Chats
-                  </Label>
-                  <span id="save-chats-description" className="text-xs text-muted-foreground">
-                    {saveChatsEnabled ? "History saved" : "Not saved"}
-                  </span>
+    <div className="relative min-h-screen overflow-hidden bg-background">
+      {/* Premium Background Effects */}
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="absolute -left-1/4 -top-1/4 h-[600px] w-[600px] rounded-full bg-gradient-to-br from-primary/8 via-primary/4 to-transparent blur-3xl" />
+        <div className="absolute -bottom-1/4 -right-1/4 h-[500px] w-[500px] rounded-full bg-gradient-to-tl from-primary/6 via-transparent to-transparent blur-3xl" />
+        <div className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-radial from-primary/3 to-transparent blur-2xl" />
+      </div>
+
+      <div className="relative flex min-h-screen flex-col">
+        <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col p-4 md:p-6">
+          {/* Premium Header */}
+          <header className="mb-6 animate-fade-in">
+            <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-card/60 p-6 backdrop-blur-xl shadow-[0_8px_32px_-8px_hsl(var(--primary)/0.1)]">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
+              <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="relative">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/25">
+                      <Sparkles className="h-7 w-7" />
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-card bg-emerald-500" />
+                  </div>
+                  <div>
+                    <h1 className="text-2xl font-bold tracking-tight text-foreground">Chat with Kai</h1>
+                    <p className="text-sm text-muted-foreground">Your compassionate AI companion</p>
+                  </div>
+                </div>
+                
+                <div className="flex flex-wrap items-center gap-3">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleClearChat}
+                    className="gap-2 rounded-xl border border-border/50 bg-background/50 backdrop-blur-sm transition-all hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    <span className="hidden sm:inline">Clear</span>
+                  </Button>
+                  
+                  <div className="flex items-center gap-3 rounded-xl border border-border/50 bg-background/50 px-4 py-2 backdrop-blur-sm">
+                    <Switch
+                      id="save-chats"
+                      checked={saveChatsEnabled}
+                      onCheckedChange={handleSavePreferenceChange}
+                      aria-describedby="save-chats-description"
+                      className="data-[state=checked]:bg-primary"
+                    />
+                    <Label htmlFor="save-chats" className="cursor-pointer">
+                      <div className="flex items-center gap-1.5 text-sm font-medium">
+                        <Save className="h-3.5 w-3.5 text-muted-foreground" />
+                        <span className="hidden sm:inline">Save Chats</span>
+                      </div>
+                      <span id="save-chats-description" className="text-xs text-muted-foreground">
+                        {saveChatsEnabled ? "Enabled" : "Disabled"}
+                      </span>
+                    </Label>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </header>
 
-        {/* Screen Reader Announcements */}
-        <LiveRegion message={lastAnnouncement} priority="polite" />
+          {/* Screen Reader Announcements */}
+          <LiveRegion message={lastAnnouncement} priority="polite" />
 
-        {/* Messages Container */}
-        <div 
-          className="flex-1 overflow-y-auto mb-4 px-2"
-          role="log"
-          aria-label="Chat messages"
-          aria-live="polite"
-        >
-          <div className="space-y-6">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
-              >
-                <Card
-                  className={`max-w-[80%] p-4 ${
-                    message.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-card text-foreground"
-                  } shadow-soft animate-fade-in border-border rounded-2xl`}
+          {/* Messages Container */}
+          <div 
+            className="flex-1 overflow-y-auto px-1 pb-4"
+            role="log"
+            aria-label="Chat messages"
+            aria-live="polite"
+          >
+            <div className="space-y-4">
+              {messages.map((message, index) => (
+                <div
+                  key={index}
+                  className={`flex items-end gap-3 animate-fade-in ${
+                    message.role === "user" ? "flex-row-reverse" : "flex-row"
+                  }`}
                 >
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="whitespace-pre-wrap flex-1">{message.content}</p>
-                    {message.role === "assistant" && message.content && (
-                      <TextToSpeechButton
-                        text={message.content}
-                        size="icon"
-                        variant="ghost"
-                        className="h-6 w-6 shrink-0"
-                      />
+                  {/* Avatar */}
+                  <Avatar className={`h-9 w-9 shrink-0 shadow-md ${message.role === "assistant" ? "ring-2 ring-primary/20" : "ring-2 ring-muted"}`}>
+                    <AvatarFallback className={`text-sm font-semibold ${
+                      message.role === "assistant" 
+                        ? "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground" 
+                        : "bg-muted text-muted-foreground"
+                    }`}>
+                      {message.role === "assistant" ? "K" : "Y"}
+                    </AvatarFallback>
+                  </Avatar>
+
+                  {/* Message Bubble */}
+                  <div
+                    className={`group relative max-w-[75%] overflow-hidden rounded-2xl px-4 py-3 shadow-sm transition-all duration-300 ${
+                      message.role === "user"
+                        ? "rounded-br-md bg-gradient-to-br from-primary to-primary/90 text-primary-foreground shadow-primary/20"
+                        : "rounded-bl-md border border-border/50 bg-card/80 text-foreground backdrop-blur-sm"
+                    }`}
+                  >
+                    {message.role === "assistant" && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                     )}
+                    
+                    <div className="relative">
+                      <div className="flex items-start justify-between gap-3">
+                        <p className="whitespace-pre-wrap text-[15px] leading-relaxed flex-1">{message.content}</p>
+                        {message.role === "assistant" && message.content && (
+                          <TextToSpeechButton
+                            text={message.content}
+                            size="icon"
+                            variant="ghost"
+                            className="h-7 w-7 shrink-0 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-primary/10"
+                          />
+                        )}
+                      </div>
+                      
+                      {message.content && (
+                        <p className={`mt-2 text-[11px] tracking-wide ${
+                          message.role === "user" ? "text-primary-foreground/60" : "text-muted-foreground"
+                        }`}>
+                          {message.timestamp.toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                  {message.content && (
-                    <p
-                      className={`text-xs mt-2 ${
-                        message.role === "user" ? "text-primary-foreground/70" : "text-muted-foreground"
-                      }`}
-                    >
-                      {message.timestamp.toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </p>
-                  )}
-                </Card>
-              </div>
-            ))}
-            
-            {/* Mood-based suggestions */}
-            {detectedMood && !isLoading && (
-              <div className="flex justify-center animate-fade-in max-w-md mx-auto px-4">
-                <div className="w-full space-y-2">
-                  <p className="text-sm text-muted-foreground text-center">Need extra support?</p>
+                </div>
+              ))}
+
+              {/* Typing Indicator */}
+              {isLoading && messages[messages.length - 1]?.content === "" && (
+                <div className="flex items-end gap-3 animate-fade-in">
+                  <Avatar className="h-9 w-9 shrink-0 shadow-md ring-2 ring-primary/20">
+                    <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground text-sm font-semibold">
+                      K
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="rounded-2xl rounded-bl-md border border-border/50 bg-card/80 px-5 py-4 backdrop-blur-sm">
+                    <div className="flex items-center gap-1.5">
+                      <div className="h-2 w-2 animate-pulse rounded-full bg-primary/60" style={{ animationDelay: "0ms" }} />
+                      <div className="h-2 w-2 animate-pulse rounded-full bg-primary/60" style={{ animationDelay: "150ms" }} />
+                      <div className="h-2 w-2 animate-pulse rounded-full bg-primary/60" style={{ animationDelay: "300ms" }} />
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Mood-based suggestions */}
+              {detectedMood && !isLoading && (
+                <div className="mx-auto max-w-md animate-fade-in pt-4">
+                  <div className="mb-3 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                    <MessageCircle className="h-4 w-4" />
+                    <span>Need extra support?</span>
+                  </div>
                   {getSuggestionCard()}
                 </div>
-              </div>
-            )}
-            
-            <div ref={messagesEndRef} />
-          </div>
-        </div>
-
-        {/* Input Area - Fixed at bottom */}
-        <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-4 shadow-soft">
-          <div className="flex gap-3">
-            <Textarea
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Share what's on your mind..."
-              className="min-h-[60px] max-h-[120px] resize-none border-border rounded-xl bg-background"
-              disabled={isLoading}
-              aria-label="Message to Kai"
-            />
-            <div className="flex flex-col gap-2">
-              <VoiceInputButton
-                onTranscript={(text) => setInputText((prev) => prev + text)}
-                disabled={isLoading}
-              />
-              <Button
-                onClick={handleSendMessage}
-                disabled={!inputText.trim() || isLoading}
-                variant="wellness"
-                className="px-4 rounded-xl"
-                aria-label="Send message"
-              >
-                {isLoading ? (
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                ) : (
-                  <Send className="h-5 w-5" />
-                )}
-              </Button>
+              )}
+              
+              <div ref={messagesEndRef} />
             </div>
           </div>
-          <p className="text-xs text-muted-foreground text-center mt-2">
-            Kai is here to listen and support. Press Enter to send, Shift+Enter for new line. Use the mic for voice input.
-          </p>
+
+          {/* Premium Input Area */}
+          <div className="sticky bottom-0 pt-4">
+            <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-card/70 p-4 backdrop-blur-xl shadow-[0_-8px_32px_-8px_hsl(var(--primary)/0.08)]">
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/3 via-transparent to-transparent" />
+              
+              <div className="relative flex gap-3">
+                <div className="relative flex-1">
+                  <Textarea
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Share what's on your mind..."
+                    className="min-h-[56px] max-h-[140px] resize-none rounded-2xl border-border/50 bg-background/60 pr-12 text-[15px] placeholder:text-muted-foreground/60 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
+                    disabled={isLoading}
+                    aria-label="Message to Kai"
+                  />
+                  <div className="absolute bottom-2 right-2">
+                    <VoiceInputButton
+                      onTranscript={(text) => setInputText((prev) => prev + text)}
+                      disabled={isLoading}
+                      size="sm"
+                    />
+                  </div>
+                </div>
+                
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={!inputText.trim() || isLoading}
+                  className="h-14 w-14 shrink-0 rounded-2xl bg-gradient-to-br from-primary to-primary/90 text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 hover:scale-105 disabled:opacity-50 disabled:shadow-none disabled:scale-100"
+                  aria-label="Send message"
+                >
+                  {isLoading ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <Send className="h-5 w-5" />
+                  )}
+                </Button>
+              </div>
+              
+              <p className="mt-3 text-center text-xs text-muted-foreground/70">
+                Press Enter to send · Shift+Enter for new line · Click mic for voice input
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Safety Dialog */}
       <AlertDialog open={showSafetyDialog} onOpenChange={setShowSafetyDialog}>
-        <AlertDialogContent className="bg-card border-border">
+        <AlertDialogContent className="rounded-3xl border-border/50 bg-card/95 backdrop-blur-xl">
           <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2 text-primary">
-              <AlertCircle className="h-5 w-5" />
+            <AlertDialogTitle className="flex items-center gap-3 text-lg">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <AlertCircle className="h-5 w-5" />
+              </div>
               You're Not Alone
             </AlertDialogTitle>
-            <AlertDialogDescription className="space-y-4 text-foreground">
+            <AlertDialogDescription className="space-y-4 text-foreground/80">
               <p>
                 It sounds like you might be going through something really difficult right now. 
                 You're not alone, and there are people who can help.
               </p>
-              <div className="bg-accent p-4 rounded-lg space-y-2">
+              <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 space-y-3">
                 <p className="font-semibold text-foreground">24/7 Crisis Support:</p>
-                <p className="text-sm">
-                  <strong>988 Suicide & Crisis Lifeline:</strong> Call or text 988
-                </p>
-                <p className="text-sm">
-                  <strong>Crisis Text Line:</strong> Text HOME to 741741
-                </p>
+                <div className="space-y-2 text-sm">
+                  <p><strong>988 Suicide & Crisis Lifeline:</strong> Call or text 988</p>
+                  <p><strong>Crisis Text Line:</strong> Text HOME to 741741</p>
+                </div>
                 <Button
                   onClick={() => navigate("/emergency-support")}
-                  variant="wellness"
-                  className="w-full mt-2 rounded-xl"
+                  className="w-full mt-2 rounded-xl bg-primary hover:bg-primary/90"
                 >
                   View All Emergency Resources
                 </Button>
@@ -627,7 +678,7 @@ const Kai = () => {
           <AlertDialogFooter>
             <AlertDialogAction
               onClick={() => setShowSafetyDialog(false)}
-              className="bg-primary hover:bg-primary/90 rounded-xl"
+              className="rounded-xl bg-muted text-foreground hover:bg-muted/80"
             >
               I Understand
             </AlertDialogAction>
