@@ -769,6 +769,178 @@ If your heart's been heavy…
     tags: ["therapy", "mental health", "self-care", "emotional wellness", "getting help"],
     featured: false,
   },
+  {
+    id: "9",
+    title: "🌿 What to Expect in Your First Therapy Session (So You Can Relax)",
+    excerpt: "Your first therapy visit isn't a test. You don't need to put on a show, explain perfectly, or act confident. It's just the start of getting the help you need.",
+    content: `**Thinking about starting therapy?** 🤔 You might be having thoughts like:
+
+- 😰 *What if I don't know what to say?*
+- 😢 *What if I cry?*
+- 😬 *What if it's awkward?*
+- 🫣 *What if the therapist judges me?*
+- 🤷 *What if therapy doesn't help?*
+
+**Guess what? Those feelings are totally normal.** 💙
+
+Your first therapy visit isn't a test. You don't need to put on a show, explain perfectly, or act confident. It's just the **start of getting the help you need**.
+
+Let's go through what usually happens in that first session, so you can feel **ready, calm, and less stressed**.
+
+---
+
+## 🌿 Before the Session: It's Okay to Be Anxious
+
+Most people get nervous before their first therapy session, **even if they want to go**.
+
+**Why is that?**
+
+Because therapy makes you do something you probably don't do much: **be really honest about how you feel**.
+
+So, if you're nervous, it doesn't mean therapy isn't right for you. **It just means you're human.** 🤗
+
+---
+
+## ✅ What Happens in Your First Therapy Session (Step-by-Step)
+
+### 1) 😊 The therapist will try to make you feel at ease
+
+The session usually starts easy. The therapist might say something like:
+
+- 💬 *"How are you feeling about being here today?"*
+- 🤔 *"What made you want to book this session?"*
+- ⏰ *"No rush."*
+
+They get that it's your first time and expect you to be a little nervous. This first session isn't super intense. **It's usually pretty chill and supportive.**
+
+### 2) 📋 They'll tell you how therapy works
+
+Most therapists will quickly go over things like:
+
+- 🔒 **Confidentiality** (privacy rules)
+- 📅 How the sessions are set up
+- 🧠 What their method is
+- ✨ How therapy can help
+
+They might also talk about when they might have to break confidentiality (like if someone is in danger). This is important so you feel **secure**.
+
+### 3) 💭 You'll be asked why you're there (but don't sweat the answer)
+
+This part can freak people out, but it's not as bad as you think. You can just be honest, like:
+
+- 🤷 *"I don't even know where to begin."*
+- 😩 *"I've been feeling super stressed lately."*
+- 😰 *"I'm anxious all the time."*
+- 😔 *"I just don't feel like myself."*
+
+**That's enough.** You don't need some big, dramatic reason to start therapy. Even *"I just want some clarity and support"* is fine. ✨
+
+### 4) 📝 They might ask you some questions about your life
+
+The therapist might ask about:
+
+- 💼 Work or school
+- 👨‍👩‍👧 Your family
+- ❤️ Relationships
+- 😴 Your sleep and daily routine
+- 🌡️ Changes in mood
+- 😤 Things that stress you out
+- 📅 Stuff that's happened in the past
+
+They won't cover everything in one session. They're just trying to get an idea of **what your life is like and what you need**.
+
+### 5) 😢 You might get emotional (and that's okay)
+
+A lot of people cry in their first session. **It doesn't mean they're weak.**
+
+It just means that, for the first time in a while, **someone is really listening without judging**.
+
+If you cry, the therapist won't be surprised, won't stop you, and won't judge you. **Crying can be a first step to feeling better.** 💧
+
+### 6) 🔒 You don't have to spill all your secrets right away
+
+This is really important: **You DO NOT have to share everything in your first session.**
+
+You can take it slow. You can say:
+
+- 🛑 *"I'm not ready to talk about that yet."*
+- 😣 *"That's hard for me to talk about."*
+- ⏳ *"Can we talk about that later?"*
+
+**A good therapist will respect that.** 🤝
+
+### 7) 🎯 The therapist might help you set some goals
+
+Near the end, you might talk about what you want to get out of therapy, like:
+
+- 😌 Less anxiety
+- 💪 More confidence
+- 🧠 Dealing with overthinking
+- 💔 Healing from the past
+- 🚧 Learning how to set boundaries
+- ❤️ Better relationships
+
+The point isn't to fix everything right away. **It's to start figuring out a plan.**
+
+### 8) 🌈 You'll leave with a little clarity (even if nothing is fixed)
+
+A lot of people think therapy will solve everything in one session. **That's not what the first session is for.**
+
+It's more like **opening a door**. You feel heard, your feelings make sense, you feel less alone, and you feel a little bit of hope. **That's pretty cool.** ✨
+
+---
+
+## ⭐ What You Can Say in Your First Session (Examples)
+
+If you're not sure what to say, try saying one of these:
+
+- 😰 *"I've been feeling anxious a lot lately."*
+- 😮‍💨 *"I feel really emotionally drained."*
+- 🔄 *"I overthink everything."*
+- 😞 *"I don't feel very confident anymore."*
+- 🔒 *"I feel stuck."*
+- 🏝️ *"I've been feeling lonely."*
+- 💚 *"I want to take care of my mental health."*
+
+**Simple, honest, and good enough.** ✅
+
+---
+
+## ✅ How to Tell If the Therapist Is a Good Fit
+
+After the first session, ask yourself:
+
+- ✅ Did I feel like they **respected me** and that I was **safe**?
+- ✅ Did they listen **without rushing me**?
+- ✅ Did I feel **understood**?
+- ✅ Do I feel okay with **going back**?
+
+It's totally fine to switch therapists if you don't click with them. **Therapy works best when you feel secure.** 🤗
+
+---
+
+## 🌿 One Last Thing
+
+Your first therapy session doesn't need to be perfect. You can be:
+
+- 😬 Nervous
+- 😢 Emotional
+- 🤔 Confused
+- 🤫 Quiet
+- 🤷 Unsure
+
+**You just need to show up.** 🙌
+
+**Starting therapy is a brave thing to do** – not because you're broken, but because you're **choosing to take care of yourself**. 💙
+
+👉 **Ready to take the first step? Book a session with a professional on RantFree.in today!**`,
+    author: "RantFree Team",
+    date: "2026-01-13",
+    readTime: "8 min read",
+    category: "Mental Health",
+    tags: ["therapy", "first session", "mental health", "self-care", "getting started", "anxiety"],
+    featured: false,
+  },
 ];
 
 // Markdown-like content renderer
