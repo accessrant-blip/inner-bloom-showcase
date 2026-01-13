@@ -10,17 +10,18 @@ const HeroSection = () => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
         <img 
           src={heroImage} 
           alt="Person in peaceful meditation representing mental wellness and self-care with RantFree app"
-          className="w-full h-full object-cover animate-fade-in"
+          className="w-full h-full object-cover animate-fade-in dark:opacity-80 dark:brightness-90"
           loading="eager"
           fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 to-background/60"></div>
+        {/* Light mode overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-background/90 to-background/60 dark:from-background/95 dark:to-background/70"></div>
       </div>
       
       {/* Content */}
