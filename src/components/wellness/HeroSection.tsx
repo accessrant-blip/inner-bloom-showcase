@@ -19,6 +19,9 @@ const HeroSection = () => {
           className="w-full h-full object-cover animate-fade-in dark:opacity-80 dark:brightness-90"
           loading="eager"
           fetchPriority="high"
+          decoding="async"
+          width={1920}
+          height={1080}
         />
         {/* Light mode overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-background/90 to-background/60 dark:from-background/95 dark:to-background/70"></div>
