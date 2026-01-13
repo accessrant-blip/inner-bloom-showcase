@@ -1,10 +1,20 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.74.0";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+// Input validation schema
+const generateDayPlanSchema = z.object({
+  goals: z.array(z.string().max(200, "Goal too long")).max(10, "Too many goals").optional(),
+  mood: z.enum(["depressed", "anxious", "stressed", "lonely", "neutral"]).optional(),
+  energyLevel: z.number().int().min(1).max(5).optional(),
+  easyMode: z.boolean().optional(),
+  adjustment: z.enum(["easier", "productive", "none"]).optional(),
+});
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -39,7 +49,19 @@ serve(async (req) => {
 
     console.log("Authenticated user:", user.id);
 
-    const { goals, mood, energyLevel, easyMode, adjustment } = await req.json();
+    // SECURITY: Validate input with Zod schema
+    const body = await req.json();
+    const validationResult = generateDayPlanSchema.safeParse(body);
+    
+    if (!validationResult.success) {
+      console.error("Input validation failed:", validationResult.error.errors);
+      return new Response(
+        JSON.stringify({ error: "Invalid input", details: validationResult.error.errors }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    const { goals, mood, energyLevel, easyMode, adjustment } = validationResult.data;
     
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
