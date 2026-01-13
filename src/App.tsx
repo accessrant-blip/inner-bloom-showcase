@@ -30,6 +30,11 @@ import Rant from "./pages/Rant";
 import BookingConfirmed from "./pages/BookingConfirmed";
 import Blog from "./pages/Blog";
 import BlogPostPage from "./pages/BlogPost";
+import ShotOfEspresso from "./pages/ShotOfEspresso";
+import DayBuilder from "./pages/espresso/DayBuilder";
+import MentalGym from "./pages/espresso/MentalGym";
+import SocialTrainer from "./pages/espresso/SocialTrainer";
+import InnerChild from "./pages/espresso/InnerChild";
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient());
@@ -68,6 +73,13 @@ const App = () => {
               <Route path="/wellness-toolkit/reminder" element={<AppLayout><SelfCareReminder /></AppLayout>} />
               <Route path="/wellness-toolkit/habit" element={<AppLayout><TrackMyHabit /></AppLayout>} />
               <Route path="/wellness-toolkit/games" element={<AppLayout><MiniGames /></AppLayout>} />
+              
+              {/* Espresso tools */}
+              <Route path="/espresso" element={<AppLayout><ShotOfEspresso /></AppLayout>} />
+              <Route path="/espresso/day-builder" element={<AppLayout><DayBuilder /></AppLayout>} />
+              <Route path="/espresso/mental-gym" element={<AppLayout><MentalGym /></AppLayout>} />
+              <Route path="/espresso/social-trainer" element={<AppLayout><SocialTrainer /></AppLayout>} />
+              <Route path="/espresso/inner-child" element={<AppLayout><InnerChild /></AppLayout>} />
               
               {/* Catch-all */}
               <Route path="*" element={<NotFound />} />

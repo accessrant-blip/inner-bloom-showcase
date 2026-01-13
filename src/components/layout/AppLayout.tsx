@@ -41,6 +41,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     { path: "/instant-relief", icon: Sparkles, label: "Instant Relief" },
     { path: "/soul-stream", icon: Wind, label: "Soul Stream" },
     { path: "/connect", icon: Users, label: "Connect" },
+    { path: "/espresso", icon: Sparkles, label: "Espresso ⚡" },
     { path: "/learn-grow", icon: BookOpen, label: "Learn & Grow" },
     { path: "/blog", icon: FileText, label: "Blog" },
   ];
