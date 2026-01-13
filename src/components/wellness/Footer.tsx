@@ -1,0 +1,125 @@
+import { Link } from "react-router-dom";
+import rantfreeLogo from "@/assets/rantfree-logo.jpg";
+
+const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="bg-card border-t border-border py-12">
+      <div className="container mx-auto px-6">
+        <div className="grid md:grid-cols-4 gap-8">
+          {/* Brand */}
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <img src={rantfreeLogo} alt="RantFree logo" className="w-8 h-8 rounded-lg object-cover" />
+              <span className="font-bold text-xl text-foreground">RantFree</span>
+            </div>
+            <p className="text-muted-foreground text-sm">
+              Your safe space for mental wellness. Express, heal, and grow with evidence-based tools and professional support.
+            </p>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="font-semibold text-foreground mb-4">Quick Links</h4>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <a href="#features" className="text-muted-foreground hover:text-primary transition-colors">
+                  Features
+                </a>
+              </li>
+              <li>
+                <a href="#how-it-works" className="text-muted-foreground hover:text-primary transition-colors">
+                  How it Works
+                </a>
+              </li>
+              <li>
+                <a href="#testimonials" className="text-muted-foreground hover:text-primary transition-colors">
+                  Testimonials
+                </a>
+              </li>
+              <li>
+                <Link to="/blog" className="text-muted-foreground hover:text-primary transition-colors">
+                  Blog
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div>
+            <h4 className="font-semibold text-foreground mb-4">Support</h4>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link to="/emergency-support" className="text-muted-foreground hover:text-primary transition-colors">
+                  Emergency Support
+                </Link>
+              </li>
+              <li>
+                <a href="mailto:support@rantfree.in" className="text-muted-foreground hover:text-primary transition-colors">
+                  Contact Us
+                </a>
+              </li>
+              <li>
+                <span className="text-muted-foreground">
+                  Privacy Policy
+                </span>
+              </li>
+              <li>
+                <span className="text-muted-foreground">
+                  Terms of Service
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Connect */}
+          <div>
+            <h4 className="font-semibold text-foreground mb-4">Connect</h4>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <a 
+                  href="https://twitter.com/rantfree_app" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Twitter
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://instagram.com/rantfree_app" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Instagram
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://linkedin.com/company/rantfree" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  LinkedIn
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
+          <p>&copy; {currentYear} RantFree. All rights reserved.</p>
+          <p className="mt-2">
+            Made with care for your mental wellness
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

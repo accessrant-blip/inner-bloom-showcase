@@ -76,7 +76,7 @@ const FeaturesSection = () => {
               src={featuresImage} 
               alt="RantFree app features showing AI insights, mood tracking, and professional support tools for mental wellness"
               loading="lazy"
-              className="w-full h-auto rounded-2xl shadow-glow"
+              className="w-full h-auto rounded-2xl shadow-glow dark:opacity-90 dark:brightness-95"
             />
           </div>
         </div>
