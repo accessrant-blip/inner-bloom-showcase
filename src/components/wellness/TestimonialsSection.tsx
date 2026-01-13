@@ -64,7 +64,7 @@ const TestimonialsSection = () => {
                     </span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-foreground">{testimonial.name}</h4>
+                    <p className="font-semibold text-foreground">{testimonial.name}</p>
                     <p className="text-sm text-muted-foreground">{testimonial.role}</p>
                   </div>
                 </div>
