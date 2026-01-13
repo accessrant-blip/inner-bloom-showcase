@@ -9,6 +9,7 @@ import { Loader2, Moon, Sun, ArrowLeft } from "lucide-react";
 import { validateAuth } from "@/lib/authValidation";
 import { useTheme } from "next-themes";
 import rantfreeLogo from "@/assets/rantfree-logo.jpg";
+import EmailVerificationModal from "@/components/auth/EmailVerificationModal";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -17,6 +18,9 @@ export default function Auth() {
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState("");
+  const [awaitingVerification, setAwaitingVerification] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { resolvedTheme, setTheme } = useTheme();
@@ -42,6 +46,19 @@ export default function Auth() {
 
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  const getReadableError = (errorMessage: string): string => {
+    if (errorMessage.includes("User already registered")) {
+      return "Email already exists. Please sign in instead.";
+    }
+    if (errorMessage.includes("Invalid login credentials")) {
+      return "Invalid email or password.";
+    }
+    if (errorMessage.includes("Password should be")) {
+      return "Invalid password. Must be at least 6 characters.";
+    }
+    return errorMessage || "Something went wrong. Please try again.";
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,22 +105,27 @@ export default function Auth() {
 
         if (error) throw error;
 
-        toast({
-          title: "Welcome to RantFree!",
-          description: "Your account has been created. You can now log in.",
-        });
-        
-        setIsLogin(true);
+        // Show verification modal and set awaiting state
+        setVerificationEmail(validation.data.email);
+        setShowVerificationModal(true);
+        setAwaitingVerification(true);
       }
     } catch (error: any) {
       toast({
         title: "Oops!",
-        description: error.message || "Something went wrong. Please try again.",
+        description: getReadableError(error.message),
         variant: "destructive",
       });
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleBackToLogin = () => {
+    setShowVerificationModal(false);
+    setAwaitingVerification(false);
+    setIsLogin(true);
+    setPassword("");
   };
 
   const toggleTheme = () => {
@@ -223,10 +245,18 @@ export default function Auth() {
               </Button>
             </form>
 
+            {awaitingVerification && (
+              <p className="text-center text-sm text-muted-foreground mt-4 animate-pulse">
+                Waiting for email verification...
+              </p>
+            )}
 
             <div className="mt-6 text-center">
               <button
-                onClick={() => setIsLogin(!isLogin)}
+                onClick={() => {
+                  setIsLogin(!isLogin);
+                  setAwaitingVerification(false);
+                }}
                 className="text-primary hover:text-primary/80 transition-colors"
               >
                 {isLogin 
@@ -241,6 +271,13 @@ export default function Auth() {
           </div>
         </div>
       </div>
+
+      <EmailVerificationModal
+        open={showVerificationModal}
+        onOpenChange={setShowVerificationModal}
+        email={verificationEmail}
+        onBackToLogin={handleBackToLogin}
+      />
     </div>
   );
 }
