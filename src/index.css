@@ -19,12 +19,12 @@ All colors MUST be HSL format for consistent theming.
     --popover: 0 0% 100%;
     --popover-foreground: 150 15% 20%;
 
-    /* Primary - Calming Sage Green */
-    --primary: 150 35% 48%;
+    /* Primary - Calming Sage Green (WCAG AA compliant) */
+    --primary: 150 40% 32%;
     --primary-foreground: 0 0% 100%;
     --primary-soft: 150 30% 92%;
     --primary-glow: 150 40% 70%;
-    --primary-hover: 150 35% 42%;
+    --primary-hover: 150 40% 28%;
 
     /* Secondary - Soft Mint */
     --secondary: 150 20% 92%;
@@ -36,9 +36,9 @@ All colors MUST be HSL format for consistent theming.
     --accent-foreground: 150 15% 20%;
     --accent-soft: 170 25% 95%;
 
-    /* Muted Tones */
+    /* Muted Tones (WCAG AA compliant - 4.5:1 contrast) */
     --muted: 150 15% 95%;
-    --muted-foreground: 150 10% 45%;
+    --muted-foreground: 150 12% 35%;
 
     /* Status Colors */
     --success: 140 45% 50%;
