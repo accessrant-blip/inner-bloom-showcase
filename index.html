@@ -15,13 +15,27 @@
       })();
     </script>
     
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHWVX6CLJX"></script>
+    <!-- Google tag (gtag.js) - deferred for better TTI -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-EHWVX6CLJX');
+      
+      // Load GTM after page becomes interactive
+      if (document.readyState === 'complete') {
+        loadGTM();
+      } else {
+        window.addEventListener('load', function() {
+          setTimeout(loadGTM, 2000);
+        });
+      }
+      function loadGTM() {
+        var s = document.createElement('script');
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-EHWVX6CLJX';
+        s.async = true;
+        document.head.appendChild(s);
+      }
     </script>
     
     <meta charset="UTF-8" />
