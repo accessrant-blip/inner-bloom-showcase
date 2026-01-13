@@ -38,6 +38,36 @@ export type Database = {
         }
         Relationships: []
       }
+      anxiety_trainer_progress: {
+        Row: {
+          completed_missions: Json | null
+          confidence_score: number | null
+          created_at: string
+          current_level: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_missions?: Json | null
+          confidence_score?: number | null
+          created_at?: string
+          current_level?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_missions?: Json | null
+          confidence_score?: number | null
+          created_at?: string
+          current_level?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           amount: number | null
@@ -199,6 +229,48 @@ export type Database = {
         }
         Relationships: []
       }
+      day_plans: {
+        Row: {
+          completed_tasks: string[] | null
+          created_at: string
+          easy_mode: boolean | null
+          energy_level: number | null
+          goals: string[] | null
+          id: string
+          mood: string | null
+          plan_date: string
+          schedule: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_tasks?: string[] | null
+          created_at?: string
+          easy_mode?: boolean | null
+          energy_level?: number | null
+          goals?: string[] | null
+          id?: string
+          mood?: string | null
+          plan_date?: string
+          schedule?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_tasks?: string[] | null
+          created_at?: string
+          easy_mode?: boolean | null
+          energy_level?: number | null
+          goals?: string[] | null
+          id?: string
+          mood?: string | null
+          plan_date?: string
+          schedule?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       emergency_contacts: {
         Row: {
           created_at: string
@@ -346,6 +418,33 @@ export type Database = {
         }
         Relationships: []
       }
+      inner_child_sessions: {
+        Row: {
+          completed_at: string
+          created_at: string
+          id: string
+          notes: string | null
+          session_type: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          session_type: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          session_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       journal: {
         Row: {
           content: string
@@ -383,6 +482,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      mental_gym_progress: {
+        Row: {
+          completed_drills: Json | null
+          created_at: string
+          current_streak: number | null
+          id: string
+          last_workout_date: string | null
+          level: number | null
+          total_xp: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_drills?: Json | null
+          created_at?: string
+          current_streak?: number | null
+          id?: string
+          last_workout_date?: string | null
+          level?: number | null
+          total_xp?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_drills?: Json | null
+          created_at?: string
+          current_streak?: number | null
+          id?: string
+          last_workout_date?: string | null
+          level?: number | null
+          total_xp?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       message_reactions: {
         Row: {
