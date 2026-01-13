@@ -2,7 +2,6 @@ import Navigation from "@/components/wellness/Navigation";
 import HeroSection from "@/components/wellness/HeroSection";
 import FeaturesSection from "@/components/wellness/FeaturesSection";
 import HowItWorksSection from "@/components/wellness/HowItWorksSection";
-import WordConnectSection from "@/components/wellness/WordConnectSection";
 import TestimonialsSection from "@/components/wellness/TestimonialsSection";
 import BlogSection from "@/components/wellness/BlogSection";
 import CTASection from "@/components/wellness/CTASection";
@@ -15,7 +14,6 @@ const Index = () => {
       <HeroSection />
       <FeaturesSection />
       <HowItWorksSection />
-      <WordConnectSection />
       <TestimonialsSection />
       <BlogSection />
       <CTASection />
