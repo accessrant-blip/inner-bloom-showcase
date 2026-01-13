@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { validateAuth } from "@/lib/authValidation";
+import EmailVerificationModal from "./EmailVerificationModal";
 
 interface AuthModalProps {
   open: boolean;
@@ -22,8 +23,23 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string; username?: string }>({});
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState("");
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const getReadableError = (errorMessage: string): string => {
+    if (errorMessage.includes("User already registered")) {
+      return "Email already exists. Please sign in instead.";
+    }
+    if (errorMessage.includes("Invalid login credentials")) {
+      return "Invalid email or password.";
+    }
+    if (errorMessage.includes("Password should be")) {
+      return "Invalid password. Must be at least 6 characters.";
+    }
+    return errorMessage || "Something went wrong. Please try again.";
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,22 +90,25 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
 
         if (error) throw error;
 
-        toast({
-          title: "Welcome to RANT!",
-          description: "Your account has been created. You can now log in.",
-        });
-        
-        setIsLogin(true);
+        // Show verification modal instead of toast
+        setVerificationEmail(validation.data.email);
+        setShowVerificationModal(true);
       }
     } catch (error: any) {
       toast({
         title: "Oops!",
-        description: error.message || "Something went wrong. Please try again.",
+        description: getReadableError(error.message),
         variant: "destructive",
       });
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleBackToLogin = () => {
+    setShowVerificationModal(false);
+    setIsLogin(true);
+    setPassword("");
   };
 
 
@@ -182,6 +201,13 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
           This space is yours — take a moment to breathe
         </p>
       </DialogContent>
+
+      <EmailVerificationModal
+        open={showVerificationModal}
+        onOpenChange={setShowVerificationModal}
+        email={verificationEmail}
+        onBackToLogin={handleBackToLogin}
+      />
     </Dialog>
   );
 }
