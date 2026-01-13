@@ -1,33 +1,57 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Sparkles, ArrowRight, Check } from "lucide-react";
+import { Sparkles, ArrowRight, Check, Trophy, Star } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 interface WordConnectGameProps {
-  onFeatureUnlock: (word: string, feature: string) => void;
+  onFeatureUnlock: (round: number, feature: string) => void;
+  onGameComplete: () => void;
+  isLoggedIn: boolean;
 }
 
-const WELLNESS_WORDS: Record<string, string> = {
-  CALM: "Instant Relief Breathing",
-  REST: "Sleep & Recovery Tools",
-  HEAL: "Guided Healing Sessions",
-  SAFE: "Anonymous Support Circles",
-  GROW: "Personal Growth Tracker",
-  RESET: "Daily Mindfulness Reset",
-};
+interface Round {
+  letters: string[];
+  targetWords: string[];
+  feature: string;
+  featureRoute: string;
+}
 
-const LETTERS = ["C", "A", "L", "M", "R", "E", "S", "T", "H", "G", "O", "W"];
+const ROUNDS: Round[] = [
+  {
+    letters: ["C", "A", "L", "M", "R", "E"],
+    targetWords: ["CALM", "CLEAR", "REAL", "ME"],
+    feature: "Instant Relief Breathing",
+    featureRoute: "/wellness-toolkit/breathe",
+  },
+  {
+    letters: ["B", "R", "E", "A", "T", "H"],
+    targetWords: ["BREATHE", "HEAR", "BARE", "TEA"],
+    feature: "Rant Journal",
+    featureRoute: "/rant",
+  },
+  {
+    letters: ["R", "E", "S", "E", "T", "G"],
+    targetWords: ["RESET", "REST", "SET", "GET"],
+    feature: "Book Empathetic Listener / Therapist",
+    featureRoute: "/book-help",
+  },
+];
 
-const WordConnectGame = ({ onFeatureUnlock }: WordConnectGameProps) => {
+const WordConnectGame = ({ onFeatureUnlock, onGameComplete, isLoggedIn }: WordConnectGameProps) => {
+  const [currentRound, setCurrentRound] = useState(0);
   const [selectedLetters, setSelectedLetters] = useState<number[]>([]);
   const [currentWord, setCurrentWord] = useState("");
-  const [unlockedWords, setUnlockedWords] = useState<string[]>([]);
+  const [foundWords, setFoundWords] = useState<string[]>([]);
   const [isDragging, setIsDragging] = useState(false);
-  const [lastUnlocked, setLastUnlocked] = useState<string | null>(null);
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [showNice, setShowNice] = useState(false);
+  const [showRoundComplete, setShowRoundComplete] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [gameComplete, setGameComplete] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Display only 6 letters in the wheel
-  const displayLetters = LETTERS.slice(0, 6);
+  const round = ROUNDS[currentRound];
+  const displayLetters = round.letters;
+  const progress = (foundWords.length / round.targetWords.length) * 100;
 
   const getLetterPosition = (index: number, total: number) => {
     const angle = (index * 360) / total - 90;
@@ -38,13 +62,14 @@ const WordConnectGame = ({ onFeatureUnlock }: WordConnectGameProps) => {
   };
 
   const handleLetterStart = (index: number) => {
+    if (showRoundComplete || gameComplete) return;
     setIsDragging(true);
     setSelectedLetters([index]);
     setCurrentWord(displayLetters[index]);
   };
 
   const handleLetterEnter = (index: number) => {
-    if (!isDragging) return;
+    if (!isDragging || showRoundComplete || gameComplete) return;
     if (selectedLetters.includes(index)) return;
     
     setSelectedLetters((prev) => [...prev, index]);
@@ -53,17 +78,24 @@ const WordConnectGame = ({ onFeatureUnlock }: WordConnectGameProps) => {
 
   const checkWord = useCallback(() => {
     const word = currentWord.toUpperCase();
-    if (WELLNESS_WORDS[word] && !unlockedWords.includes(word)) {
-      setUnlockedWords((prev) => [...prev, word]);
-      setLastUnlocked(word);
-      setShowSuccess(true);
-      onFeatureUnlock(word, WELLNESS_WORDS[word]);
-      
-      setTimeout(() => {
-        setShowSuccess(false);
-      }, 3000);
+    if (round.targetWords.includes(word) && !foundWords.includes(word)) {
+      const newFoundWords = [...foundWords, word];
+      setFoundWords(newFoundWords);
+      setShowNice(true);
+      setTimeout(() => setShowNice(false), 1000);
+
+      // Check if round is complete
+      if (newFoundWords.length === round.targetWords.length) {
+        setShowConfetti(true);
+        setShowRoundComplete(true);
+        onFeatureUnlock(currentRound + 1, round.feature);
+        
+        setTimeout(() => {
+          setShowConfetti(false);
+        }, 2000);
+      }
     }
-  }, [currentWord, unlockedWords, onFeatureUnlock]);
+  }, [currentWord, foundWords, round, currentRound, onFeatureUnlock]);
 
   const handleEnd = () => {
     if (isDragging) {
@@ -72,6 +104,17 @@ const WordConnectGame = ({ onFeatureUnlock }: WordConnectGameProps) => {
     setIsDragging(false);
     setSelectedLetters([]);
     setCurrentWord("");
+  };
+
+  const handleNextRound = () => {
+    if (currentRound < ROUNDS.length - 1) {
+      setCurrentRound((prev) => prev + 1);
+      setFoundWords([]);
+      setShowRoundComplete(false);
+    } else {
+      setGameComplete(true);
+      onGameComplete();
+    }
   };
 
   useEffect(() => {
@@ -84,11 +127,90 @@ const WordConnectGame = ({ onFeatureUnlock }: WordConnectGameProps) => {
     };
   }, [isDragging, currentWord]);
 
+  // Game Complete Screen
+  if (gameComplete) {
+    return (
+      <div className="relative text-center py-8">
+        {/* Celebration background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(12)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2 h-2 rounded-full animate-float"
+              style={{
+                left: `${10 + (i * 8)}%`,
+                top: `${20 + (i % 3) * 25}%`,
+                background: `hsl(${150 + i * 20}, 70%, 60%)`,
+                animationDelay: `${i * 0.2}s`,
+                opacity: 0.6,
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="relative z-10">
+          <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+            <Trophy className="w-10 h-10 text-primary" />
+          </div>
+          
+          <h3 className="text-2xl font-bold text-foreground mb-2">Journey Started</h3>
+          <p className="text-muted-foreground mb-6 max-w-xs mx-auto">
+            You've unlocked your first set of wellness tools.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Button variant="wellness" className="gap-2">
+              Create account
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+            <Button variant="outline" className="gap-2">
+              Log in
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative">
+      {/* Confetti effect */}
+      {showConfetti && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2 h-2 rounded-full animate-confetti"
+              style={{
+                left: `${Math.random() * 100}%`,
+                background: `hsl(${Math.random() * 360}, 80%, 60%)`,
+                animationDelay: `${Math.random() * 0.5}s`,
+              }}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Round indicator */}
+      <div className="text-center mb-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium">
+          <Star className="w-4 h-4" />
+          Round {currentRound + 1} of 3
+        </div>
+      </div>
+
+      {/* Progress bar */}
+      <div className="mb-6">
+        <div className="flex justify-between text-xs text-muted-foreground mb-2">
+          <span>{foundWords.length} of {round.targetWords.length} words</span>
+          <span>{Math.round(progress)}%</span>
+        </div>
+        <Progress value={progress} className="h-2" />
+      </div>
+
       {/* Current word display */}
       <div className="text-center mb-6">
-        <div className="h-10 flex items-center justify-center">
+        <div className="h-10 flex items-center justify-center relative">
           {currentWord ? (
             <span className="text-2xl font-bold text-primary tracking-widest animate-scale-in">
               {currentWord}
@@ -96,6 +218,13 @@ const WordConnectGame = ({ onFeatureUnlock }: WordConnectGameProps) => {
           ) : (
             <span className="text-sm text-muted-foreground">
               Connect letters to form words
+            </span>
+          )}
+          
+          {/* Nice! micro-animation */}
+          {showNice && (
+            <span className="absolute -right-2 -top-2 text-success text-sm font-bold animate-bounce">
+              Nice!
             </span>
           )}
         </div>
@@ -181,33 +310,64 @@ const WordConnectGame = ({ onFeatureUnlock }: WordConnectGameProps) => {
         })}
       </div>
 
-      {/* Unlocked words display */}
+      {/* Target words display */}
       <div className="mt-6 flex flex-wrap gap-2 justify-center">
-        {Object.keys(WELLNESS_WORDS).slice(0, 4).map((word) => (
+        {round.targetWords.map((word) => (
           <span
             key={word}
             className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300
               ${
-                unlockedWords.includes(word)
-                  ? "bg-success/20 text-success dark:bg-success/30"
+                foundWords.includes(word)
+                  ? "bg-success/20 text-success dark:bg-success/30 shadow-glow-success"
                   : "bg-muted text-muted-foreground"
               }
             `}
           >
-            {unlockedWords.includes(word) && <Check className="inline w-3 h-3 mr-1" />}
-            {word}
+            {foundWords.includes(word) && <Check className="inline w-3 h-3 mr-1" />}
+            {foundWords.includes(word) ? word : "????".slice(0, word.length)}
           </span>
         ))}
       </div>
 
-      {/* Success animation */}
-      {showSuccess && lastUnlocked && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="animate-scale-in">
-            <Sparkles className="w-16 h-16 text-primary animate-pulse" />
+      {/* Round complete overlay */}
+      {showRoundComplete && (
+        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm rounded-2xl flex items-center justify-center z-10">
+          <div className="text-center p-6 animate-scale-in">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-success/20 flex items-center justify-center">
+              <Sparkles className="w-8 h-8 text-success animate-pulse" />
+            </div>
+            <h4 className="text-xl font-bold text-foreground mb-2">
+              Round {currentRound + 1} Complete!
+            </h4>
+            <p className="text-sm text-muted-foreground mb-4">
+              {round.feature} unlocked
+            </p>
+            <Button variant="wellness" onClick={handleNextRound} className="gap-2">
+              {currentRound < ROUNDS.length - 1 ? "Next Round" : "Finish"}
+              <ArrowRight className="w-4 h-4" />
+            </Button>
           </div>
         </div>
       )}
+
+      <style>{`
+        @keyframes confetti {
+          0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(200px) rotate(720deg);
+            opacity: 0;
+          }
+        }
+        .animate-confetti {
+          animation: confetti 2s ease-out forwards;
+        }
+        .shadow-glow-success {
+          box-shadow: 0 0 12px hsl(var(--success) / 0.4);
+        }
+      `}</style>
     </div>
   );
 };
