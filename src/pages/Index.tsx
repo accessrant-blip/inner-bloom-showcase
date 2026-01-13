@@ -1,25 +1,7 @@
-import Navigation from "@/components/wellness/Navigation";
-import HeroSection from "@/components/wellness/HeroSection";
-import FeaturesSection from "@/components/wellness/FeaturesSection";
-import HowItWorksSection from "@/components/wellness/HowItWorksSection";
-import TestimonialsSection from "@/components/wellness/TestimonialsSection";
-import BlogSection from "@/components/wellness/BlogSection";
-import CTASection from "@/components/wellness/CTASection";
-import Footer from "@/components/wellness/Footer";
+import WordConnectGame from "@/components/landing/WordConnectGame";
 
 const Index = () => {
-  return (
-    <main className="min-h-screen bg-background text-foreground">
-      <Navigation />
-      <HeroSection />
-      <FeaturesSection />
-      <HowItWorksSection />
-      <TestimonialsSection />
-      <BlogSection />
-      <CTASection />
-      <Footer />
-    </main>
-  );
+  return <WordConnectGame />;
 };
 
 export default Index;
