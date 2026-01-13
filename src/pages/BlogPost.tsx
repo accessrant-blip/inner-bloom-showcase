@@ -213,6 +213,75 @@ The first step is always the hardest, but once you start, you'll wonder why you 
     featured: false,
   },
   {
+    id: "day-6",
+    title: "📝 Day 6: 10 Signs You Need a Mental Health Break (And What to Do Next)",
+    excerpt: "A lot of people wait until they're totally burned out before they chill out. But your mind usually gives you some warnings way before that happens. Spotting these signs early can really help your mental health.",
+    content: `A lot of people wait until they're **totally burned out** before they chill out. But your mind usually gives you some **warnings** way before that happens. Spotting these signs early can really help your mental health.
+
+## 🚨 10 Signs You Need to Chill
+
+Watch out for these warning signs:
+
+- 😴 **Always tired**, even after resting
+- 😐 **Feeling blah** — nothing excites you
+- 😤 **Getting annoyed** super easily
+- 🧠 **Can't concentrate** on anything
+- 💤 **Not feeling motivated** to do things
+- 🌙 **Can't sleep** properly
+- 😰 **Anxiety is up** — constant worry
+- 🚶 **Avoiding people** — isolating yourself
+- 🤕 **Headaches and stuff like that** — physical symptoms
+- 🌊 **Feeling swamped** every single day
+
+If you're experiencing **3 or more** of these regularly, it's time to take action!
+
+## ✅ What to Do Right Now
+
+### 1) Put off anything that's not a must-do
+
+- 📋 **Prioritize ruthlessly** — what REALLY needs to happen today?
+- 🚫 **Say no** to extra commitments
+- 🗓️ **Reschedule** non-urgent tasks
+
+### 2) Talk about how you feel
+
+- 🗣️ **Open up** to someone you trust
+- 📝 **Write it down** if talking feels hard
+- 💬 **Don't bottle it up** — expression = relief
+
+### 3) Quiet your mind
+
+- 🧘 **Try deep breathing** — even 2 minutes helps
+- 🚶 **Take a short walk** outside
+- 📵 **Unplug** from screens for a bit
+
+## 🌟 How RantFree.in Can Help
+
+Writing down your feelings can be a **quick way to feel better**. 
+
+**RantFree.in** lets you:
+
+- 🔒 **Vent anonymously** — no judgment
+- 💨 **Release stress** instantly
+- 😌 **Feel less overwhelmed** without explaining yourself to anyone
+
+Sometimes all you need is to **get it out of your head**.
+
+## 💡 Bottom Line
+
+Needing a break doesn't mean you're **weak**. It just means you're **human**.
+
+Taking care of your mental health isn't selfish — it's **necessary**. Your mind deserves the same attention as your body.
+
+👉 **Feeling stressed? Give yourself a break with RantFree.in.**`,
+    author: "RantFree Team",
+    date: "2026-01-13",
+    readTime: "4 min read",
+    category: "Mental Health",
+    tags: ["mental health", "burnout", "self-care", "stress relief", "wellness tips"],
+    featured: false,
+  },
+  {
     id: "4",
     title: "📝 Day 4: Turn Your Rants Into Something Useful",
     excerpt: "Every rant has something to teach you – maybe about your limits, what stresses you out, or what you really need. Learn how to transform venting into personal growth.",
