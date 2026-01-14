@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const WordConnectSection = () => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authDefaultTab, setAuthDefaultTab] = useState<"login" | "signup">("signup");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -22,7 +23,13 @@ const WordConnectSection = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const handleRequestAuth = () => {
+  const handleSignup = () => {
+    setAuthDefaultTab("signup");
+    setAuthModalOpen(true);
+  };
+
+  const handleLogin = () => {
+    setAuthDefaultTab("login");
     setAuthModalOpen(true);
   };
 
@@ -69,7 +76,8 @@ const WordConnectSection = () => {
               }}
             >
               <WordConnectGame 
-                onRequestAuth={handleRequestAuth}
+                onSignup={handleSignup}
+                onLogin={handleLogin}
                 isAuthenticated={isAuthenticated}
               />
             </div>
@@ -80,6 +88,7 @@ const WordConnectSection = () => {
       <AuthModal 
         open={authModalOpen} 
         onOpenChange={setAuthModalOpen}
+        defaultTab={authDefaultTab}
       />
     </section>
   );
