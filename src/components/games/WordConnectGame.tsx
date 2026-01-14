@@ -85,6 +85,13 @@ export const WordConnectGame = ({
 
   const level = LEVELS[currentLevel];
 
+  // Initialize shuffled letters immediately
+  useEffect(() => {
+    if (level?.letters) {
+      setShuffledLetters([...level.letters].sort(() => Math.random() - 0.5));
+    }
+  }, [level?.letters]);
+
   // Load saved progress on mount
   useEffect(() => {
     if (savedProgress) {
@@ -99,17 +106,19 @@ export const WordConnectGame = ({
     }
   }, [savedProgress]);
 
-  // Initialize shuffled letters when level changes
+  // Reset state when level changes
   useEffect(() => {
-    setShuffledLetters([...level.letters].sort(() => Math.random() - 0.5));
-    // Don't reset found words if loading from saved progress
-    if (!savedProgress?.completedWords[currentLevel]) {
-      setFoundWords(new Set());
+    if (level?.letters) {
+      setShuffledLetters([...level.letters].sort(() => Math.random() - 0.5));
+      // Don't reset found words if loading from saved progress
+      if (!savedProgress?.completedWords[currentLevel]) {
+        setFoundWords(new Set());
+      }
+      setSelectedIndices([]);
+      setCurrentWord("");
+      setLevelComplete(false);
     }
-    setSelectedIndices([]);
-    setCurrentWord("");
-    setLevelComplete(false);
-  }, [currentLevel, level.letters]);
+  }, [currentLevel]);
 
   // Save progress helper
   const saveProgress = useCallback((updates: Partial<GameProgress>) => {
