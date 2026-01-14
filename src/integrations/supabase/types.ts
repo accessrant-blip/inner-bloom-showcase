@@ -1180,6 +1180,36 @@ export type Database = {
           },
         ]
       }
+      user_game_progress: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          game_completed: boolean
+          id: string
+          progress: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          game_completed?: boolean
+          id?: string
+          progress?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          game_completed?: boolean
+          id?: string
+          progress?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_preferences: {
         Row: {
           created_at: string
