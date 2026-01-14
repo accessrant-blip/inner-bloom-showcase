@@ -44,8 +44,6 @@ const LEVELS: Level[] = [
   },
 ];
 
-const STORAGE_KEY = "rantfree_wordgame_progress";
-
 interface GameProgress {
   currentLevel: number;
   completedWords: Record<number, string[]>;
@@ -62,6 +60,9 @@ interface WordConnectGameProps {
   onProgressUpdate: (progress: GameProgress) => void;
 }
 
+// Utility to shuffle letters
+const shuffleArray = (arr: string[]): string[] => [...arr].sort(() => Math.random() - 0.5);
+
 export const WordConnectGame = ({ 
   onRequestAuth, 
   isAuthenticated, 
@@ -70,36 +71,40 @@ export const WordConnectGame = ({
   onProgressUpdate 
 }: WordConnectGameProps) => {
   const navigate = useNavigate();
-  const [currentLevel, setCurrentLevel] = useState(0);
-  const [foundWords, setFoundWords] = useState<Set<string>>(new Set());
+  
+  // Initialize all state synchronously - no loading state needed
+  const [currentLevel, setCurrentLevel] = useState(() => savedProgress.currentLevel);
+  const [foundWords, setFoundWords] = useState<Set<string>>(() => {
+    const words = savedProgress.completedWords[savedProgress.currentLevel] || [];
+    return new Set(words);
+  });
+  const [unlockedFeatures, setUnlockedFeatures] = useState<string[]>(() => savedProgress.unlockedFeatures);
+  const [gameComplete, setGameComplete] = useState(() => savedProgress.isGameCompleted);
+  
+  // Initialize shuffled letters immediately based on current level
+  const [shuffledLetters, setShuffledLetters] = useState<string[]>(() => {
+    const levelIndex = savedProgress.currentLevel;
+    const level = LEVELS[levelIndex];
+    return level ? shuffleArray(level.letters) : shuffleArray(LEVELS[0].letters);
+  });
+  
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [currentWord, setCurrentWord] = useState("");
-  const [shuffledLetters, setShuffledLetters] = useState<string[]>([]);
   const [showSuccess, setShowSuccess] = useState(false);
   const [levelComplete, setLevelComplete] = useState(false);
-  const [unlockedFeatures, setUnlockedFeatures] = useState<string[]>([]);
-  const [gameComplete, setGameComplete] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  
   const letterRefs = useRef<(HTMLDivElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const level = LEVELS[currentLevel];
 
-  // Initialize shuffled letters immediately
-  useEffect(() => {
-    if (level?.letters) {
-      setShuffledLetters([...level.letters].sort(() => Math.random() - 0.5));
-    }
-  }, [level?.letters]);
-
-  // Load saved progress on mount
+  // Update state when savedProgress changes (e.g., from Supabase sync)
   useEffect(() => {
     setCurrentLevel(savedProgress.currentLevel);
     setUnlockedFeatures(savedProgress.unlockedFeatures);
-    if (savedProgress.isGameCompleted) {
-      setGameComplete(true);
-    }
-    // Restore found words for current level
+    setGameComplete(savedProgress.isGameCompleted);
+    
     const levelWords = savedProgress.completedWords[savedProgress.currentLevel] || [];
     setFoundWords(new Set(levelWords));
   }, [savedProgress]);
@@ -107,11 +112,7 @@ export const WordConnectGame = ({
   // Reset state when level changes
   useEffect(() => {
     if (level?.letters) {
-      setShuffledLetters([...level.letters].sort(() => Math.random() - 0.5));
-      // Don't reset found words if loading from saved progress
-      if (!savedProgress.completedWords[currentLevel]) {
-        setFoundWords(new Set());
-      }
+      setShuffledLetters(shuffleArray(level.letters));
       setSelectedIndices([]);
       setCurrentWord("");
       setLevelComplete(false);
@@ -122,13 +123,13 @@ export const WordConnectGame = ({
   const saveProgress = useCallback((updates: Partial<GameProgress>) => {
     const currentProgress: GameProgress = {
       currentLevel,
-      completedWords: {},
+      completedWords: savedProgress.completedWords,
       unlockedFeatures,
       isGameCompleted: gameComplete,
       ...updates,
     };
     onProgressUpdate(currentProgress);
-  }, [currentLevel, unlockedFeatures, gameComplete, onProgressUpdate]);
+  }, [currentLevel, savedProgress.completedWords, unlockedFeatures, gameComplete, onProgressUpdate]);
 
   const getLetterPosition = (index: number) => {
     const total = shuffledLetters.length;
@@ -178,26 +179,22 @@ export const WordConnectGame = ({
       setTimeout(() => setShowSuccess(false), 600);
 
       // Build updated completedWords
-      const updatedCompletedWords: Record<number, string[]> = {};
-      LEVELS.forEach((_, idx) => {
-        if (idx === currentLevel) {
-          updatedCompletedWords[idx] = Array.from(newFoundWords);
-        } else if (savedProgress.completedWords[idx]) {
-          updatedCompletedWords[idx] = savedProgress.completedWords[idx];
-        }
-      });
+      const updatedCompletedWords: Record<number, string[]> = { ...savedProgress.completedWords };
+      updatedCompletedWords[currentLevel] = Array.from(newFoundWords);
 
       // Check if level is complete
       if (newFoundWords.size === level.targetWords.length) {
         const newUnlockedFeatures = [...unlockedFeatures, level.unlockedFeature];
         setUnlockedFeatures(newUnlockedFeatures);
         
+        const isLastLevel = currentLevel === LEVELS.length - 1;
+        
         // Save progress with updated features
         saveProgress({
           currentLevel,
           completedWords: updatedCompletedWords,
           unlockedFeatures: newUnlockedFeatures,
-          isGameCompleted: currentLevel === LEVELS.length - 1,
+          isGameCompleted: isLastLevel,
         });
         
         setTimeout(() => setLevelComplete(true), 800);
@@ -216,7 +213,7 @@ export const WordConnectGame = ({
   };
 
   const handleShuffle = () => {
-    setShuffledLetters([...shuffledLetters].sort(() => Math.random() - 0.5));
+    setShuffledLetters(shuffleArray(shuffledLetters));
   };
 
   const handleClear = () => {
@@ -231,12 +228,7 @@ export const WordConnectGame = ({
       setFoundWords(new Set());
       
       // Save progress with new level
-      const updatedCompletedWords: Record<number, string[]> = {};
-      LEVELS.forEach((_, idx) => {
-        if (savedProgress.completedWords[idx]) {
-          updatedCompletedWords[idx] = savedProgress.completedWords[idx];
-        }
-      });
+      const updatedCompletedWords: Record<number, string[]> = { ...savedProgress.completedWords };
       updatedCompletedWords[currentLevel] = level.targetWords;
       
       saveProgress({
@@ -248,12 +240,18 @@ export const WordConnectGame = ({
     } else {
       // Game complete - final level done
       setGameComplete(true);
+      
+      const updatedCompletedWords: Record<number, string[]> = { ...savedProgress.completedWords };
+      updatedCompletedWords[currentLevel] = level.targetWords;
+      
       saveProgress({
         currentLevel,
-        completedWords: savedProgress.completedWords,
+        completedWords: updatedCompletedWords,
         unlockedFeatures,
         isGameCompleted: true,
       });
+      
+      // Trigger the completion callback to show auth modal
       onGameComplete();
     }
   };
@@ -276,6 +274,7 @@ export const WordConnectGame = ({
     setUnlockedFeatures([]);
     setGameComplete(false);
     setLevelComplete(false);
+    setShuffledLetters(shuffleArray(LEVELS[0].letters));
     saveProgress({
       currentLevel: 0,
       completedWords: {},
