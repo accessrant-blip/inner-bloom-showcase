@@ -18,18 +18,22 @@ serve(async (req) => {
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY');
     const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
 
-    if (!supabaseUrl || !supabaseKey || !lovableApiKey) {
+    if (!supabaseUrl || !supabaseAnonKey || !lovableApiKey) {
       throw new Error('Missing environment variables');
     }
 
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Use ANON_KEY with user's auth header - RLS will enforce access control
+    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+      global: {
+        headers: { Authorization: authHeader },
+      },
+    });
 
-    // Get user from token
-    const token = authHeader.replace('Bearer ', '');
-    const { data: { user }, error: userError } = await supabase.auth.getUser(token);
+    // Get authenticated user
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
 
     if (userError || !user) {
       throw new Error('Invalid user token');
