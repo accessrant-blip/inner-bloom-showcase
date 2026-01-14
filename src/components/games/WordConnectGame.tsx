@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Shuffle, X, ArrowRight } from "lucide-react";
+import { Shuffle, X, ArrowRight, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Level {
@@ -40,12 +40,11 @@ const LEVELS: Level[] = [
 ];
 
 interface WordConnectGameProps {
-  onSignup: () => void;
-  onLogin: () => void;
+  onRequestAuth: () => void;
   isAuthenticated: boolean;
 }
 
-export const WordConnectGame = ({ onSignup, onLogin, isAuthenticated }: WordConnectGameProps) => {
+export const WordConnectGame = ({ onRequestAuth, isAuthenticated }: WordConnectGameProps) => {
   const [currentLevel, setCurrentLevel] = useState(0);
   const [foundWords, setFoundWords] = useState<Set<string>>(new Set());
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
@@ -142,66 +141,51 @@ export const WordConnectGame = ({ onSignup, onLogin, isAuthenticated }: WordConn
     }
   };
 
-  const handlePlayAgain = () => {
-    setCurrentLevel(0);
-    setFoundWords(new Set());
-    setSelectedIndices([]);
-    setCurrentWord("");
-    setLevelComplete(false);
-    setUnlockedFeatures([]);
-    setGameComplete(false);
+  const handleFeatureClick = (feature: string) => {
+    if (!isAuthenticated) {
+      onRequestAuth();
+    }
   };
 
   const progress = (foundWords.size / level.targetWords.length) * 100;
 
-  // Journey Complete screen - shown only after all 3 levels
   if (gameComplete) {
     return (
       <div className="flex flex-col items-center justify-center p-8 text-center animate-fade-in">
-        <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4 animate-scale-in">
-          <div className="w-10 h-10 rounded-full bg-primary/30 flex items-center justify-center">
-            <div className="w-4 h-4 rounded-full bg-primary" />
-          </div>
+        <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
+          <ArrowRight className="w-8 h-8 text-primary" />
         </div>
-        <h3 className="text-xl font-semibold text-foreground mb-2">You've unlocked your journey.</h3>
-        <p className="text-muted-foreground mb-6 max-w-xs text-sm">
-          Create your free account to save progress and unlock RantFree tools.
+        <h3 className="text-xl font-semibold text-foreground mb-2">Journey Started</h3>
+        <p className="text-muted-foreground mb-6 max-w-xs">
+          You've unlocked all starter tools. Create an account to access them.
         </p>
-        
+        <div className="space-y-3 w-full max-w-xs">
+          {unlockedFeatures.map((feature, index) => (
+            <button
+              key={feature}
+              onClick={() => handleFeatureClick(feature)}
+              className={cn(
+                "w-full p-3 rounded-xl text-left transition-all",
+                "bg-card/60 backdrop-blur-sm border border-border/50",
+                "hover:border-primary/30 hover:shadow-md",
+                !isAuthenticated && "cursor-pointer"
+              )}
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-medium text-foreground">{feature}</span>
+                {!isAuthenticated && <Lock className="w-4 h-4 text-muted-foreground" />}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                {LEVELS[index].featureDescription}
+              </p>
+            </button>
+          ))}
+        </div>
         {!isAuthenticated && (
-          <div className="space-y-3 w-full max-w-xs">
-            <Button 
-              onClick={onSignup} 
-              className="w-full rounded-xl" 
-              variant="wellness"
-            >
-              Create Account
-            </Button>
-            <Button 
-              onClick={onLogin} 
-              variant="outline" 
-              className="w-full rounded-xl"
-            >
-              Log In
-            </Button>
-          </div>
+          <Button onClick={onRequestAuth} className="mt-6 rounded-xl" variant="wellness">
+            Join RantFree to unlock tools
+          </Button>
         )}
-
-        {isAuthenticated && (
-          <div className="space-y-3 w-full max-w-xs">
-            <div className="bg-primary/10 rounded-xl p-4 border border-primary/20">
-              <p className="font-medium text-primary text-sm">All tools unlocked</p>
-              <p className="text-xs text-muted-foreground mt-1">Visit your dashboard to start your wellness journey</p>
-            </div>
-          </div>
-        )}
-
-        <button
-          onClick={handlePlayAgain}
-          className="mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
-        >
-          Play again
-        </button>
       </div>
     );
   }
