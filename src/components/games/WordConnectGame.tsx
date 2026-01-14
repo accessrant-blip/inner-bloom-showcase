@@ -1,7 +1,8 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Shuffle, X, ArrowRight, Lock } from "lucide-react";
+import { Shuffle, X, ArrowRight, RotateCcw, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 interface Level {
   id: number;
@@ -10,6 +11,7 @@ interface Level {
   targetWords: string[];
   unlockedFeature: string;
   featureDescription: string;
+  featureRoute: string;
 }
 
 const LEVELS: Level[] = [
@@ -20,6 +22,7 @@ const LEVELS: Level[] = [
     targetWords: ["CALM", "CLEAR", "REAL"],
     unlockedFeature: "Instant Relief Breathing",
     featureDescription: "Quick breathing exercises for immediate calm",
+    featureRoute: "/toolkit/breathe",
   },
   {
     id: 2,
@@ -28,6 +31,7 @@ const LEVELS: Level[] = [
     targetWords: ["SAFE", "EASE", "YES"],
     unlockedFeature: "Rant Journal",
     featureDescription: "Private space to express your thoughts",
+    featureRoute: "/rant",
   },
   {
     id: 3,
@@ -36,15 +40,36 @@ const LEVELS: Level[] = [
     targetWords: ["HEAL", "HOPE", "HELP"],
     unlockedFeature: "Book Empathetic Listener",
     featureDescription: "Connect with trained listeners",
+    featureRoute: "/book-help",
   },
 ];
+
+const STORAGE_KEY = "rantfree_wordgame_progress";
+
+interface GameProgress {
+  currentLevel: number;
+  completedWords: Record<number, string[]>;
+  unlockedFeatures: string[];
+  isGameCompleted: boolean;
+  isSynced?: boolean;
+}
 
 interface WordConnectGameProps {
   onRequestAuth: () => void;
   isAuthenticated: boolean;
+  onGameComplete: () => void;
+  savedProgress: GameProgress | null;
+  onProgressUpdate: (progress: GameProgress) => void;
 }
 
-export const WordConnectGame = ({ onRequestAuth, isAuthenticated }: WordConnectGameProps) => {
+export const WordConnectGame = ({ 
+  onRequestAuth, 
+  isAuthenticated, 
+  onGameComplete,
+  savedProgress,
+  onProgressUpdate 
+}: WordConnectGameProps) => {
+  const navigate = useNavigate();
   const [currentLevel, setCurrentLevel] = useState(0);
   const [foundWords, setFoundWords] = useState<Set<string>>(new Set());
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
@@ -60,13 +85,43 @@ export const WordConnectGame = ({ onRequestAuth, isAuthenticated }: WordConnectG
 
   const level = LEVELS[currentLevel];
 
+  // Load saved progress on mount
+  useEffect(() => {
+    if (savedProgress) {
+      setCurrentLevel(savedProgress.currentLevel);
+      setUnlockedFeatures(savedProgress.unlockedFeatures);
+      if (savedProgress.isGameCompleted) {
+        setGameComplete(true);
+      }
+      // Restore found words for current level
+      const levelWords = savedProgress.completedWords[savedProgress.currentLevel] || [];
+      setFoundWords(new Set(levelWords));
+    }
+  }, [savedProgress]);
+
+  // Initialize shuffled letters when level changes
   useEffect(() => {
     setShuffledLetters([...level.letters].sort(() => Math.random() - 0.5));
-    setFoundWords(new Set());
+    // Don't reset found words if loading from saved progress
+    if (!savedProgress?.completedWords[currentLevel]) {
+      setFoundWords(new Set());
+    }
     setSelectedIndices([]);
     setCurrentWord("");
     setLevelComplete(false);
   }, [currentLevel, level.letters]);
+
+  // Save progress helper
+  const saveProgress = useCallback((updates: Partial<GameProgress>) => {
+    const currentProgress: GameProgress = {
+      currentLevel,
+      completedWords: {},
+      unlockedFeatures,
+      isGameCompleted: gameComplete,
+      ...updates,
+    };
+    onProgressUpdate(currentProgress);
+  }, [currentLevel, unlockedFeatures, gameComplete, onProgressUpdate]);
 
   const getLetterPosition = (index: number) => {
     const total = shuffledLetters.length;
@@ -115,9 +170,38 @@ export const WordConnectGame = ({ onRequestAuth, isAuthenticated }: WordConnectG
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 600);
 
+      // Build updated completedWords
+      const updatedCompletedWords: Record<number, string[]> = {};
+      LEVELS.forEach((_, idx) => {
+        if (idx === currentLevel) {
+          updatedCompletedWords[idx] = Array.from(newFoundWords);
+        } else if (savedProgress?.completedWords[idx]) {
+          updatedCompletedWords[idx] = savedProgress.completedWords[idx];
+        }
+      });
+
+      // Check if level is complete
       if (newFoundWords.size === level.targetWords.length) {
-        setUnlockedFeatures(prev => [...prev, level.unlockedFeature]);
+        const newUnlockedFeatures = [...unlockedFeatures, level.unlockedFeature];
+        setUnlockedFeatures(newUnlockedFeatures);
+        
+        // Save progress with updated features
+        saveProgress({
+          currentLevel,
+          completedWords: updatedCompletedWords,
+          unlockedFeatures: newUnlockedFeatures,
+          isGameCompleted: currentLevel === LEVELS.length - 1,
+        });
+        
         setTimeout(() => setLevelComplete(true), 800);
+      } else {
+        // Save progress after each word
+        saveProgress({
+          currentLevel,
+          completedWords: updatedCompletedWords,
+          unlockedFeatures,
+          isGameCompleted: false,
+        });
       }
     }
     setSelectedIndices([]);
@@ -135,61 +219,121 @@ export const WordConnectGame = ({ onRequestAuth, isAuthenticated }: WordConnectG
 
   const handleNextLevel = () => {
     if (currentLevel < LEVELS.length - 1) {
-      setCurrentLevel(prev => prev + 1);
+      const nextLevel = currentLevel + 1;
+      setCurrentLevel(nextLevel);
+      setFoundWords(new Set());
+      
+      // Save progress with new level
+      const updatedCompletedWords: Record<number, string[]> = {};
+      LEVELS.forEach((_, idx) => {
+        if (savedProgress?.completedWords[idx]) {
+          updatedCompletedWords[idx] = savedProgress.completedWords[idx];
+        }
+      });
+      updatedCompletedWords[currentLevel] = level.targetWords;
+      
+      saveProgress({
+        currentLevel: nextLevel,
+        completedWords: updatedCompletedWords,
+        unlockedFeatures,
+        isGameCompleted: false,
+      });
     } else {
+      // Game complete - final level done
       setGameComplete(true);
+      saveProgress({
+        currentLevel,
+        completedWords: savedProgress?.completedWords || {},
+        unlockedFeatures,
+        isGameCompleted: true,
+      });
+      onGameComplete();
     }
   };
 
   const handleFeatureClick = (feature: string) => {
     if (!isAuthenticated) {
       onRequestAuth();
+      return;
     }
+    // Find the route for this feature
+    const levelWithFeature = LEVELS.find(l => l.unlockedFeature === feature);
+    if (levelWithFeature) {
+      navigate(levelWithFeature.featureRoute);
+    }
+  };
+
+  const handlePlayAgain = () => {
+    setCurrentLevel(0);
+    setFoundWords(new Set());
+    setUnlockedFeatures([]);
+    setGameComplete(false);
+    setLevelComplete(false);
+    saveProgress({
+      currentLevel: 0,
+      completedWords: {},
+      unlockedFeatures: [],
+      isGameCompleted: false,
+    });
   };
 
   const progress = (foundWords.size / level.targetWords.length) * 100;
 
+  // Game complete view
   if (gameComplete) {
     return (
       <div className="flex flex-col items-center justify-center p-8 text-center animate-fade-in">
         <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
-          <ArrowRight className="w-8 h-8 text-primary" />
+          <Check className="w-8 h-8 text-primary" />
         </div>
-        <h3 className="text-xl font-semibold text-foreground mb-2">Journey Started</h3>
+        <h3 className="text-xl font-semibold text-foreground mb-2">Journey Complete</h3>
         <p className="text-muted-foreground mb-6 max-w-xs">
-          You've unlocked all starter tools. Create an account to access them.
+          {isAuthenticated 
+            ? "You've unlocked all starter tools. Explore them below."
+            : "Create an account to save your progress and unlock tools."
+          }
         </p>
         <div className="space-y-3 w-full max-w-xs">
-          {unlockedFeatures.map((feature, index) => (
+          {LEVELS.map((lvl) => (
             <button
-              key={feature}
-              onClick={() => handleFeatureClick(feature)}
+              key={lvl.unlockedFeature}
+              onClick={() => handleFeatureClick(lvl.unlockedFeature)}
               className={cn(
                 "w-full p-3 rounded-xl text-left transition-all",
                 "bg-card/60 backdrop-blur-sm border border-border/50",
-                "hover:border-primary/30 hover:shadow-md",
-                !isAuthenticated && "cursor-pointer"
+                "hover:border-primary/30 hover:shadow-md"
               )}
             >
               <div className="flex items-center justify-between">
-                <span className="font-medium text-foreground">{feature}</span>
-                {!isAuthenticated && <Lock className="w-4 h-4 text-muted-foreground" />}
+                <span className="font-medium text-foreground">{lvl.unlockedFeature}</span>
+                {isAuthenticated && <ArrowRight className="w-4 h-4 text-primary" />}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                {LEVELS[index].featureDescription}
+                {lvl.featureDescription}
               </p>
             </button>
           ))}
         </div>
-        {!isAuthenticated && (
-          <Button onClick={onRequestAuth} className="mt-6 rounded-xl" variant="wellness">
-            Join RantFree to unlock tools
+        <div className="flex flex-col gap-3 mt-6 w-full max-w-xs">
+          {!isAuthenticated && (
+            <Button onClick={onRequestAuth} className="w-full rounded-xl" variant="wellness">
+              Create Account
+            </Button>
+          )}
+          <Button 
+            onClick={handlePlayAgain} 
+            variant="outline" 
+            className="w-full rounded-xl"
+          >
+            <RotateCcw className="w-4 h-4 mr-2" />
+            Play Again
           </Button>
-        )}
+        </div>
       </div>
     );
   }
 
+  // Level complete view
   if (levelComplete) {
     return (
       <div className="flex flex-col items-center justify-center p-8 text-center animate-fade-in">
@@ -203,13 +347,14 @@ export const WordConnectGame = ({ onRequestAuth, isAuthenticated }: WordConnectG
           <p className="text-xs text-muted-foreground mt-1">{level.featureDescription}</p>
         </div>
         <Button onClick={handleNextLevel} className="rounded-xl" variant="wellness">
-          {currentLevel < LEVELS.length - 1 ? "Next Level" : "View All Tools"}
+          {currentLevel < LEVELS.length - 1 ? "Next Level" : "Complete Journey"}
           <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
       </div>
     );
   }
 
+  // Game play view
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
