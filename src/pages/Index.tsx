@@ -5,7 +5,6 @@ import WordConnectSection from "@/components/wellness/WordConnectSection";
 import HowItWorksSection from "@/components/wellness/HowItWorksSection";
 import TestimonialsSection from "@/components/wellness/TestimonialsSection";
 import BlogSection from "@/components/wellness/BlogSection";
-import CTASection from "@/components/wellness/CTASection";
 import Footer from "@/components/wellness/Footer";
 
 const Index = () => {
@@ -18,7 +17,6 @@ const Index = () => {
       <HowItWorksSection />
       <TestimonialsSection />
       <BlogSection />
-      <CTASection />
       <Footer />
     </main>
   );
