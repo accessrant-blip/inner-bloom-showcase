@@ -22,22 +22,39 @@ const getDefaultProgress = (): GameProgress => ({
   isSynced: false,
 });
 
+// Synchronous localStorage loader with error handling
+const loadProgressFromStorage = (): GameProgress => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      // Validate the parsed data has required fields
+      if (
+        typeof parsed.currentLevel === "number" &&
+        typeof parsed.completedWords === "object" &&
+        Array.isArray(parsed.unlockedFeatures) &&
+        typeof parsed.isGameCompleted === "boolean"
+      ) {
+        return parsed;
+      }
+    }
+  } catch (e) {
+    console.error("Failed to load/parse progress from localStorage:", e);
+    // Reset corrupted data
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {}
+  }
+  return getDefaultProgress();
+};
+
 const WordConnectSection = () => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
-  const [savedProgress, setSavedProgress] = useState<GameProgress>(() => {
-    // Initialize immediately from localStorage - no async, no blocking
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        return JSON.parse(stored);
-      }
-    } catch (e) {
-      console.error("Failed to load progress from localStorage:", e);
-    }
-    return getDefaultProgress();
-  });
+  
+  // Initialize progress synchronously from localStorage - NEVER blocks
+  const [savedProgress, setSavedProgress] = useState<GameProgress>(loadProgressFromStorage);
   const [showCompletionPrompt, setShowCompletionPrompt] = useState(false);
 
   // Save progress to localStorage (sync, non-blocking)
@@ -197,8 +214,10 @@ const WordConnectSection = () => {
     setAuthModalOpen(true);
   };
 
+  // Called when Level 3 is completed
   const handleGameComplete = () => {
     if (!isAuthenticated) {
+      // Show the completion prompt modal immediately
       setShowCompletionPrompt(true);
     }
   };
@@ -267,7 +286,7 @@ const WordConnectSection = () => {
         </div>
       </div>
 
-      {/* Completion prompt modal */}
+      {/* Completion prompt modal - shown after Level 3 for guests */}
       {showCompletionPrompt && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div 
