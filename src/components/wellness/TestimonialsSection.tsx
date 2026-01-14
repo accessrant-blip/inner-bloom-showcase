@@ -3,25 +3,25 @@ import { Star } from "lucide-react";
 
 const testimonials = [
   {
-    name: "Sarah Johnson",
-    role: "Marketing Professional",
-    content: "This app has completely transformed how I manage stress. The daily mood tracking helped me identify patterns I never noticed before.",
+    name: "Ishika Negi",
+    role: "User",
+    content: "I am really happy with the compassionate listener, she genuinely listen to me. Happy with the initiative.",
     rating: 5,
-    avatar: "SJ"
+    avatar: "IN"
   },
   {
-    name: "Michael Chen",
+    name: "Sanya",
     role: "Student",
-    content: "The guided meditation sessions are incredible. I've been sleeping better and feeling more focused during my studies.",
+    content: "I have used so many mental health apps, hoping this might be one stop solution.",
     rating: 5,
-    avatar: "MC"
+    avatar: "S"
   },
   {
-    name: "Dr. Emily Rodriguez",
-    role: "Therapist",
-    content: "I recommend this platform to my clients. The evidence-based approach and professional support integration is outstanding.",
+    name: "Gargi Chauhan",
+    role: "General Physician",
+    content: "I recommend this platform to my colleagues. The approach and professional support integration is outstanding.",
     rating: 5,
-    avatar: "ER"
+    avatar: "GC"
   }
 ];
 
