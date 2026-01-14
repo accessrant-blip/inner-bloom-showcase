@@ -15,26 +15,31 @@
       })();
     </script>
     
-    <!-- Google tag (gtag.js) - deferred for better TTI -->
+    <!-- Google tag (gtag.js) - loaded on first user interaction for best performance -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-EHWVX6CLJX');
       
-      // Load GTM after page becomes interactive
-      if (document.readyState === 'complete') {
-        loadGTM();
-      } else {
-        window.addEventListener('load', function() {
-          setTimeout(loadGTM, 2000);
-        });
-      }
+      var gtmLoaded = false;
       function loadGTM() {
+        if (gtmLoaded) return;
+        gtmLoaded = true;
+        gtag('js', new Date());
+        gtag('config', 'G-EHWVX6CLJX');
         var s = document.createElement('script');
         s.src = 'https://www.googletagmanager.com/gtag/js?id=G-EHWVX6CLJX';
         s.async = true;
         document.head.appendChild(s);
+      }
+      
+      // Load GTM on first user interaction OR after 4s idle
+      ['click', 'scroll', 'keydown', 'touchstart'].forEach(function(e) {
+        document.addEventListener(e, loadGTM, { once: true, passive: true });
+      });
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(function() { setTimeout(loadGTM, 4000); });
+      } else {
+        setTimeout(loadGTM, 5000);
       }
     </script>
     
