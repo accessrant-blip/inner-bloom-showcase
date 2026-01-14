@@ -469,7 +469,115 @@ By taking **small steps**, getting **real support**, and being **kind to yoursel
     featured: false,
   },
   {
-    id: "day-7",
+    id: "day-7-habits",
+    title: "✨ Day 7: 7 Easy Things You Can Do Daily for Better Mental Health",
+    excerpt: "Good mental health isn't a one-time thing. It's about what you do every day. Discover 7 simple daily habits that can transform your mental wellness.",
+    content: `Good mental health isn't a one-time thing. It's about **what you do every day**.
+
+## 🌟 7 Simple Habits for Better Mental Health
+
+### 1️⃣ Don't look at your phone first thing 📱
+
+Start your day with **your own thoughts**, not someone else's posts or news. Give yourself at least **15 minutes** before checking your phone.
+
+### 2️⃣ Take 2 minutes to breathe deeply 🧘
+
+Just **2 minutes** of deep breathing can:
+
+- 😌 **Calm your nervous system**
+- 🧠 **Clear your head**
+- ⚡ **Boost your focus**
+
+Try this: **Breathe in for 4 seconds, hold for 4, breathe out for 4.**
+
+### 3️⃣ Jot down one real thought ✍️
+
+You don't need to write a whole journal entry. Just **one honest thought** about how you're feeling.
+
+This helps you:
+
+- 💭 **Process your emotions**
+- 🔍 **Notice patterns**
+- 🎯 **Stay in touch with yourself**
+
+### 4️⃣ Stay hydrated – drink enough water! 💧
+
+Sounds simple, but **dehydration** affects your:
+
+- 🧠 **Mood**
+- ⚡ **Energy levels**
+- 💭 **Concentration**
+
+Keep a water bottle nearby and **sip throughout the day**.
+
+### 5️⃣ Get some gentle exercise 🚶
+
+You don't need an intense workout. Just **move your body**:
+
+- 🌳 A **short walk** outside
+- 🧘 Some **stretching**
+- 💃 **Dancing** to your favorite song
+
+Movement releases **feel-good chemicals** in your brain.
+
+### 6️⃣ Cut back on the negativity you see 🛡️
+
+What you consume **affects how you feel**:
+
+- 📵 **Mute or unfollow** accounts that drain you
+- 📰 **Limit doom-scrolling** news
+- 🌈 **Follow accounts** that inspire or calm you
+
+Protect your mental space!
+
+### 7️⃣ Let your feelings out before bed 🌙
+
+Don't take **bottled-up emotions** to sleep with you.
+
+Try:
+
+- ✍️ **Writing down** what's on your mind
+- 🗣️ **Talking to someone** you trust
+- 💬 **Venting anonymously** on RantFree.in
+
+## 💜 Why Expressing Feelings Matters
+
+**Holding stuff in is tiring.** 
+
+It builds up pressure that can lead to:
+
+- 😰 **Anxiety**
+- 😤 **Irritability**
+- 😴 **Exhaustion**
+
+**Letting it out helps you feel balanced** and lighter.
+
+## 🏠 RantFree.in Can Be a Daily Thing
+
+A lot of people use **RantFree.in** to get stuff off their chest daily, like a journal.
+
+It keeps them from getting too overwhelmed by:
+
+- 📝 **Providing a safe space** to express anything
+- 🔒 **Keeping it anonymous** – no judgment
+- 🌊 **Releasing daily stress** before it builds up
+
+## ⭐ Last Tip
+
+**Don't sweat being perfect.** Just be **consistent**.
+
+Small daily habits compound over time into **big mental health improvements**.
+
+👉 **Start today. Take one step. You've got this!**`,
+    author: "RantFree Team",
+    date: "2026-01-14",
+    readTime: "5 min read",
+    category: "Mental Health",
+    tags: ["daily habits", "mental health", "self-care", "wellness tips", "emotional balance"],
+    featured: false,
+  },
+  {
+    id: "day-7-sadness",
     title: "🌧️ Sadness vs. Depression: Spotting the Difference and Knowing When to Get Help",
     excerpt: "Feeling sad is part of life. But depression is something else. Learn to spot the real difference between sadness and depression, and know when it's time to seek help.",
     content: `Feeling sad is part of life. It happens when things get tough – like after a breakup, a loss, or just feeling stressed.
