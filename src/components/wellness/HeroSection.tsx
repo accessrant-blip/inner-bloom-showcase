@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
-import heroImage from "@/assets/hero-mental-wellness.webp";
+import heroImage from "@/assets/hero-meditation.webp";
 import DemoModal from "./DemoModal";
 import AuthModal from "@/components/auth/AuthModal";
 import { useState } from "react";
