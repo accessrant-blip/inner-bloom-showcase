@@ -1,6 +1,7 @@
 import Navigation from "@/components/wellness/Navigation";
 import HeroSection from "@/components/wellness/HeroSection";
 import FeaturesSection from "@/components/wellness/FeaturesSection";
+import WordConnectSection from "@/components/wellness/WordConnectSection";
 import HowItWorksSection from "@/components/wellness/HowItWorksSection";
 import TestimonialsSection from "@/components/wellness/TestimonialsSection";
 import BlogSection from "@/components/wellness/BlogSection";
@@ -13,6 +14,7 @@ const Index = () => {
       <Navigation />
       <HeroSection />
       <FeaturesSection />
+      <WordConnectSection />
       <HowItWorksSection />
       <TestimonialsSection />
       <BlogSection />
