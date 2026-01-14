@@ -90,12 +90,15 @@ export function EditProfileModal({ open, onClose, profile, onUpdate }: EditProfi
 
       if (uploadError) throw uploadError;
 
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
+      // Get signed URL for private bucket (24 hour expiry)
+      const { data: signedUrlData, error: signedUrlError } = await supabase.storage
         .from('avatars')
-        .getPublicUrl(fileName);
+        .createSignedUrl(fileName, 86400); // 24 hours
 
-      setAvatarUrl(publicUrl);
+      if (signedUrlError) throw signedUrlError;
+      if (!signedUrlData?.signedUrl) throw new Error('Failed to generate signed URL');
+
+      setAvatarUrl(signedUrlData.signedUrl);
 
       toast({
         title: "Avatar uploaded! 📸",
