@@ -26,12 +26,8 @@ const WordConnectSection = () => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
-  const [savedProgress, setSavedProgress] = useState<GameProgress | null>(null);
-  const [showCompletionPrompt, setShowCompletionPrompt] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Load progress from localStorage
-  const loadLocalProgress = useCallback((): GameProgress => {
+  const [savedProgress, setSavedProgress] = useState<GameProgress>(() => {
+    // Initialize immediately from localStorage - no async, no blocking
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
@@ -41,9 +37,10 @@ const WordConnectSection = () => {
       console.error("Failed to load progress from localStorage:", e);
     }
     return getDefaultProgress();
-  }, []);
+  });
+  const [showCompletionPrompt, setShowCompletionPrompt] = useState(false);
 
-  // Save progress to localStorage
+  // Save progress to localStorage (sync, non-blocking)
   const saveLocalProgress = useCallback((progress: GameProgress) => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
@@ -52,7 +49,7 @@ const WordConnectSection = () => {
     }
   }, []);
 
-  // Sync progress to Supabase
+  // Sync progress to Supabase (background, non-blocking)
   const syncToSupabase = useCallback(async (progress: GameProgress, uid: string) => {
     try {
       const { error } = await supabase
@@ -84,7 +81,7 @@ const WordConnectSection = () => {
     }
   }, [saveLocalProgress]);
 
-  // Load progress from Supabase
+  // Load progress from Supabase (background, non-blocking)
   const loadSupabaseProgress = useCallback(async (uid: string): Promise<GameProgress | null> => {
     try {
       const { data, error } = await supabase
@@ -116,74 +113,84 @@ const WordConnectSection = () => {
     }
   }, []);
 
-  // Initialize and handle auth changes
+  // Background auth sync - never blocks UI
   useEffect(() => {
-    const initAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      const localProgress = loadLocalProgress();
-      
-      if (session?.user) {
-        setIsAuthenticated(true);
-        setUserId(session.user.id);
+    let isMounted = true;
+
+    const syncAuthInBackground = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
         
-        // Load from Supabase
-        const supabaseProgress = await loadSupabaseProgress(session.user.id);
+        if (!isMounted) return;
         
-        if (supabaseProgress) {
-          // Use Supabase progress if available
-          setSavedProgress(supabaseProgress);
-          saveLocalProgress(supabaseProgress);
-        } else if (localProgress.currentLevel > 0 || localProgress.isGameCompleted) {
-          // Sync local progress to Supabase if user has progress
-          await syncToSupabase(localProgress, session.user.id);
-          setSavedProgress(localProgress);
-        } else {
-          setSavedProgress(getDefaultProgress());
+        if (session?.user) {
+          setIsAuthenticated(true);
+          setUserId(session.user.id);
+          
+          // Try to load from Supabase in background
+          const supabaseProgress = await loadSupabaseProgress(session.user.id);
+          
+          if (!isMounted) return;
+          
+          if (supabaseProgress) {
+            // Use Supabase progress if it's more advanced
+            if (supabaseProgress.currentLevel > savedProgress.currentLevel || 
+                supabaseProgress.isGameCompleted) {
+              setSavedProgress(supabaseProgress);
+              saveLocalProgress(supabaseProgress);
+            }
+          } else if (savedProgress.currentLevel > 0 || savedProgress.isGameCompleted) {
+            // Sync local progress to Supabase
+            syncToSupabase(savedProgress, session.user.id);
+          }
         }
-      } else {
-        setSavedProgress(localProgress);
+      } catch (e) {
+        console.error("Background auth sync failed:", e);
+        // Silently fail - game continues with local progress
       }
-      setIsLoading(false);
     };
-    
-    initAuth();
+
+    // Start background sync without blocking
+    syncAuthInBackground();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      const wasAuthenticated = isAuthenticated;
-      const nowAuthenticated = !!session;
+      if (!isMounted) return;
       
+      const nowAuthenticated = !!session;
       setIsAuthenticated(nowAuthenticated);
       setUserId(session?.user?.id || null);
 
-      // User just logged in
-      if (!wasAuthenticated && nowAuthenticated && session?.user) {
-        const localProgress = loadLocalProgress();
-        
-        // Check if user has existing Supabase progress
-        const supabaseProgress = await loadSupabaseProgress(session.user.id);
-        
-        if (supabaseProgress && supabaseProgress.isGameCompleted) {
-          // Use existing Supabase progress if game was completed
-          setSavedProgress(supabaseProgress);
-          saveLocalProgress(supabaseProgress);
-          toast.success("Welcome back! Your progress has been restored.");
-        } else if (localProgress.currentLevel > 0 || localProgress.isGameCompleted) {
-          // Sync local progress to Supabase
-          const synced = await syncToSupabase(localProgress, session.user.id);
-          if (synced) {
-            toast.success("Account created — progress saved.");
+      // User just logged in - sync in background
+      if (nowAuthenticated && session?.user) {
+        try {
+          const supabaseProgress = await loadSupabaseProgress(session.user.id);
+          
+          if (!isMounted) return;
+          
+          if (supabaseProgress && supabaseProgress.isGameCompleted) {
+            setSavedProgress(supabaseProgress);
+            saveLocalProgress(supabaseProgress);
+            toast.success("Welcome back! Your progress has been restored.");
+          } else if (savedProgress.currentLevel > 0 || savedProgress.isGameCompleted) {
+            const synced = await syncToSupabase(savedProgress, session.user.id);
+            if (synced) {
+              toast.success("Account created — progress saved.");
+            }
           }
-          setSavedProgress(localProgress);
+        } catch (e) {
+          console.error("Auth state change sync failed:", e);
         }
         
-        // Close the auth modal and completion prompt
         setAuthModalOpen(false);
         setShowCompletionPrompt(false);
       }
     });
 
-    return () => subscription.unsubscribe();
-  }, [isAuthenticated, loadLocalProgress, loadSupabaseProgress, saveLocalProgress, syncToSupabase]);
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
+  }, [loadSupabaseProgress, saveLocalProgress, syncToSupabase, savedProgress]);
 
   const handleRequestAuth = () => {
     setShowCompletionPrompt(false);
@@ -200,23 +207,11 @@ const WordConnectSection = () => {
     setSavedProgress(progress);
     saveLocalProgress(progress);
     
-    // If authenticated, sync to Supabase
+    // If authenticated, sync to Supabase in background
     if (isAuthenticated && userId) {
       syncToSupabase(progress, userId);
     }
   }, [isAuthenticated, userId, saveLocalProgress, syncToSupabase]);
-
-  if (isLoading) {
-    return (
-      <section className="py-16 md:py-24 bg-gradient-to-b from-background to-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-center items-center min-h-[400px]">
-            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section className="py-16 md:py-24 bg-gradient-to-b from-background to-muted/30">

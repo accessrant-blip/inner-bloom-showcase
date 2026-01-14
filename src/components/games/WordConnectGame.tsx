@@ -58,7 +58,7 @@ interface WordConnectGameProps {
   onRequestAuth: () => void;
   isAuthenticated: boolean;
   onGameComplete: () => void;
-  savedProgress: GameProgress | null;
+  savedProgress: GameProgress;
   onProgressUpdate: (progress: GameProgress) => void;
 }
 
@@ -94,16 +94,14 @@ export const WordConnectGame = ({
 
   // Load saved progress on mount
   useEffect(() => {
-    if (savedProgress) {
-      setCurrentLevel(savedProgress.currentLevel);
-      setUnlockedFeatures(savedProgress.unlockedFeatures);
-      if (savedProgress.isGameCompleted) {
-        setGameComplete(true);
-      }
-      // Restore found words for current level
-      const levelWords = savedProgress.completedWords[savedProgress.currentLevel] || [];
-      setFoundWords(new Set(levelWords));
+    setCurrentLevel(savedProgress.currentLevel);
+    setUnlockedFeatures(savedProgress.unlockedFeatures);
+    if (savedProgress.isGameCompleted) {
+      setGameComplete(true);
     }
+    // Restore found words for current level
+    const levelWords = savedProgress.completedWords[savedProgress.currentLevel] || [];
+    setFoundWords(new Set(levelWords));
   }, [savedProgress]);
 
   // Reset state when level changes
@@ -111,7 +109,7 @@ export const WordConnectGame = ({
     if (level?.letters) {
       setShuffledLetters([...level.letters].sort(() => Math.random() - 0.5));
       // Don't reset found words if loading from saved progress
-      if (!savedProgress?.completedWords[currentLevel]) {
+      if (!savedProgress.completedWords[currentLevel]) {
         setFoundWords(new Set());
       }
       setSelectedIndices([]);
@@ -184,7 +182,7 @@ export const WordConnectGame = ({
       LEVELS.forEach((_, idx) => {
         if (idx === currentLevel) {
           updatedCompletedWords[idx] = Array.from(newFoundWords);
-        } else if (savedProgress?.completedWords[idx]) {
+        } else if (savedProgress.completedWords[idx]) {
           updatedCompletedWords[idx] = savedProgress.completedWords[idx];
         }
       });
@@ -235,7 +233,7 @@ export const WordConnectGame = ({
       // Save progress with new level
       const updatedCompletedWords: Record<number, string[]> = {};
       LEVELS.forEach((_, idx) => {
-        if (savedProgress?.completedWords[idx]) {
+        if (savedProgress.completedWords[idx]) {
           updatedCompletedWords[idx] = savedProgress.completedWords[idx];
         }
       });
@@ -252,7 +250,7 @@ export const WordConnectGame = ({
       setGameComplete(true);
       saveProgress({
         currentLevel,
-        completedWords: savedProgress?.completedWords || {},
+        completedWords: savedProgress.completedWords,
         unlockedFeatures,
         isGameCompleted: true,
       });
