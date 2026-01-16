@@ -1642,6 +1642,105 @@ Don't wait until stress overwhelms you. **Start with one thing from this list to
     tags: ["stress relief", "quick tips", "breathing exercises", "grounding", "self-care"],
     featured: false,
   },
+  {
+    id: "day-9-social-media-mental-health",
+    title: "📱 Day 9: Social Media & Your Mental Health (Plus, How to Stay Sane)",
+    excerpt: "Social media can be draining. Learn why scrolling affects your mental health and discover practical tips to build healthier digital habits.",
+    content: `Let's talk about something we all deal with: **social media and how it messes with our heads**. 🧠
+
+## 😔 The Downside of Scrolling
+
+Social media can make you feel:
+
+- 🪞 **Like you're always comparing yourself to others** – everyone seems to have it together (spoiler: they don't!)
+- 😰 **Anxious** – about missing out, about responses, about everything
+- 🔄 **Like you can't stop thinking** – your mind keeps replaying posts and comments
+- 😩 **Emotionally worn out** – even though you were "just relaxing"
+
+Sound familiar? **You're definitely not alone.** 💙
+
+## 🤔 Why Does It Feel So Bad?
+
+Here's the thing: **even when you think you're chilling**, your brain treats all that constant information as stress.
+
+Every post, every notification, every scroll triggers your brain to:
+
+- ⚡ **Process new information** constantly
+- 🎭 **Compare your life** to curated highlights
+- 🔔 **Stay on high alert** for updates
+- 💭 **Form opinions** about everything you see
+
+**Result?** Your brain never gets a real break, even when your body is resting on the couch! 🛋️
+
+## 💡 Some Ideas for Better Habits
+
+### 1️⃣ Cut Down on How Much You Scroll ⏰
+
+- 📊 **Set app timers** – most phones have this built in
+- 🚫 **Create no-phone zones** – like your bedroom or dining table
+- ⏱️ **Try the 5-minute rule** – wait 5 minutes before opening social apps
+- 🌅 **No scrolling first thing** in the morning or before bed
+
+### 2️⃣ Fill Your Feed with Good Stuff ✨
+
+- ➕ **Follow accounts** that make you feel good
+- ➖ **Unfollow or mute** accounts that drain you
+- 🧹 **Declutter regularly** – your feed needs cleaning too!
+- 🌈 **Add variety** – not just one type of content
+
+### 3️⃣ Do Something Thoughtful Instead of Scrolling 🎨
+
+When you feel the urge to scroll, try:
+
+- 📖 **Reading** a few pages of a book
+- ✏️ **Writing** down your thoughts
+- 🎵 **Listening** to music mindfully
+- 🚶 **Taking a short walk** – even just around the room
+- 🧘 **Doing a quick breathing exercise**
+
+## 💭 A Thought: Try This Instead
+
+Instead of just **watching what everyone else is doing**, share your own thoughts.
+
+**Here's the difference:**
+
+| Passive Scrolling 👀 | Active Expression ✍️ |
+|---|---|
+| Consuming others' content | Creating your own |
+| Comparing yourself | Understanding yourself |
+| Feeling empty after | Feeling lighter after |
+| Gives energy to others | Takes care of YOU |
+
+Writing on **RantFree.in** can help you:
+
+- ✅ **Get your feelings out** instead of bottling them up
+- ✅ **Process your thoughts** by putting them into words
+- ✅ **Feel heard** without the pressure of social media
+- ✅ **Take control** of your digital experience
+
+**It's the difference between consuming and creating** – and your brain loves creating! 🧠✨
+
+## 👑 You're in Charge
+
+Remember: **Your mental health matters more than being online.**
+
+- 💙 **You don't owe anyone** constant availability
+- 💪 **You're allowed to** take breaks without explaining
+- 🌟 **Your worth isn't measured** by likes or followers
+- 🎯 **You get to decide** how much time you give to screens
+
+**Social media is a tool – not your boss.** Use it in ways that serve YOU! 🛠️
+
+---
+
+👉 **Feeling drained by social media? Head to RantFree.in and let it out. No likes, no followers, no pressure – just you and your thoughts.**`,
+    author: "RantFree Team",
+    date: "2026-01-16",
+    readTime: "5 min read",
+    category: "Mental Health",
+    tags: ["social media", "digital wellness", "mental health", "screen time", "self-care", "healthy habits"],
+    featured: false,
+  },
 ];
 
 // Markdown-like content renderer
