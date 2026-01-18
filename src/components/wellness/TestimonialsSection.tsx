@@ -17,11 +17,11 @@ const testimonials = [
     avatar: "S"
   },
   {
-    name: "Gargi Chauhan",
+    name: "Deeksha Chauhan",
     role: "General Physician",
     content: "I recommend this platform to my colleagues. The approach and professional support integration is outstanding.",
     rating: 5,
-    avatar: "GC"
+    avatar: "DC"
   }
 ];
 
