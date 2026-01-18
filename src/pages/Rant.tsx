@@ -65,53 +65,35 @@ const Rant = () => {
   };
 
   const fetchPublicRants = async () => {
-    // Only select non-sensitive fields - exclude user_id to prevent identity linkage
-    const { data, error } = await supabase
-      .from("rants")
-      .select("id, content, privacy, created_at, mood, user_id")
-      .in("privacy", ["public", "anonymous"])
-      .order("created_at", { ascending: false });
+    // Use secure RPC function that never exposes user_id - ownership computed server-side
+    const { data, error } = await supabase.rpc("get_public_rants");
 
     if (error) {
       console.error("Error fetching rants:", error);
       setPublicRants([]);
     } else {
-      // Process rants: fetch profiles for public posts, mark ownership, then strip user_id
-      const rantsWithProfiles = await Promise.all(
-        (data || []).map(async (rant) => {
-          const isOwner = currentUserId === rant.user_id;
-          
-          if (rant.privacy === "public" && rant.user_id) {
-            const { data: profile } = await supabase
-              .from("profiles")
-              .select("username, avatar_url")
-              .eq("user_id", rant.user_id)
-              .single();
-            
-            // Return without user_id - only keep computed is_owner flag
-            return { 
-              id: rant.id,
-              content: rant.content,
-              privacy: rant.privacy,
-              created_at: rant.created_at,
-              mood: rant.mood,
-              is_owner: isOwner,
-              profiles: profile 
-            };
-          }
-          
-          // Return without user_id for anonymous posts
-          return { 
-            id: rant.id,
-            content: rant.content,
-            privacy: rant.privacy,
-            created_at: rant.created_at,
-            mood: rant.mood,
-            is_owner: isOwner,
-            profiles: null 
-          };
-        })
-      );
+      // Map server response to expected format - user_id is never exposed
+      const rantsWithProfiles = (data || []).map((rant: {
+        id: string;
+        content: string;
+        privacy: string;
+        created_at: string;
+        mood: string | null;
+        is_owner: boolean;
+        author_username: string | null;
+        author_avatar_url: string | null;
+      }) => ({
+        id: rant.id,
+        content: rant.content,
+        privacy: rant.privacy,
+        created_at: rant.created_at,
+        mood: rant.mood,
+        is_owner: rant.is_owner,
+        profiles: rant.author_username ? {
+          username: rant.author_username,
+          avatar_url: rant.author_avatar_url
+        } : null
+      }));
       setPublicRants(rantsWithProfiles);
     }
   };
