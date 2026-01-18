@@ -179,6 +179,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "calls_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings_secure"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "calls_professional_id_fkey"
             columns: ["professional_id"]
             isOneToOne: false
@@ -733,6 +740,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "payments_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings_secure"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "payments_professional_id_fkey"
             columns: ["professional_id"]
             isOneToOne: false
@@ -1089,6 +1103,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "session_feedback_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings_secure"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "session_feedback_professional_id_fkey"
             columns: ["professional_id"]
             isOneToOne: false
@@ -1140,6 +1161,13 @@ export type Database = {
             columns: ["booking_id"]
             isOneToOne: false
             referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sessions_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings_secure"
             referencedColumns: ["id"]
           },
           {
@@ -1263,7 +1291,68 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      bookings_secure: {
+        Row: {
+          amount: number | null
+          booking_date: string | null
+          booking_time: string | null
+          booking_type: string | null
+          created_at: string | null
+          duration: number | null
+          email: string | null
+          id: string | null
+          mode: string | null
+          name: string | null
+          notes: string | null
+          professional_id: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount?: number | null
+          booking_date?: string | null
+          booking_time?: string | null
+          booking_type?: string | null
+          created_at?: string | null
+          duration?: number | null
+          email?: never
+          id?: string | null
+          mode?: string | null
+          name?: never
+          notes?: never
+          professional_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number | null
+          booking_date?: string | null
+          booking_time?: string | null
+          booking_type?: string | null
+          created_at?: string | null
+          duration?: number | null
+          email?: never
+          id?: string | null
+          mode?: string | null
+          name?: never
+          notes?: never
+          professional_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       [_ in never]: never
