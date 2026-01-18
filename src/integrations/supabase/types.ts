@@ -1355,7 +1355,19 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      get_public_rants: {
+        Args: never
+        Returns: {
+          author_avatar_url: string
+          author_username: string
+          content: string
+          created_at: string
+          id: string
+          is_owner: boolean
+          mood: string
+          privacy: string
+        }[]
+      }
     }
     Enums: {
       availability_status: "online" | "offline" | "busy"
