@@ -3,11 +3,11 @@ import { Star } from "lucide-react";
 
 const testimonials = [
   {
-    name: "Ishika Negi",
+    name: "Priyam Kapoor",
     role: "User",
     content: "I am really happy with the compassionate listener, she genuinely listen to me. Happy with the initiative.",
     rating: 5,
-    avatar: "IN"
+    avatar: "PK"
   },
   {
     name: "Sanya",
