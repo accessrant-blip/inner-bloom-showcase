@@ -73,7 +73,10 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
         });
         
         onOpenChange(false);
-        navigate("/dashboard");
+        // Use setTimeout to ensure navigation happens after modal closes
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 0);
       } else {
         const redirectUrl = `${window.location.origin}/dashboard`;
         
