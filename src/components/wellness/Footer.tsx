@@ -24,7 +24,7 @@ const Footer = () => {
     },
     {
       name: "LinkedIn",
-      url: "https://linkedin.com/company/rantfree",
+      url: "https://www.linkedin.com/in/rantfree",
       icon: Linkedin,
     },
   ];
