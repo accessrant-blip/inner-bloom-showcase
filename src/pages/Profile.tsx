@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { 
-  User, Edit, AlertCircle
+  User, Edit, AlertCircle, Mail, Shield, FileText, ChevronRight
 } from "lucide-react";
 import { EditProfileModal } from "@/components/profile/EditProfileModal";
 import { EmergencyModal } from "@/components/profile/EmergencyModal";
@@ -179,6 +179,45 @@ export default function Profile() {
 
         {/* Feedback Form */}
         <FeedbackForm />
+
+        {/* Quick Links */}
+        <Card className="rounded-3xl shadow-soft border-border animate-fade-in">
+          <CardHeader>
+            <CardTitle className="text-lg text-foreground">Support & Policies</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <Link 
+              to="/contact" 
+              className="flex items-center justify-between p-3 rounded-xl hover:bg-muted transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <Mail className="h-5 w-5 text-primary" />
+                <span className="text-foreground">Contact Us</span>
+              </div>
+              <ChevronRight className="h-5 w-5 text-muted-foreground" />
+            </Link>
+            <Link 
+              to="/privacy-policy" 
+              className="flex items-center justify-between p-3 rounded-xl hover:bg-muted transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <Shield className="h-5 w-5 text-primary" />
+                <span className="text-foreground">Privacy Policy</span>
+              </div>
+              <ChevronRight className="h-5 w-5 text-muted-foreground" />
+            </Link>
+            <Link 
+              to="/terms-of-service" 
+              className="flex items-center justify-between p-3 rounded-xl hover:bg-muted transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <FileText className="h-5 w-5 text-primary" />
+                <span className="text-foreground">Terms of Service</span>
+              </div>
+              <ChevronRight className="h-5 w-5 text-muted-foreground" />
+            </Link>
+          </CardContent>
+        </Card>
 
         {/* Microcopy Footer */}
         <Card className="rounded-3xl shadow-soft border-border bg-primary/5">

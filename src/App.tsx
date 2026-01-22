@@ -40,6 +40,9 @@ const DayBuilder = lazy(() => import("./pages/espresso/DayBuilder"));
 const MentalGym = lazy(() => import("./pages/espresso/MentalGym"));
 const SocialTrainer = lazy(() => import("./pages/espresso/SocialTrainer"));
 const InnerChild = lazy(() => import("./pages/espresso/InnerChild"));
+const Contact = lazy(() => import("./pages/Contact"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -67,6 +70,9 @@ const App = () => {
                 <Route path="/booking-confirmed" element={<BookingConfirmed />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:id" element={<BlogPostPage />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
                 
                 {/* App routes with persistent layout */}
                 <Route path="/dashboard" element={<AppLayout><Dashboard /></AppLayout>} />
