@@ -1,8 +1,28 @@
 import { Link } from "react-router-dom";
+import { Twitter, Instagram, Linkedin } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import rantfreeLogo from "@/assets/rantfree-logo.jpg";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+
+  const socialLinks = [
+    {
+      name: "X (Twitter)",
+      url: "https://x.com/rant_freeee",
+      icon: Twitter,
+    },
+    {
+      name: "Instagram",
+      url: "https://www.instagram.com/rantfree.in/",
+      icon: Instagram,
+    },
+    {
+      name: "LinkedIn",
+      url: "https://linkedin.com/company/rantfree",
+      icon: Linkedin,
+    },
+  ];
 
   return (
     <footer className="bg-card border-t border-border py-12">
@@ -76,38 +96,26 @@ const Footer = () => {
           {/* Connect */}
           <div>
             <h4 className="font-semibold text-foreground mb-4">Connect</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a 
-                  href="https://twitter.com/rantfree_app" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Twitter
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="https://instagram.com/rantfree_app" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Instagram
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="https://linkedin.com/company/rantfree" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  LinkedIn
-                </a>
-              </li>
-            </ul>
+            <div className="flex items-center gap-4">
+              {socialLinks.map((social) => (
+                <Tooltip key={social.name}>
+                  <TooltipTrigger asChild>
+                    <a
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-200"
+                      aria-label={`Follow us on ${social.name}`}
+                    >
+                      <social.icon className="w-5 h-5" />
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Follow us on {social.name}</p>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
           </div>
         </div>
 
