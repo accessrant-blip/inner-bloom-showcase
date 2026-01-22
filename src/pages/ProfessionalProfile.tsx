@@ -89,6 +89,23 @@ const ProfessionalProfile = () => {
   };
 
   const handleBookSession = () => {
+    // Check if this is Dr. Divya Batra - use Calendly popup
+    const isDivyaBatra = professional.name.toLowerCase().includes('divya batra');
+    
+    if (isDivyaBatra) {
+      // Open Calendly popup widget for Dr. Divya Batra
+      if (typeof window !== 'undefined' && (window as any).Calendly) {
+        (window as any).Calendly.initPopupWidget({
+          url: 'https://calendly.com/accessrant/30min'
+        });
+      } else {
+        // Fallback if Calendly widget hasn't loaded
+        window.open('https://calendly.com/accessrant/30min', '_blank', 'noopener,noreferrer');
+      }
+      return;
+    }
+    
+    // Default behavior for other professionals - use Google Form
     const formLink = professional.google_form_link;
     if (!formLink) {
       toast({
