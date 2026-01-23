@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "15",
+    title: "Emotional Regulation: A Simple Guide to Stop Overreacting 🧘‍♀️",
+    excerpt: "Ever find yourself reacting before you even think? Learn how to manage your emotions better with these simple steps.",
+    date: "2026-01-23",
+    readTime: "6 min",
+    category: "Self Improvement",
+  },
+  {
     id: "1",
     title: "Day 1: Why Getting Stuff Off Your Chest Is Good for You",
     excerpt: "We all have stuff we're dealing with—work stress, personal problems, thoughts we can't shake. When you keep it all inside, it just builds up.",
@@ -38,14 +46,6 @@ const blogPreviews: BlogPreview[] = [
     date: "2026-01-10",
     readTime: "3 min",
     category: "Community",
-  },
-  {
-    id: "4",
-    title: "Day 4: Turn Your Rants Into Something Useful",
-    excerpt: "Every rant has something to teach you – maybe about your limits, what stresses you out, or what you really need. Transform venting into growth.",
-    date: "2026-01-11",
-    readTime: "4 min",
-    category: "Self Improvement",
   },
 ];
 
