@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
-
+import DivyaBookingModal from "@/components/booking/DivyaBookingModal";
 interface Professional {
   id: string;
   name: string;
@@ -33,6 +33,7 @@ const ProfessionalProfile = () => {
   const [professional, setProfessional] = useState<Professional | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedDuration, setSelectedDuration] = useState("30");
+  const [showDivyaModal, setShowDivyaModal] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -88,20 +89,17 @@ const ProfessionalProfile = () => {
     busy: "bg-warning"
   };
 
+  // Divya Batra configuration
+  const DIVYA_CALENDLY_URL = "https://calendly.com/accessrant/30min";
+  const DIVYA_GOOGLE_FORM_URL = professional?.google_form_link || "https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform";
+
   const handleBookSession = () => {
-    // Check if this is Dr. Divya Batra - use Calendly popup
+    // Check if this is Dr. Divya Batra - use multi-step booking flow
     const isDivyaBatra = professional.name.toLowerCase().includes('divya batra');
     
     if (isDivyaBatra) {
-      // Open Calendly popup widget for Dr. Divya Batra
-      if (typeof window !== 'undefined' && (window as any).Calendly) {
-        (window as any).Calendly.initPopupWidget({
-          url: 'https://calendly.com/accessrant/30min'
-        });
-      } else {
-        // Fallback if Calendly widget hasn't loaded
-        window.open('https://calendly.com/accessrant/30min', '_blank', 'noopener,noreferrer');
-      }
+      // Open the multi-step booking modal for Divya Batra
+      setShowDivyaModal(true);
       return;
     }
     
@@ -278,6 +276,17 @@ const ProfessionalProfile = () => {
           </Button>
         </div>
       </div>
+
+      {/* Divya Batra Multi-Step Booking Modal */}
+      {professional.name.toLowerCase().includes('divya batra') && (
+        <DivyaBookingModal
+          isOpen={showDivyaModal}
+          onClose={() => setShowDivyaModal(false)}
+          googleFormUrl={DIVYA_GOOGLE_FORM_URL}
+          calendlyUrl={DIVYA_CALENDLY_URL}
+          professionalName={professional.alias || professional.name}
+        />
+      )}
     </div>
   );
 };
