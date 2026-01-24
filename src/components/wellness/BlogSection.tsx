@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "16",
+    title: "What Emotional Maturity Really Looks Like 🧠",
+    excerpt: "Being emotionally mature isn't about being perfect. It's about knowing yourself, taking responsibility, and reacting in healthy ways.",
+    date: "2026-01-24",
+    readTime: "5 min",
+    category: "Community",
+  },
+  {
     id: "15",
     title: "Emotional Regulation: A Simple Guide to Stop Overreacting 🧘‍♀️",
     excerpt: "Ever find yourself reacting before you even think? Learn how to manage your emotions better with these simple steps.",
@@ -30,22 +38,6 @@ const blogPreviews: BlogPreview[] = [
     date: "2026-01-08",
     readTime: "4 min",
     category: "Self Improvement",
-  },
-  {
-    id: "2",
-    title: "Day 2: Should You Vent or Keep It In?",
-    excerpt: "Keeping emotions bottled up can cause bad mood, tiredness, and worry. But venting the right way helps you feel understood and think clearer.",
-    date: "2026-01-09",
-    readTime: "3 min",
-    category: "Wellness Tips",
-  },
-  {
-    id: "3",
-    title: "Day 3: Does Venting Anonymously Help Your Mental Health?",
-    excerpt: "Being anonymous lets you be emotionally free without worrying about judgment. Discover how anonymous venting can help your mental wellness.",
-    date: "2026-01-10",
-    readTime: "3 min",
-    category: "Community",
   },
 ];
 
