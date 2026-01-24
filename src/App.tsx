@@ -43,6 +43,7 @@ const InnerChild = lazy(() => import("./pages/espresso/InnerChild"));
 const Contact = lazy(() => import("./pages/Contact"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -73,6 +74,7 @@ const App = () => {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 
                 {/* App routes with persistent layout */}
                 <Route path="/dashboard" element={<AppLayout><Dashboard /></AppLayout>} />
