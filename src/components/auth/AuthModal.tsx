@@ -9,6 +9,7 @@ import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { validateAuth } from "@/lib/authValidation";
 import EmailVerificationModal from "./EmailVerificationModal";
+import ForgotPasswordModal from "./ForgotPasswordModal";
 
 interface AuthModalProps {
   open: boolean;
@@ -25,6 +26,7 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string; username?: string }>({});
   const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [verificationEmail, setVerificationEmail] = useState("");
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -158,7 +160,21 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="password">Password</Label>
+              {isLogin && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onOpenChange(false);
+                    setShowForgotPassword(true);
+                  }}
+                  className="text-sm text-primary hover:text-primary-glow transition-colors"
+                >
+                  Forgot password?
+                </button>
+              )}
+            </div>
             <Input
               id="password"
               type="password"
@@ -210,6 +226,16 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
         onOpenChange={setShowVerificationModal}
         email={verificationEmail}
         onBackToLogin={handleBackToLogin}
+      />
+
+      <ForgotPasswordModal
+        open={showForgotPassword}
+        onOpenChange={setShowForgotPassword}
+        onBackToLogin={() => {
+          setShowForgotPassword(false);
+          onOpenChange(true);
+          setIsLogin(true);
+        }}
       />
     </Dialog>
   );
