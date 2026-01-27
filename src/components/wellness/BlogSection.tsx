@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "17",
+    title: "Emotional Regulation: How to Hit the Reset Button After a Rough Day 🔄",
+    excerpt: "Some days just need to end. Learn how an emotional reset can help you end the day on a good note instead of letting it hang over you.",
+    date: "2026-01-27",
+    readTime: "5 min",
+    category: "Wellness Tips",
+  },
+  {
     id: "16",
     title: "What Emotional Maturity Really Looks Like 🧠",
     excerpt: "Being emotionally mature isn't about being perfect. It's about knowing yourself, taking responsibility, and reacting in healthy ways.",
@@ -29,14 +37,6 @@ const blogPreviews: BlogPreview[] = [
     excerpt: "Ever find yourself reacting before you even think? Learn how to manage your emotions better with these simple steps.",
     date: "2026-01-23",
     readTime: "6 min",
-    category: "Self Improvement",
-  },
-  {
-    id: "1",
-    title: "Day 1: Why Getting Stuff Off Your Chest Is Good for You",
-    excerpt: "We all have stuff we're dealing with—work stress, personal problems, thoughts we can't shake. When you keep it all inside, it just builds up.",
-    date: "2026-01-08",
-    readTime: "4 min",
     category: "Self Improvement",
   },
 ];
