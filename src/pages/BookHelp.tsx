@@ -80,7 +80,7 @@ const BookHelp = () => {
               value="listener" 
               className="rounded-lg md:rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold transition-all duration-300 text-xs md:text-sm py-2.5 md:py-2 px-2 min-h-[44px]"
             >
-              Compassionate Listeners
+              Empathetic Listeners
             </TabsTrigger>
             <TabsTrigger 
               value="therapist" 
@@ -99,11 +99,11 @@ const BookHelp = () => {
               <TabsContent value="listener" className="mt-0 animate-fade-in">
                 <div className="mb-4 md:mb-6 text-center">
                   <p className="text-muted-foreground text-sm md:text-lg">
-                    ₹150 for 10 minutes • They listen with empathy, not judgment
+                    A safe space to be heard. No judgment, just support.
                   </p>
                 </div>
                 {listeners.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
                     {listeners.map(professional => (
                       <ProfessionalCard key={professional.id} professional={professional} />
                     ))}
