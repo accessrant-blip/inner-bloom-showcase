@@ -3,6 +3,7 @@ import { ArrowLeft, Calendar, Clock, User, Tag, Share2, BookOpen } from "lucide-
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import DOMPurify from "dompurify";
 
 interface BlogPost {
   id: string;
@@ -2983,10 +2984,13 @@ const renderContent = (content: string) => {
     }
   };
 
+  // SECURITY: Blog content is currently static/hardcoded. DOMPurify sanitization
+  // is added as defense-in-depth in case content source changes to dynamic/CMS in future.
   const formatInlineText = (text: string): string => {
     // Bold text
     text = text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>');
-    return text;
+    // Sanitize to prevent XSS if content source ever becomes user-controlled
+    return DOMPurify.sanitize(text, { ALLOWED_TAGS: ['strong', 'em', 'br'], ALLOWED_ATTR: ['class'] });
   };
 
   lines.forEach((line, index) => {
