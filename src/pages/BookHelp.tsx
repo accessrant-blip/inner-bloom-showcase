@@ -32,15 +32,15 @@ const BookHelp = () => {
   const fetchProfessionals = async () => {
     try {
       setLoading(true);
+      // Use professionals_public view which excludes user_id for privacy
       const { data, error } = await supabase
-        .from('professionals')
+        .from('professionals_public' as any)
         .select('id, name, alias, role, bio, specialties, profile_image_url, availability_status, rate_per_session, currency, is_verified, google_form_link')
-        .eq('is_active', true)
         .order('availability_status', { ascending: false })
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setProfessionals(data || []);
+      setProfessionals((data as unknown as Professional[]) || []);
     } catch (error) {
       console.error('Error fetching professionals:', error);
       toast({
