@@ -128,6 +128,13 @@ export type Database = {
             referencedRelation: "professionals"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "bookings_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       calls: {
@@ -190,6 +197,13 @@ export type Database = {
             columns: ["professional_id"]
             isOneToOne: false
             referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calls_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
             referencedColumns: ["id"]
           },
         ]
@@ -753,6 +767,13 @@ export type Database = {
             referencedRelation: "professionals"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "payments_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       private_info: {
@@ -828,6 +849,13 @@ export type Database = {
             columns: ["professional_id"]
             isOneToOne: false
             referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "professional_availability_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
             referencedColumns: ["id"]
           },
         ]
@@ -1116,6 +1144,13 @@ export type Database = {
             referencedRelation: "professionals"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "session_feedback_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       sessions: {
@@ -1175,6 +1210,13 @@ export type Database = {
             columns: ["professional_id"]
             isOneToOne: false
             referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sessions_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
             referencedColumns: ["id"]
           },
         ]
@@ -1351,7 +1393,74 @@ export type Database = {
             referencedRelation: "professionals"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "bookings_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      professionals_public: {
+        Row: {
+          alias: string | null
+          availability_status:
+            | Database["public"]["Enums"]["availability_status"]
+            | null
+          bio: string | null
+          created_at: string | null
+          currency: string | null
+          google_form_link: string | null
+          id: string | null
+          is_active: boolean | null
+          is_verified: boolean | null
+          name: string | null
+          profile_image_url: string | null
+          rate_per_session: number | null
+          role: Database["public"]["Enums"]["professional_role"] | null
+          specialties: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          alias?: string | null
+          availability_status?:
+            | Database["public"]["Enums"]["availability_status"]
+            | null
+          bio?: string | null
+          created_at?: string | null
+          currency?: string | null
+          google_form_link?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          is_verified?: boolean | null
+          name?: string | null
+          profile_image_url?: string | null
+          rate_per_session?: number | null
+          role?: Database["public"]["Enums"]["professional_role"] | null
+          specialties?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          alias?: string | null
+          availability_status?:
+            | Database["public"]["Enums"]["availability_status"]
+            | null
+          bio?: string | null
+          created_at?: string | null
+          currency?: string | null
+          google_form_link?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          is_verified?: boolean | null
+          name?: string | null
+          profile_image_url?: string | null
+          rate_per_session?: number | null
+          role?: Database["public"]["Enums"]["professional_role"] | null
+          specialties?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
     }
     Functions: {

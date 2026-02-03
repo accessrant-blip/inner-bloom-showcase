@@ -44,15 +44,15 @@ const ProfessionalProfile = () => {
   const fetchProfessional = async () => {
     try {
       setLoading(true);
+      // Use professionals_public view which excludes user_id for privacy
       const { data, error } = await supabase
-        .from('professionals')
+        .from('professionals_public' as any)
         .select('id, name, alias, role, bio, specialties, profile_image_url, availability_status, rate_per_session, currency, is_verified, google_form_link')
         .eq('id', id)
-        .eq('is_active', true)
         .single();
 
       if (error) throw error;
-      setProfessional(data);
+      setProfessional(data as unknown as Professional);
     } catch (error) {
       console.error('Error fetching professional:', error);
       toast({
