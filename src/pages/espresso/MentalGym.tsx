@@ -292,13 +292,13 @@ const MentalGym = () => {
 
         {showLevelSelect ? (
           /* Level Selection */
-          <div className="space-y-6">
+          <div className="space-y-6 animate-fade-in">
             <p className="text-muted-foreground text-center mb-8">
               Short emotional drills. No pressure. Train at your pace.
             </p>
 
             <div className="space-y-4">
-              {levels.map((level) => {
+              {levels.map((level, index) => {
                 const isUnlocked = unlockedLevels.includes(level.id);
                 const completedCount = completedDrillsPerLevel[level.id]?.length || 0;
                 const Icon = level.icon;
@@ -306,16 +306,17 @@ const MentalGym = () => {
                 return (
                   <Card
                     key={level.id}
-                    className={`p-6 transition-all ${
+                    className={`p-6 transition-all duration-300 animate-fade-in ${
                       isUnlocked
-                        ? "cursor-pointer hover:shadow-md hover:border-primary/30"
+                        ? "cursor-pointer hover:shadow-md hover:border-primary/30 hover:scale-[1.01]"
                         : "opacity-50 cursor-not-allowed"
                     }`}
+                    style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'backwards' }}
                     onClick={() => isUnlocked && selectLevel(level.id)}
                   >
                     <div className="flex items-start gap-4">
-                      <div className={`p-3 rounded-xl ${isUnlocked ? "bg-primary/10" : "bg-muted"}`}>
-                        <Icon className={`h-6 w-6 ${isUnlocked ? "text-primary" : "text-muted-foreground"}`} />
+                      <div className={`p-3 rounded-xl transition-colors duration-300 ${isUnlocked ? "bg-primary/10" : "bg-muted"}`}>
+                        <Icon className={`h-6 w-6 transition-colors duration-300 ${isUnlocked ? "text-primary" : "text-muted-foreground"}`} />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
@@ -349,13 +350,13 @@ const MentalGym = () => {
           </div>
         ) : !drillStarted ? (
           /* Ready to Start Drill */
-          <Card className="p-8 text-center space-y-6">
+          <Card className="p-8 text-center space-y-6 animate-scale-in">
             {currentLevelData && (
               <>
-                <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center animate-fade-in" style={{ animationDelay: '100ms' }}>
                   <currentLevelData.icon className="h-8 w-8 text-primary" />
                 </div>
-                <div>
+                <div className="animate-fade-in" style={{ animationDelay: '150ms', animationFillMode: 'backwards' }}>
                   <h2 className="text-xl font-medium mb-2">
                     {currentLevelData.name}
                   </h2>
@@ -363,10 +364,10 @@ const MentalGym = () => {
                     {currentLevelData.purpose}
                   </p>
                 </div>
-                <p className="text-sm italic text-muted-foreground">
+                <p className="text-sm italic text-muted-foreground animate-fade-in" style={{ animationDelay: '200ms', animationFillMode: 'backwards' }}>
                   {currentLevelData.tone}
                 </p>
-                <Button className="w-full" size="lg" onClick={startDrill}>
+                <Button className="w-full transition-all duration-300 hover:scale-[1.02]" size="lg" onClick={startDrill}>
                   Start
                 </Button>
               </>
@@ -374,31 +375,31 @@ const MentalGym = () => {
           </Card>
         ) : !drillComplete ? (
           /* Active Drill */
-          <Card className="p-8 space-y-6">
+          <Card className="p-8 space-y-6 animate-fade-in">
             {currentDrill && (
               <>
-                <div className="text-center">
+                <div className="text-center animate-scale-in" style={{ animationDelay: '50ms', animationFillMode: 'backwards' }}>
                   <p className="text-xl leading-relaxed">
                     {currentDrill.prompt}
                   </p>
                   {currentDrill.hint && (
-                    <p className="text-sm text-muted-foreground mt-3 italic">
+                    <p className="text-sm text-muted-foreground mt-3 italic animate-fade-in" style={{ animationDelay: '150ms', animationFillMode: 'backwards' }}>
                       {currentDrill.hint}
                     </p>
                   )}
                 </div>
 
                 {/* Optional response area */}
-                <div className="pt-4">
+                <div className="pt-4 animate-fade-in" style={{ animationDelay: '100ms', animationFillMode: 'backwards' }}>
                   <Textarea
                     placeholder="Write your thoughts (optional)..."
                     value={response}
                     onChange={(e) => setResponse(e.target.value)}
-                    className="min-h-[100px] resize-none"
+                    className="min-h-[100px] resize-none transition-shadow duration-300 focus:shadow-md"
                   />
                 </div>
 
-                <Button className="w-full" size="lg" onClick={completeDrill}>
+                <Button className="w-full transition-all duration-300 hover:scale-[1.02]" size="lg" onClick={completeDrill}>
                   Done
                 </Button>
               </>
@@ -406,12 +407,12 @@ const MentalGym = () => {
           </Card>
         ) : (
           /* Drill Complete */
-          <Card className="p-8 text-center space-y-6">
-            <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+          <Card className="p-8 text-center space-y-6 animate-scale-in">
+            <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center animate-fade-in" style={{ animationDelay: '100ms', animationFillMode: 'backwards' }}>
               <Check className="h-8 w-8 text-primary" />
             </div>
 
-            <div>
+            <div className="animate-fade-in" style={{ animationDelay: '150ms', animationFillMode: 'backwards' }}>
               <h2 className="text-xl font-medium mb-2">
                 That's enough for now.
               </h2>
@@ -423,7 +424,7 @@ const MentalGym = () => {
             </div>
 
             {justUnlockedLevel && (
-              <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">
+              <div className="p-4 rounded-xl bg-primary/5 border border-primary/20 animate-scale-in" style={{ animationDelay: '250ms', animationFillMode: 'backwards' }}>
                 <p className="text-primary font-medium">
                   Level {justUnlockedLevel} unlocked
                 </p>
@@ -433,11 +434,11 @@ const MentalGym = () => {
               </div>
             )}
 
-            <div className="flex flex-col gap-3">
-              <Button variant="outline" onClick={doAnotherDrill}>
+            <div className="flex flex-col gap-3 animate-fade-in" style={{ animationDelay: '200ms', animationFillMode: 'backwards' }}>
+              <Button variant="outline" className="transition-all duration-300 hover:scale-[1.02]" onClick={doAnotherDrill}>
                 Do another drill
               </Button>
-              <Button onClick={finishSession}>
+              <Button className="transition-all duration-300 hover:scale-[1.02]" onClick={finishSession}>
                 Finish for now
               </Button>
             </div>
