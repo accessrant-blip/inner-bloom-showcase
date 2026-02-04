@@ -9,6 +9,8 @@ interface LiveRegionProps {
 /**
  * A visually hidden live region for screen reader announcements
  * Use this component when you need to announce dynamic content changes
+ * 
+ * For global announcements, prefer using the `announce` function from useAccessibility()
  */
 export function LiveRegion({ 
   message, 
@@ -57,5 +59,29 @@ export function LiveRegion({
     >
       {announcement}
     </div>
+  );
+}
+
+/**
+ * Utility component to provide status text alongside visual indicators
+ * Use this when color alone conveys meaning (e.g., online/offline status)
+ */
+export function StatusIndicator({ 
+  status, 
+  label,
+  className = '' 
+}: { 
+  status: 'success' | 'warning' | 'error' | 'info';
+  label: string;
+  className?: string;
+}) {
+  return (
+    <span 
+      className={`status-indicator ${className}`}
+      data-status={status}
+    >
+      <span className="sr-only">{status}: </span>
+      {label}
+    </span>
   );
 }

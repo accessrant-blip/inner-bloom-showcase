@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { 
-  User, Edit, AlertCircle, Mail, Shield, FileText, ChevronRight
+  User, Edit, AlertCircle, Mail, Shield, FileText, ChevronRight, Accessibility
 } from "lucide-react";
 import { EditProfileModal } from "@/components/profile/EditProfileModal";
 import { EmergencyModal } from "@/components/profile/EmergencyModal";
@@ -16,6 +16,7 @@ import { WellnessToolkit } from "@/components/profile/WellnessToolkit";
 import { AIReflection } from "@/components/profile/AIReflection";
 import { SafetyPolicy } from "@/components/profile/SafetyPolicy";
 import FeedbackForm from "@/components/profile/FeedbackForm";
+import { AccessibilitySettings } from "@/components/accessibility/AccessibilitySettings";
 
 export default function Profile() {
   const [user, setUser] = useState<any>(null);
@@ -153,15 +154,31 @@ export default function Profile() {
 
         {/* Tabs for Profile Sections */}
         <Tabs defaultValue="private-info" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 rounded-xl">
-            <TabsTrigger value="private-info" className="rounded-lg">Private Info</TabsTrigger>
-            <TabsTrigger value="ai-reflection" className="rounded-lg">AI Reflection</TabsTrigger>
-            <TabsTrigger value="wellness-toolkit" className="rounded-lg">Wellness Toolkit</TabsTrigger>
-            <TabsTrigger value="safety-policy" className="rounded-lg">Safety & Policy</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-5 rounded-xl h-auto p-1">
+            <TabsTrigger value="private-info" className="rounded-lg text-xs sm:text-sm py-2 px-1 sm:px-3">
+              Private Info
+            </TabsTrigger>
+            <TabsTrigger value="accessibility" className="rounded-lg text-xs sm:text-sm py-2 px-1 sm:px-3">
+              <Accessibility className="h-4 w-4 sm:mr-1" aria-hidden="true" />
+              <span className="hidden sm:inline">Accessibility</span>
+            </TabsTrigger>
+            <TabsTrigger value="ai-reflection" className="rounded-lg text-xs sm:text-sm py-2 px-1 sm:px-3">
+              AI Reflection
+            </TabsTrigger>
+            <TabsTrigger value="wellness-toolkit" className="rounded-lg text-xs sm:text-sm py-2 px-1 sm:px-3">
+              Wellness
+            </TabsTrigger>
+            <TabsTrigger value="safety-policy" className="rounded-lg text-xs sm:text-sm py-2 px-1 sm:px-3">
+              Safety
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="private-info" className="mt-6">
             <PrivateInfoSection userId={user?.id} />
+          </TabsContent>
+
+          <TabsContent value="accessibility" className="mt-6">
+            <AccessibilitySettings />
           </TabsContent>
 
           <TabsContent value="ai-reflection" className="mt-6">

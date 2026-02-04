@@ -45,22 +45,27 @@ const Navigation = () => {
   const isDark = resolvedTheme === "dark";
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
+    <nav 
+      className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border"
+      role="navigation"
+      aria-label="Main navigation"
+    >
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <img src={rantfreeLogo} alt="RantFree logo" className="w-8 h-8 rounded-lg object-cover" />
+          <a href="/" className="flex items-center space-x-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
+            <img src={rantfreeLogo} alt="" className="w-8 h-8 rounded-lg object-cover" aria-hidden="true" />
             <span className="font-bold text-xl text-foreground">RantFree</span>
-          </div>
+          </a>
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8" role="menubar">
             {navLinks.map((link) => (
               <button
                 key={link.name}
                 onClick={() => handleNavClick(link.href)}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors min-h-[44px] px-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:rounded-md"
+                role="menuitem"
               >
                 {link.name}
               </button>
@@ -101,13 +106,13 @@ const Navigation = () => {
                 variant="ghost"
                 size="icon"
                 onClick={toggleTheme}
-                className="rounded-full hover:bg-muted"
+                className="rounded-full hover:bg-muted min-h-[44px] min-w-[44px]"
                 aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
               >
                 {isDark ? (
-                  <Sun className="h-5 w-5" />
+                  <Sun className="h-5 w-5" aria-hidden="true" />
                 ) : (
-                  <Moon className="h-5 w-5" />
+                  <Moon className="h-5 w-5" aria-hidden="true" />
                 )}
               </Button>
             )}
@@ -115,30 +120,40 @@ const Navigation = () => {
               variant="ghost"
               size="sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              className="min-h-[44px] min-w-[44px]"
             >
-              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {isMenuOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
             </Button>
           </div>
         </div>
         
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border">
+          <div 
+            id="mobile-menu"
+            className="md:hidden py-4 border-t border-border"
+            role="menu"
+            aria-label="Mobile navigation menu"
+          >
             <div className="flex flex-col space-y-4">
               {navLinks.map((link) => (
                 <button
                   key={link.name}
                   onClick={() => handleNavClick(link.href)}
-                  className="text-muted-foreground hover:text-foreground transition-colors px-4 text-left"
+                  className="text-muted-foreground hover:text-foreground transition-colors px-4 text-left min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+                  role="menuitem"
                 >
                   {link.name}
                 </button>
               ))}
               <div className="flex flex-col space-y-2 px-4 pt-4">
-                <Button variant="ghost" className="justify-start" onClick={() => openAuthModal("login")}>
+                <Button variant="ghost" className="justify-start min-h-[44px]" onClick={() => openAuthModal("login")}>
                   Sign In
                 </Button>
-                <Button variant="wellness" className="justify-start" onClick={() => openAuthModal("signup")}>
+                <Button variant="wellness" className="justify-start min-h-[44px]" onClick={() => openAuthModal("signup")}>
                   Get Started
                 </Button>
               </div>

@@ -64,30 +64,40 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   // Mobile Bottom Navigation
   const MobileBottomNav = () => (
-    <nav className="fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-md border-t border-border z-50 pb-safe">
+    <nav 
+      className="fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-md border-t border-border z-50 pb-safe"
+      role="navigation"
+      aria-label="Mobile navigation"
+    >
       <div className="flex items-center justify-around px-2 py-2">
         {navItems.slice(0, 4).map((item) => (
           <button
             key={item.path}
             onClick={() => handleNavigation(item.path)}
-            className={`flex flex-col items-center justify-center min-h-[48px] min-w-[48px] px-2 py-1 rounded-xl transition-all ${
+            aria-label={item.label}
+            aria-current={isActive(item.path) ? "page" : undefined}
+            className={`flex flex-col items-center justify-center min-h-[48px] min-w-[48px] px-2 py-1 rounded-xl transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
               isActive(item.path)
                 ? "text-primary bg-primary/10"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
-            <item.icon className="h-5 w-5 mb-1" />
-            <span className="text-[10px] font-medium leading-tight">{item.label.split(' ')[0]}</span>
+            <item.icon className="h-5 w-5 mb-1" aria-hidden="true" />
+            <span className="text-[10px] font-medium leading-tight" aria-hidden="true">{item.label.split(' ')[0]}</span>
           </button>
         ))}
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
           <SheetTrigger asChild>
-            <button className="flex flex-col items-center justify-center min-h-[48px] min-w-[48px] px-2 py-1 rounded-xl text-muted-foreground hover:text-foreground transition-all">
-              <Menu className="h-5 w-5 mb-1" />
-              <span className="text-[10px] font-medium leading-tight">More</span>
+            <button 
+              className="flex flex-col items-center justify-center min-h-[48px] min-w-[48px] px-2 py-1 rounded-xl text-muted-foreground hover:text-foreground transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              aria-label="Open more menu options"
+              aria-expanded={mobileMenuOpen}
+            >
+              <Menu className="h-5 w-5 mb-1" aria-hidden="true" />
+              <span className="text-[10px] font-medium leading-tight" aria-hidden="true">More</span>
             </button>
           </SheetTrigger>
-          <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-3xl pb-safe">
+          <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-3xl pb-safe" aria-label="Additional menu options">
             <div className="py-4 space-y-2">
               <h3 className="text-lg font-semibold text-foreground mb-4 px-2">Menu</h3>
               {navItems.slice(4).map((item) => (
@@ -95,13 +105,14 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                   key={item.path}
                   variant="ghost"
                   onClick={() => handleNavigation(item.path)}
+                  aria-current={isActive(item.path) ? "page" : undefined}
                   className={`w-full justify-start min-h-[48px] text-base rounded-xl ${
                     isActive(item.path)
                       ? "bg-primary text-primary-foreground"
                       : "hover:bg-muted"
                   }`}
                 >
-                  <item.icon className="h-5 w-5 mr-3" />
+                  <item.icon className="h-5 w-5 mr-3" aria-hidden="true" />
                   {item.label}
                 </Button>
               ))}
@@ -109,11 +120,12 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                 <Button
                   variant="ghost"
                   onClick={() => handleNavigation("/profile")}
+                  aria-current={isActive("/profile") ? "page" : undefined}
                   className={`w-full justify-start min-h-[48px] text-base rounded-xl ${
                     isActive("/profile") ? "bg-primary text-primary-foreground" : "hover:bg-muted"
                   }`}
                 >
-                  <User className="h-5 w-5 mr-3" />
+                  <User className="h-5 w-5 mr-3" aria-hidden="true" />
                   Profile
                 </Button>
                 <ThemeToggle showLabel={true} className="min-h-[48px] text-base" />
@@ -122,7 +134,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                   onClick={handleSignOut}
                   className="w-full justify-start min-h-[48px] text-base rounded-xl hover:bg-destructive/10 text-destructive"
                 >
-                  <LogOut className="h-5 w-5 mr-3" />
+                  <LogOut className="h-5 w-5 mr-3" aria-hidden="true" />
                   Sign Out
                 </Button>
               </div>
@@ -139,43 +151,49 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       className={`fixed left-0 top-0 h-full bg-card/80 backdrop-blur-sm border-r border-border transition-all duration-300 z-50 ${
         sidebarOpen ? "w-64" : "w-16"
       } overflow-hidden`}
+      role="navigation"
+      aria-label="Desktop navigation"
     >
       <div className="flex flex-col h-full">
         {/* Header */}
         <div className="p-4 border-b border-border flex items-center justify-between">
           {sidebarOpen && (
             <div className="flex items-center space-x-2">
-              <img src={rantfreeLogo} alt="RantFree mental wellness app logo" className="w-8 h-8 rounded-lg object-cover" />
+              <img src={rantfreeLogo} alt="" className="w-8 h-8 rounded-lg object-cover" aria-hidden="true" />
               <span className="font-semibold text-lg text-foreground">RantFree</span>
             </div>
           )}
           {!sidebarOpen && (
-            <img src={rantfreeLogo} alt="RantFree logo" className="w-8 h-8 rounded-lg object-cover mx-auto" />
+            <img src={rantfreeLogo} alt="" className="w-8 h-8 rounded-lg object-cover mx-auto" aria-hidden="true" />
           )}
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="rounded-xl hover:bg-primary/10"
+            aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+            aria-expanded={sidebarOpen}
           >
-            {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {sidebarOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
           </Button>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+        <nav className="flex-1 p-3 space-y-1 overflow-y-auto" aria-label="Main menu">
           {navItems.map((item) => (
             <Button
               key={item.path}
               variant="ghost"
               onClick={() => navigate(item.path)}
+              aria-label={!sidebarOpen ? item.label : undefined}
+              aria-current={isActive(item.path) ? "page" : undefined}
               className={`w-full justify-start rounded-xl transition-all duration-200 ${
                 isActive(item.path)
                   ? "bg-primary text-primary-foreground hover:bg-primary/90"
                   : "hover:bg-muted"
               } ${!sidebarOpen && "justify-center"}`}
             >
-              <item.icon className={`h-5 w-5 ${sidebarOpen ? "mr-3" : ""}`} />
+              <item.icon className={`h-5 w-5 ${sidebarOpen ? "mr-3" : ""}`} aria-hidden="true" />
               {sidebarOpen && <span>{item.label}</span>}
             </Button>
           ))}
@@ -186,22 +204,25 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           <Button
             variant="ghost"
             onClick={() => navigate("/profile")}
+            aria-label={!sidebarOpen ? "Profile" : undefined}
+            aria-current={isActive("/profile") ? "page" : undefined}
             className={`w-full justify-start rounded-xl hover:bg-muted ${
               !sidebarOpen && "justify-center"
             }`}
           >
-            <User className={`h-5 w-5 ${sidebarOpen ? "mr-3" : ""}`} />
+            <User className={`h-5 w-5 ${sidebarOpen ? "mr-3" : ""}`} aria-hidden="true" />
             {sidebarOpen && <span>Profile</span>}
           </Button>
           <ThemeToggle showLabel={sidebarOpen} className={!sidebarOpen ? "justify-center" : ""} />
           <Button
             variant="ghost"
             onClick={handleSignOut}
+            aria-label={!sidebarOpen ? "Sign Out" : undefined}
             className={`w-full justify-start rounded-xl hover:bg-destructive/10 text-destructive ${
               !sidebarOpen && "justify-center"
             }`}
           >
-            <LogOut className={`h-5 w-5 ${sidebarOpen ? "mr-3" : ""}`} />
+            <LogOut className={`h-5 w-5 ${sidebarOpen ? "mr-3" : ""}`} aria-hidden="true" />
             {sidebarOpen && <span>Sign Out</span>}
           </Button>
         </div>
@@ -216,9 +237,12 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
       {/* Main Content */}
       <main
+        id="main-content"
         className={`flex-1 min-h-screen bg-background transition-all duration-300 ${
           isMobile ? "pb-20" : sidebarOpen ? "ml-64" : "ml-16"
         }`}
+        role="main"
+        aria-label="Main content"
       >
         {/* Page Content */}
         <div className="animate-fade-in">{children}</div>
