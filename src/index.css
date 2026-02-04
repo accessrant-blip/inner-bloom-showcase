@@ -251,6 +251,209 @@ All colors MUST be HSL format for consistent theming.
   display: none !important;
 }
 
+/* ================================
+   ACCESSIBILITY MODES
+   ================================ */
+
+/* Large Text Mode */
+.accessibility-large-text {
+  font-size: 112.5%; /* 18px base instead of 16px */
+}
+
+.accessibility-large-text body {
+  line-height: 1.7;
+}
+
+.accessibility-large-text p,
+.accessibility-large-text span,
+.accessibility-large-text div,
+.accessibility-large-text li {
+  font-size: 1.125em;
+}
+
+.accessibility-large-text h1 {
+  font-size: 2.5rem;
+}
+
+.accessibility-large-text h2 {
+  font-size: 2rem;
+}
+
+.accessibility-large-text h3 {
+  font-size: 1.5rem;
+}
+
+.accessibility-large-text button,
+.accessibility-large-text input,
+.accessibility-large-text textarea,
+.accessibility-large-text select {
+  font-size: 1.125rem;
+  min-height: 48px;
+}
+
+/* High Contrast Mode */
+.accessibility-high-contrast {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 0%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 0%;
+  --primary: 220 100% 35%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 96%;
+  --secondary-foreground: 0 0% 0%;
+  --muted: 0 0% 92%;
+  --muted-foreground: 0 0% 25%;
+  --accent: 0 0% 96%;
+  --accent-foreground: 0 0% 0%;
+  --border: 0 0% 40%;
+  --input: 0 0% 100%;
+  --ring: 220 100% 35%;
+}
+
+.accessibility-high-contrast.dark {
+  --background: 0 0% 0%;
+  --foreground: 0 0% 100%;
+  --card: 0 0% 5%;
+  --card-foreground: 0 0% 100%;
+  --primary: 50 100% 50%;
+  --primary-foreground: 0 0% 0%;
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 0 0% 20%;
+  --muted-foreground: 0 0% 80%;
+  --accent: 0 0% 15%;
+  --accent-foreground: 0 0% 100%;
+  --border: 0 0% 60%;
+  --input: 0 0% 10%;
+  --ring: 50 100% 50%;
+}
+
+.accessibility-high-contrast *:focus-visible {
+  outline: 3px solid hsl(var(--ring)) !important;
+  outline-offset: 2px !important;
+}
+
+.accessibility-high-contrast a,
+.accessibility-high-contrast button {
+  text-decoration-thickness: 2px;
+}
+
+/* Reduce Motion Mode */
+.accessibility-reduce-motion *,
+.accessibility-reduce-motion *::before,
+.accessibility-reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Voice First Mode - Show voice buttons more prominently */
+.accessibility-voice-first [data-voice-input] {
+  order: -1;
+  transform: scale(1.1);
+}
+
+.accessibility-voice-first .voice-input-button {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+/* ================================
+   GLOBAL ACCESSIBILITY IMPROVEMENTS
+   ================================ */
+
+/* Ensure minimum tap target size */
+button,
+a,
+input,
+select,
+textarea,
+[role="button"],
+[role="link"],
+[role="checkbox"],
+[role="switch"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Inline links exception */
+p a,
+span a,
+li a {
+  min-height: auto;
+  min-width: auto;
+}
+
+/* Focus visible styles for keyboard navigation */
+:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Remove focus outline for mouse clicks */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Screen reader only class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Make sr-only visible when focused (for skip links) */
+.sr-only:focus,
+.sr-only:focus-visible {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Ensure text remains readable during font loading */
+body {
+  font-display: swap;
+}
+
+/* Status indicators with text labels (not color alone) */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-indicator::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-indicator[data-status="success"]::before {
+  background-color: hsl(var(--success));
+}
+
+.status-indicator[data-status="warning"]::before {
+  background-color: hsl(var(--warning));
+}
+
+.status-indicator[data-status="error"]::before {
+  background-color: hsl(var(--destructive));
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
