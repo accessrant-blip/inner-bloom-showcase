@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "18",
+    title: "What Helps You Feel Less Alone? 💙",
+    excerpt: "Feeling lonely isn't always about being alone. Discover the little everyday moments that can make a big impact on your sense of connection.",
+    date: "2026-02-04",
+    readTime: "4 min",
+    category: "Community",
+  },
+  {
     id: "17",
     title: "Emotional Regulation: How to Hit the Reset Button After a Rough Day 🔄",
     excerpt: "Some days just need to end. Learn how an emotional reset can help you end the day on a good note instead of letting it hang over you.",
@@ -30,14 +38,6 @@ const blogPreviews: BlogPreview[] = [
     date: "2026-01-24",
     readTime: "5 min",
     category: "Community",
-  },
-  {
-    id: "15",
-    title: "Emotional Regulation: A Simple Guide to Stop Overreacting 🧘‍♀️",
-    excerpt: "Ever find yourself reacting before you even think? Learn how to manage your emotions better with these simple steps.",
-    date: "2026-01-23",
-    readTime: "6 min",
-    category: "Self Improvement",
   },
 ];
 
