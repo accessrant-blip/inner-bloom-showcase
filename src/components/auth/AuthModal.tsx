@@ -69,16 +69,16 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
 
         if (error) throw error;
 
-        // OPTIMISTIC: Close modal and navigate immediately on auth success
-        // Don't wait for profile fetch, analytics, or any side effects
-        onOpenChange(false);
-        navigate("/dashboard", { replace: true });
-        
-        // Show toast after navigation (non-blocking)
         toast({
           title: "Welcome back!",
           description: "You've successfully logged in.",
         });
+        
+        onOpenChange(false);
+        // Use setTimeout to ensure navigation happens after modal closes
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 0);
       } else {
         const redirectUrl = `${window.location.origin}/dashboard`;
         
@@ -195,7 +195,7 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Signing you in…
+                Please wait...
               </>
             ) : (
               isLogin ? "Sign In" : "Create Account"

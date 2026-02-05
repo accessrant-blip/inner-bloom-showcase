@@ -32,37 +32,27 @@ const Dashboard = () => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    // OPTIMISTIC: Get user ID immediately from cached session
-    // Profile data loads lazily after render - doesn't block UI
-    let mounted = true;
-    
-    const loadUserData = async () => {
-      // Quick session check (uses cache)
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!mounted) return;
-      
-      setCurrentUserId(user?.id || null);
-      
-      // LAZY LOAD: Profile fetch happens after UI is visible
-      if (user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('username, avatar_url')
-          .eq('user_id', user.id)
-          .single();
-        
-        if (!mounted) return;
-        if (profile) {
-          if (profile.username) setUsername(profile.username);
-          if (profile.avatar_url) setAvatarUrl(profile.avatar_url);
-        }
-      }
-    };
-    
-    loadUserData();
-    
-    return () => { mounted = false; };
+    getCurrentUser();
   }, []);
+
+  const getCurrentUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    setCurrentUserId(user?.id || null);
+    
+    if (user) {
+      // Fetch username and avatar from profile
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('username, avatar_url')
+        .eq('user_id', user.id)
+        .single();
+      
+      if (profile) {
+        if (profile.username) setUsername(profile.username);
+        if (profile.avatar_url) setAvatarUrl(profile.avatar_url);
+      }
+    }
+  };
 
   const startVoiceRecording = async () => {
     try {

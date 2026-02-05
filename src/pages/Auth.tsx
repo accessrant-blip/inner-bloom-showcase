@@ -21,7 +21,6 @@ export default function Auth() {
   const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [verificationEmail, setVerificationEmail] = useState("");
   const [awaitingVerification, setAwaitingVerification] = useState(false);
-  const [checkingSession, setCheckingSession] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { resolvedTheme, setTheme } = useTheme();
@@ -31,21 +30,18 @@ export default function Auth() {
   }, []);
 
   useEffect(() => {
-    // OPTIMISTIC: Set up auth listener FIRST (before getSession)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    // Check if user is already logged in
+    supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        // Immediate redirect on session detection
-        navigate("/dashboard", { replace: true });
+        navigate("/dashboard");
       }
     });
 
-    // Then check existing session - uses cached data when available
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
-        navigate("/dashboard", { replace: true });
+        navigate("/dashboard");
       }
-      // Mark session check complete (show form)
-      setCheckingSession(false);
     });
 
     return () => subscription.unsubscribe();
@@ -89,16 +85,10 @@ export default function Auth() {
 
         if (error) throw error;
 
-        // OPTIMISTIC: Navigate immediately on auth success
-        // Don't wait for profile fetch, analytics, or side effects
-        navigate("/dashboard", { replace: true });
-        
-        // Show toast after navigation (non-blocking)
         toast({
           title: "Welcome back!",
           description: "You've successfully logged in.",
         });
-        return; // Exit early, auth listener will handle rest
       } else {
         const redirectUrl = `${window.location.origin}/dashboard`;
         
@@ -143,18 +133,6 @@ export default function Auth() {
   };
 
   const isDark = resolvedTheme === "dark";
-
-  // Show minimal loading while checking session (max 500ms feel)
-  if (checkingSession) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="h-6 w-6 animate-spin text-primary mx-auto mb-2" />
-          <p className="text-sm text-muted-foreground">Checking session…</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -259,7 +237,7 @@ export default function Auth() {
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Signing you in…
+                    Please wait...
                   </>
                 ) : (
                   isLogin ? "Sign In" : "Create Account"
