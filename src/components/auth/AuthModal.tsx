@@ -69,16 +69,14 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "signup" }:
 
         if (error) throw error;
 
+        // Navigate immediately — don't wait for modal animation
+        onOpenChange(false);
+        navigate("/dashboard");
+        
         toast({
           title: "Welcome back!",
           description: "You've successfully logged in.",
         });
-        
-        onOpenChange(false);
-        // Use setTimeout to ensure navigation happens after modal closes
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 0);
       } else {
         const redirectUrl = `${window.location.origin}/dashboard`;
         
