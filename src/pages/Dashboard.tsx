@@ -37,21 +37,21 @@ const Dashboard = () => {
 
   const getCurrentUser = async () => {
     const { data: { user } } = await supabase.auth.getUser();
-    setCurrentUserId(user?.id || null);
-    
-    if (user) {
-      // Fetch username and avatar from profile
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('username, avatar_url')
-        .eq('user_id', user.id)
-        .single();
-      
-      if (profile) {
-        if (profile.username) setUsername(profile.username);
-        if (profile.avatar_url) setAvatarUrl(profile.avatar_url);
-      }
+    if (!user) {
+      setCurrentUserId(null);
+      return;
     }
+    setCurrentUserId(user.id);
+    
+    // Fetch profile in parallel — don't block on getUser first
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('username, avatar_url')
+      .eq('user_id', user.id)
+      .maybeSingle();
+    
+    if (profile?.username) setUsername(profile.username);
+    if (profile?.avatar_url) setAvatarUrl(profile.avatar_url);
   };
 
   const startVoiceRecording = async () => {
