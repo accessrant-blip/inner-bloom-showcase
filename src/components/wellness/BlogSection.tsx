@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "19",
+    title: "How Violence Messes With Your Head: What You Need to Know 🧠",
+    excerpt: "Violence isn't just physical — it can be emotional, verbal, mental, or sexual. Understanding this can help you stop blaming yourself.",
+    date: "2026-02-07",
+    readTime: "7 min",
+    category: "Mental Health",
+  },
+  {
     id: "18",
     title: "What Helps You Feel Less Alone? 💙",
     excerpt: "Feeling lonely isn't always about being alone. Discover the little everyday moments that can make a big impact on your sense of connection.",
@@ -30,14 +38,6 @@ const blogPreviews: BlogPreview[] = [
     date: "2026-01-27",
     readTime: "5 min",
     category: "Wellness Tips",
-  },
-  {
-    id: "16",
-    title: "What Emotional Maturity Really Looks Like 🧠",
-    excerpt: "Being emotionally mature isn't about being perfect. It's about knowing yourself, taking responsibility, and reacting in healthy ways.",
-    date: "2026-01-24",
-    readTime: "5 min",
-    category: "Community",
   },
 ];
 
