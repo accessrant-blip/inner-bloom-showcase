@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { 
   Home, MessageSquare, BookOpen, Heart, Brain, 
-  Sparkles, Wind, Users, LogOut, Menu, X, User, FileText, ShieldAlert
+  Sparkles, Wind, Users, LogOut, Menu, X, User, FileText
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -36,13 +36,12 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const navItems = [
     { path: "/dashboard", icon: Home, label: "Dashboard" },
     { path: "/rant", icon: MessageSquare, label: "Rant Space" },
-    { path: "/panic-corner", icon: ShieldAlert, label: "Panic Corner" },
     { path: "/book-help", icon: Heart, label: "Book Help" },
     { path: "/kai", icon: Brain, label: "Chat with Kai" },
     { path: "/instant-relief", icon: Sparkles, label: "Instant Relief" },
     { path: "/soul-stream", icon: Wind, label: "Soul Stream" },
     { path: "/connect", icon: Users, label: "Connect" },
-    { path: "/espresso", icon: Sparkles, label: "Espresso" },
+    { path: "/espresso", icon: Sparkles, label: "Espresso ⚡" },
     { path: "/learn-grow", icon: BookOpen, label: "Learn & Grow" },
     { path: "/blog", icon: FileText, label: "Blog" },
   ];

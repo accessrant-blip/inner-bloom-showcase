@@ -55,7 +55,6 @@ const Contact = lazy(() => import("./pages/Contact"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
-const PanicCorner = lazy(() => import("./pages/PanicCorner"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -90,7 +89,6 @@ const App = () => {
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/terms-of-service" element={<TermsOfService />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
-                <Route path="/panic-corner" element={<AppLayout><PanicCorner /></AppLayout>} />
                 
                 {/* App routes with persistent layout */}
                 <Route path="/dashboard" element={<AppLayout><Dashboard /></AppLayout>} />
