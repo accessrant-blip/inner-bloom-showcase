@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { AccessibilityProvider } from "@/components/accessibility/AccessibilityProvider";
 import { SkipLink } from "@/components/accessibility/SkipLink";
+import { FloatingAccessibilityButton } from "@/components/accessibility/FloatingAccessibilityButton";
 import AppLayout from "./components/layout/AppLayout";
 import { Loader2 } from "lucide-react";
 
@@ -74,6 +75,7 @@ const App = () => {
             <Sonner />
             <BrowserRouter>
               <SkipLink />
+              <FloatingAccessibilityButton />
               <Suspense fallback={<PageLoader />}>
                 <Routes>
                   {/* Public routes */}
