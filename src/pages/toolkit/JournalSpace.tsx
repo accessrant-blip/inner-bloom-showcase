@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useJournalPrompts } from "@/hooks/useJournalPrompts";
+import WritingPrompts from "@/components/journal/WritingPrompts";
 
 interface JournalEntry {
   id: string;
@@ -32,7 +34,8 @@ export default function JournalSpace() {
   const [mood, setMood] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [deletingEntries, setDeletingEntries] = useState<DeletingEntry[]>([]);
-
+  const { prompts, dismissed, refresh, dismiss, selectPrompt } = useJournalPrompts(mood);
+  const showPrompts = !dismissed && !content.trim() && !editingEntry;
   useEffect(() => {
     fetchEntries();
   }, []);
@@ -255,6 +258,19 @@ export default function JournalSpace() {
                 />
               </div>
               <div>
+                {showPrompts && (
+                  <div className="mb-3">
+                    <WritingPrompts
+                      prompts={prompts}
+                      onSelectPrompt={(prompt) => {
+                        selectPrompt(prompt);
+                        setContent(prompt + " ");
+                      }}
+                      onRefresh={refresh}
+                      onDismiss={dismiss}
+                    />
+                  </div>
+                )}
                 <Textarea
                   placeholder="Let your thoughts flow..."
                   value={content}
