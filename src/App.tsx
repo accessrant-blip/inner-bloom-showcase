@@ -14,14 +14,8 @@ import { Loader2 } from "lucide-react";
 // Eagerly load the landing page for best LCP
 import Index from "./pages/Index";
 
-// Preload Dashboard for fast post-login navigation
-const dashboardImport = () => import("./pages/Dashboard");
-const Dashboard = lazy(dashboardImport);
-// Trigger preload when auth page or modal is likely (warm the chunk)
-if (typeof window !== 'undefined') {
-  // Preload after initial paint so it doesn't block LCP
-  requestIdleCallback?.(() => dashboardImport()) ?? setTimeout(() => dashboardImport(), 2000);
-}
+// Lazy load Dashboard - preload is triggered on user interaction (hover/focus on login)
+const Dashboard = lazy(() => import("./pages/Dashboard"));
 
 // Lazy load all other pages for code-splitting
 const SoulStream = lazy(() => import("./pages/SoulStream"));
