@@ -3550,6 +3550,88 @@ That's all there is to it.
     tags: ["meditation", "mindfulness", "wellness tips", "self-care", "breathing", "mental health"],
     featured: false,
   },
+  {
+    id: "21",
+    title: "10 Easy Journaling Tips (Plus Prompts to Get You Started) 📝",
+    excerpt: "Journaling doesn't need to be a big deal to work. You don't have to write a lot, dig super deep, or make it perfect. All you need is honesty.",
+    content: `Journaling doesn't need to be a big deal to work. You don't have to write a lot, dig super deep, or make it perfect.
+
+Basically, journaling is just a way to **check in with yourself**. It's about noticing your feelings, clearing your head, and getting some space between your thoughts and how you react to them.
+
+You don't need to be consistent or disciplined to start. All you need is **honesty**.
+
+## 🌿 Why Journaling Helps Your Mental Health
+
+Psychologically speaking, journaling can help by:
+
+- ✅ **Lessening emotional overload**
+- ✅ **Slowing down racing thoughts**
+- ✅ **Helping you understand yourself better**
+- ✅ **Helping you manage your emotions**
+- ✅ **Bringing clarity when you're stressed**
+
+Even a **few minutes** can make a difference.
+
+## 📝 Simple Guidelines to Keep In Mind
+
+- 🚫 **Don't judge** what you write
+- ✏️ **Spelling and grammar** don't matter
+- 📄 **Short entries** are totally fine
+- 🗓️ **Don't feel bad** if you skip days
+- 🛑 **Stop** if it gets to be too much
+
+Your journal should feel like a **safe place**, not another demand on your time.
+
+## 🌱 How to Journal Without Stress
+
+Instead of asking, *"What should I write?"* ask yourself:
+
+> **"What needs to come out right now?"**
+
+Let writing be a **release**, not another chore.
+
+## ✅ 10 Journaling Prompts to Get You Going (Pick One)
+
+- 💭 **Right now, I feel…**
+- 🧠 **Something that's been on my mind lately is…**
+- 🚶 **I've been avoiding…**
+- 🌊 **Something that affected me today was…**
+- 💆 **My body feels…**
+- 💛 **I wish someone understood…**
+- 🗣️ **If I could be really honest, I would say…**
+- 🌟 **I need more…**
+- ☀️ **A small thing that helped me today was…**
+- 🤗 **If I was kind to myself, I would say…**
+
+You don't have to answer them all. Just **pick one** that speaks to you.
+
+## 🌿 When Journaling Gets Hard
+
+If writing brings up strong feelings:
+
+- ⏸️ **Pause**
+- 🌬️ **Breathe slowly**
+- 🧘 **Take a moment to center yourself**
+- 🚪 **Step away if you need to**
+
+Journaling should help you **heal**, not make things worse.
+
+## 💛 One Last Thing
+
+Journaling isn't about **fixing yourself**.
+
+It's about **listening to yourself** – without anyone interrupting, judging, or pressuring you.
+
+Sometimes, that's all your mind needs.
+
+👉 **Ready to start journaling? Try the Journal Space on RantFree.in today.**`,
+    author: "RantFree Team",
+    date: "2026-02-08",
+    readTime: "4 min",
+    category: "Wellness Tips",
+    tags: ["journaling", "mental health", "self-care", "wellness tips", "prompts", "emotional wellness"],
+    featured: true,
+  },
 ];
 
 // Markdown-like content renderer
