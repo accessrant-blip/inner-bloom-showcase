@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "21",
+    title: "10 Easy Journaling Tips (Plus Prompts to Get You Started) 📝",
+    excerpt: "Journaling doesn't need to be a big deal to work. You don't have to write a lot, dig super deep, or make it perfect. All you need is honesty.",
+    date: "2026-02-08",
+    readTime: "4 min",
+    category: "Wellness Tips",
+  },
+  {
     id: "19",
     title: "How Violence Messes With Your Head: What You Need to Know 🧠",
     excerpt: "Violence isn't just physical — it can be emotional, verbal, mental, or sexual. Understanding this can help you stop blaming yourself.",
@@ -30,14 +38,6 @@ const blogPreviews: BlogPreview[] = [
     date: "2026-02-04",
     readTime: "4 min",
     category: "Community",
-  },
-  {
-    id: "17",
-    title: "Emotional Regulation: How to Hit the Reset Button After a Rough Day 🔄",
-    excerpt: "Some days just need to end. Learn how an emotional reset can help you end the day on a good note instead of letting it hang over you.",
-    date: "2026-01-27",
-    readTime: "5 min",
-    category: "Wellness Tips",
   },
 ];
 
