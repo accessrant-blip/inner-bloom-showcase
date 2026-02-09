@@ -3632,6 +3632,169 @@ Sometimes, that's all your mind needs.
     tags: ["journaling", "mental health", "self-care", "wellness tips", "prompts", "emotional wellness"],
     featured: true,
   },
+  {
+    id: "stop-abandoning-yourself",
+    title: "How to Stop Abandoning Yourself (And Start Showing Up for You) 💛",
+    excerpt: "Abandoning yourself isn't some big, dramatic thing. It's saying yes when you really want to say no. It's ignoring what you need just to keep everyone happy. Learn how to recognize self-abandonment and start choosing yourself again.",
+    content: `Abandoning yourself isn't some big, dramatic thing.
+
+It's saying **yes** when you really want to say **no**.
+
+It's ignoring what you need just to keep everyone happy.
+
+It's staying quiet so people won't dislike you.
+
+It's pushing yourself even when you're tired because people need you.
+
+After a while, this makes a bad habit:
+
+> **You're always there for everyone else — but not for you.**
+
+This blog will help you get what ditching yourself means, why we do it, and how to stop, little by little.
+
+## 🌿 What Does Ditching Yourself Mean?
+
+Ditching yourself is when you:
+
+- 😶 **Ignore how you feel**
+- 🚫 **Break your own rules**
+- 🙈 **Make your needs seem unimportant**
+- 😟 **Go against what you know is right** to feel liked or safe
+
+It usually starts as a way to survive — mainly when telling people what you need wasn't safe or okay.
+
+So, if you struggle with this, it **doesn't** mean you're weak.
+
+> **It means you learned to survive by not listening to yourself.**
+
+## 🧠 Why We Ditch Ourselves
+
+Ditching ourselves often comes from:
+
+- 😰 **Being scared of fights**
+- 💔 **Being scared of dislike or being left**
+- 🤗 **Wanting to please everyone**
+- 🩹 **Having bad past experiences or emotional scars**
+- ⭐ **Getting praise for being easy or strong**
+
+Your brain learned:
+
+> *"If I disappear a little, I'll be safer."*
+
+## 🚨 Signs You Might Be Ditching Yourself
+
+You might relate to these:
+
+- 😓 **Feeling bad for resting**
+- 🤷 **Not knowing what you really want**
+- 🫠 **Putting others first**, even when you're wiped
+- 🙅 **Having a hard time saying no**
+- 😶 **Ignoring your own feelings**
+- 😤 **Feeling distant or angry later**
+
+These are just **signals**, not failures.
+
+## ✅ How to Stop Ditching Yourself (Real Steps)
+
+### 1️⃣ Start noticing when you go against yourself
+
+Ditching yourself happens in small ways.
+
+**Stop and ask:**
+
+- 💭 *"How am I feeling now?"*
+- 🤔 *"What do I really need?"*
+
+> **Knowing is the first step to being loyal to yourself.**
+
+### 2️⃣ Try choosing yourself in easy situations
+
+You don't have to make big changes right away.
+
+**Start small:**
+
+- 😌 Choosing to **rest**
+- 🗣️ Saying **what you prefer**
+- ⏸️ Saying *"let me think about it"*
+- 📱 **Not replying** right away
+
+> **Small things help you trust yourself again.**
+
+### 3️⃣ Be curious instead of guilty
+
+When you feel bad, don't listen to it.
+
+**Ask:**
+
+- 🤔 *"What am I scared of if I choose myself?"*
+
+> **Feeling bad usually hides old fears, not what's real now.**
+
+### 4️⃣ Learn to deal with being uncomfortable
+
+Choosing yourself might feel **weird** at first.
+
+That doesn't make it wrong.
+
+It means you're **changing a habit**.
+
+> **Being uncomfortable isn't the same as being in danger.**
+
+### 5️⃣ Check in with yourself every day
+
+Once a day, ask:
+
+- 🌅 *"What do I need today?"*
+- 📏 *"What rule would help me?"*
+- 💛 *"What would it look like to respect myself now?"*
+
+> **Getting close to yourself happens by doing it often.**
+
+### 6️⃣ Talk to yourself like you would to others
+
+Notice how kind you are to others.
+
+Now, try talking to yourself the same way:
+
+- 🤗 *"It makes sense that I feel this way."*
+- 😌 *"It's okay for me to need rest."*
+- 💛 *"I don't have to earn care."*
+
+## 🌱 What Choosing Yourself Looks Like
+
+Choosing yourself **doesn't** mean:
+
+- ❌ Hurting people
+- ❌ Being selfish
+- ❌ Cutting others off
+
+It **means**:
+
+- ✅ **Respecting what you need**
+- ✅ **Knowing your limits**
+- ✅ **Listening to yourself**
+- ✅ **Sticking with yourself**, even when it's hard
+
+## 💛 Final Thought
+
+You don't stop ditching yourself overnight.
+
+You stop **one moment at a time**.
+
+Each time you stop, listen, and care, you're telling yourself:
+
+> **"I'm here for you."**
+
+And that's where things start to get better.
+
+👉 **Need a safe space to express how you feel? RantFree.in is here for you.**`,
+    author: "RantFree Team",
+    date: "2026-02-09",
+    readTime: "6 min read",
+    category: "Mental Health",
+    tags: ["self-abandonment", "self-care", "mental health", "healing", "self-love", "personal growth"],
+    featured: true,
+  },
 ];
 
 // Markdown-like content renderer
