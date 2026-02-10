@@ -27,12 +27,15 @@ const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const filteredPosts = blogPosts.filter((post) => {
-    const matchesSearch = 
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+    const query = searchQuery.toLowerCase();
+    const matchesSearch = !searchQuery || 
+      post.title.toLowerCase().includes(query) ||
+      post.excerpt.toLowerCase().includes(query) ||
+      post.tags.some(tag => tag.toLowerCase().includes(query));
     
-    const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
+    const matchesCategory = selectedCategory === "All" || 
+      post.category === selectedCategory ||
+      post.tags.some(tag => tag.toLowerCase().includes(selectedCategory.toLowerCase()));
     
     return matchesSearch && matchesCategory;
   });
