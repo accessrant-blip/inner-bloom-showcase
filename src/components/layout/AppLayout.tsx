@@ -14,7 +14,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
-import rantfreeLogo from "@/assets/rantfree-logo.jpg";
+import rantfreeLogo from "@/assets/rantfree-logo.svg";
 
 interface AppLayoutProps {
   children: React.ReactNode;

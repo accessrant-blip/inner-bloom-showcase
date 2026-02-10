@@ -3,7 +3,7 @@ import { Menu, X, Moon, Sun } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import AuthModal from "@/components/auth/AuthModal";
-import rantfreeLogo from "@/assets/rantfree-logo.jpg";
+import rantfreeLogo from "@/assets/rantfree-logo.svg";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
