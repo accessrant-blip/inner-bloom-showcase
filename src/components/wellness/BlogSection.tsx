@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "sit-with-your-feelings",
+    title: "\"Sit With Your Feelings\": What Therapists Really Mean 🌿",
+    excerpt: "Ever heard a therapist say 'sit with your feelings' and thought, 'Huh?' This post explains what they mean and what it doesn't mean.",
+    date: "2026-02-10",
+    readTime: "6 min",
+    category: "Mental Health",
+  },
+  {
     id: "21",
     title: "10 Easy Journaling Tips (Plus Prompts to Get You Started) 📝",
     excerpt: "Journaling doesn't need to be a big deal to work. You don't have to write a lot, dig super deep, or make it perfect. All you need is honesty.",
@@ -30,14 +38,6 @@ const blogPreviews: BlogPreview[] = [
     date: "2026-02-07",
     readTime: "7 min",
     category: "Mental Health",
-  },
-  {
-    id: "18",
-    title: "What Helps You Feel Less Alone? 💙",
-    excerpt: "Feeling lonely isn't always about being alone. Discover the little everyday moments that can make a big impact on your sense of connection.",
-    date: "2026-02-04",
-    readTime: "4 min",
-    category: "Community",
   },
 ];
 
