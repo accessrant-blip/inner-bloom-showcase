@@ -162,12 +162,11 @@ const Blog = () => {
         )}
 
         {/* All Posts */}
-        <section aria-labelledby="all-posts-heading">
-          <h3 id="all-posts-heading" className="text-2xl font-semibold mb-6 text-foreground">
-            {selectedCategory === "All" ? "All Articles" : selectedCategory}
-          </h3>
-          
-          {regularPosts.length > 0 ? (
+        {regularPosts.length > 0 && (
+          <section aria-labelledby="all-posts-heading">
+            <h3 id="all-posts-heading" className="text-2xl font-semibold mb-6 text-foreground">
+              {selectedCategory === "All" ? "All Articles" : selectedCategory}
+            </h3>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {regularPosts.map((post) => (
                 <article key={post.id}>
@@ -206,19 +205,22 @@ const Blog = () => {
                 </article>
               ))}
             </div>
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">No articles found matching your search.</p>
-              <Button 
-                variant="link" 
-                onClick={() => { setSearchQuery(""); setSelectedCategory("All"); }}
-                className="mt-2"
-              >
-                Clear filters
-              </Button>
-            </div>
-          )}
-        </section>
+          </section>
+        )}
+
+        {/* Empty State - only when no posts at all */}
+        {filteredPosts.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No articles found matching your search.</p>
+            <Button 
+              variant="link" 
+              onClick={() => { setSearchQuery(""); setSelectedCategory("All"); }}
+              className="mt-2"
+            >
+              Clear filters
+            </Button>
+          </div>
+        )}
 
         {/* Newsletter CTA */}
         <section className="mt-16 bg-card rounded-2xl p-8 md:p-12 text-center border border-border" aria-labelledby="newsletter-heading">
