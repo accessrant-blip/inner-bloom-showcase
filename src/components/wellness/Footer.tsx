@@ -1,7 +1,7 @@
 import { Twitter, Instagram, Linkedin } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Link } from "react-router-dom";
-import rantfreeLogo from "@/assets/rantfree-logo.jpg";
+import rantfreeLogo from "@/assets/rantfree-logo.svg";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();

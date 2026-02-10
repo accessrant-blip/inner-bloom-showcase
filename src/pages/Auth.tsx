@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, Moon, Sun, ArrowLeft } from "lucide-react";
 import { validateAuth } from "@/lib/authValidation";
 import { useTheme } from "next-themes";
-import rantfreeLogo from "@/assets/rantfree-logo.jpg";
+import rantfreeLogo from "@/assets/rantfree-logo.svg";
 import EmailVerificationModal from "@/components/auth/EmailVerificationModal";
 
 export default function Auth() {
