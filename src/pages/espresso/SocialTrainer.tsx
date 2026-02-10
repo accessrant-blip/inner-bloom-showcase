@@ -3,23 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Slider } from "@/components/ui/slider";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import {
   ArrowLeft,
   MessageCircle,
-  Target,
   Shield,
-  Zap,
   Check,
   ArrowRight,
   Loader2,
-  Trophy,
   Heart,
-  Star,
-  Sparkles
+  X
 } from "lucide-react";
 
 interface Mission {
@@ -30,7 +24,6 @@ interface Mission {
   script: string;
   backupScript: string;
   exitLine: string;
-  confidenceGain: number;
 }
 
 const missions: Mission[] = [
@@ -41,8 +34,7 @@ const missions: Mission[] = [
     description: "Make eye contact with a stranger and smile.",
     script: "Just look, smile gently, and continue walking. No words needed.",
     backupScript: "If nervous: A small nod works too.",
-    exitLine: "Just look away naturally and continue your day.",
-    confidenceGain: 5
+    exitLine: "Just look away naturally and continue your day."
   },
   {
     id: "easy-2",
@@ -51,8 +43,25 @@ const missions: Mission[] = [
     description: "Thank a cashier or service worker with genuine warmth.",
     script: "\"Thank you so much, have a great day!\"",
     backupScript: "If nervous: \"Thanks!\" with a smile is enough.",
-    exitLine: "Walk away with a smile.",
-    confidenceGain: 5
+    exitLine: "Walk away with a smile."
+  },
+  {
+    id: "easy-3",
+    level: "easy",
+    title: "The Wave",
+    description: "Wave at a neighbor or someone you recognize.",
+    script: "A simple wave from where you are. No need to walk over.",
+    backupScript: "If nervous: A head nod from a distance works.",
+    exitLine: "Keep walking. That was enough."
+  },
+  {
+    id: "easy-4",
+    level: "easy",
+    title: "The Hold",
+    description: "Hold a door open for someone behind you.",
+    script: "Just hold it, maybe a small nod. No words required.",
+    backupScript: "If nervous: You can let go before they reach it — still counts.",
+    exitLine: "Walk on. You did a kind thing."
   },
   {
     id: "medium-1",
@@ -61,8 +70,7 @@ const missions: Mission[] = [
     description: "Give a genuine compliment to someone you encounter.",
     script: "\"I love your [jacket/shoes/bag]! Where did you get it?\"",
     backupScript: "If nervous: \"Nice [item]!\" and walk away.",
-    exitLine: "\"Anyway, have a good one!\"",
-    confidenceGain: 10
+    exitLine: "\"Anyway, have a good one!\""
   },
   {
     id: "medium-2",
@@ -71,8 +79,25 @@ const missions: Mission[] = [
     description: "Ask someone for a simple recommendation.",
     script: "\"Excuse me, do you know a good coffee place around here?\"",
     backupScript: "If nervous: \"Any food recommendations nearby?\"",
-    exitLine: "\"Thanks so much! I'll check it out.\"",
-    confidenceGain: 10
+    exitLine: "\"Thanks so much! I'll check it out.\""
+  },
+  {
+    id: "medium-3",
+    level: "medium",
+    title: "The Comment",
+    description: "Make a small comment to someone nearby about something shared.",
+    script: "\"That smells amazing\" (at a bakery) or \"Great weather today.\"",
+    backupScript: "If nervous: Say it quietly, even if they don't hear. You still said it.",
+    exitLine: "Smile and move on. That's it."
+  },
+  {
+    id: "medium-4",
+    level: "medium",
+    title: "The Order Extra",
+    description: "Add a small personal touch when ordering food or coffee.",
+    script: "\"Can I get that with oat milk? Also — love this place.\"",
+    backupScript: "If nervous: Just the order is fine. You showed up.",
+    exitLine: "\"Thanks!\" and step aside."
   },
   {
     id: "hard-1",
@@ -81,8 +106,7 @@ const missions: Mission[] = [
     description: "Start a brief conversation with someone waiting in line.",
     script: "Comment on something shared: \"This line is wild today, huh?\"",
     backupScript: "If nervous: \"Been waiting long?\"",
-    exitLine: "\"Well, nice chatting with you!\"",
-    confidenceGain: 20
+    exitLine: "\"Well, nice chatting with you!\""
   },
   {
     id: "hard-2",
@@ -91,25 +115,60 @@ const missions: Mission[] = [
     description: "Invite an acquaintance to hang out sometime.",
     script: "\"Hey, we should grab coffee sometime! Are you free this week?\"",
     backupScript: "If nervous: \"Let me know if you ever want to hang out.\"",
-    exitLine: "\"No worries either way, just thought I'd ask!\"",
-    confidenceGain: 25
+    exitLine: "\"No worries either way, just thought I'd ask!\""
+  },
+  {
+    id: "hard-3",
+    level: "hard",
+    title: "The Follow-Up",
+    description: "Ask a follow-up question in a conversation instead of letting it end.",
+    script: "\"Oh really? What was that like?\" or \"How did that go?\"",
+    backupScript: "If nervous: \"That's cool\" with a nod keeps it going gently.",
+    exitLine: "\"Thanks for sharing that. Talk soon!\""
+  },
+  {
+    id: "hard-4",
+    level: "hard",
+    title: "The Reconnect",
+    description: "Text or message someone you haven't talked to in a while.",
+    script: "\"Hey! Thought of you today. How've you been?\"",
+    backupScript: "If nervous: A reaction to their story or post counts too.",
+    exitLine: "Send it and put your phone down. You reached out."
   }
 ];
+
+const levelMicroCopy: Record<string, string> = {
+  easy: "No pressure. These are small, quiet moments.",
+  medium: "A little stretch. You can always fall back.",
+  hard: "Only when you're ready. There's no rush."
+};
+
+const reflectionOptions = [
+  "I did it and it felt okay",
+  "I tried but froze up",
+  "I almost did it",
+  "I skipped it — not today",
+  "Something unexpected happened"
+];
+
+const reassuranceMessages: Record<string, string> = {
+  "I did it and it felt okay": "That's real progress. Quietly powerful.",
+  "I tried but froze up": "Freezing is your body protecting you. That still counts.",
+  "I almost did it": "Almost is not failure. It's the edge of growth.",
+  "I skipped it — not today": "Knowing your limit is a skill, not a weakness.",
+  "Something unexpected happened": "Life doesn't follow scripts. You handled it your way."
+};
+
+const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 
 const SocialTrainer = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [step, setStep] = useState<"select" | "mission" | "reflection" | "complete">("select");
+  const [step, setStep] = useState<"select" | "mission" | "reflection">("select");
   const [selectedLevel, setSelectedLevel] = useState<"easy" | "medium" | "hard">("easy");
   const [currentMission, setCurrentMission] = useState<Mission | null>(null);
-  const [completed, setCompleted] = useState(false);
-  const [anxietyBefore, setAnxietyBefore] = useState([5]);
-  const [anxietyAfter, setAnxietyAfter] = useState([5]);
-  const [reflection, setReflection] = useState("");
-  const [progress, setProgress] = useState({
-    confidenceScore: 0,
-    completedMissions: [] as string[]
-  });
+  const [selectedReflection, setSelectedReflection] = useState<string | null>(null);
+  const [recentMissions, setRecentMissions] = useState<{ id: string; date: number }[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -119,7 +178,10 @@ const SocialTrainer = () => {
   const loadProgress = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      if (!user) {
+        setIsLoading(false);
+        return;
+      }
 
       const { data } = await supabase
         .from("anxiety_trainer_progress")
@@ -128,10 +190,10 @@ const SocialTrainer = () => {
         .single();
 
       if (data) {
-        setProgress({
-          confidenceScore: data.confidence_score || 0,
-          completedMissions: (data.completed_missions as string[]) || []
-        });
+        const saved = (data.completed_missions as { id: string; date: number }[] | null) || [];
+        // Filter to only missions from the last 7 days
+        const recent = saved.filter((m) => Date.now() - m.date < SEVEN_DAYS_MS);
+        setRecentMissions(recent);
       }
     } catch (error) {
       console.error("Error loading progress:", error);
@@ -140,40 +202,34 @@ const SocialTrainer = () => {
     }
   };
 
-  const startMission = () => {
-    const availableMissions = missions.filter(
-      (m) => m.level === selectedLevel && !progress.completedMissions.includes(m.id)
+  const pickMission = () => {
+    const recentIds = recentMissions.map((m) => m.id);
+    const available = missions.filter(
+      (m) => m.level === selectedLevel && !recentIds.includes(m.id)
     );
-    
-    if (availableMissions.length === 0) {
-      // Reset completed for this level if all done
-      const allLevelMissions = missions.filter(m => m.level === selectedLevel);
-      setCurrentMission(allLevelMissions[Math.floor(Math.random() * allLevelMissions.length)]);
-    } else {
-      setCurrentMission(availableMissions[Math.floor(Math.random() * availableMissions.length)]);
-    }
+
+    const pool = available.length > 0
+      ? available
+      : missions.filter((m) => m.level === selectedLevel);
+
+    setCurrentMission(pool[Math.floor(Math.random() * pool.length)]);
+    setSelectedReflection(null);
     setStep("mission");
   };
 
-  const handleMissionComplete = (didComplete: boolean) => {
-    setCompleted(didComplete);
-    setStep("reflection");
-  };
+  const handleReflection = async (reflection: string) => {
+    setSelectedReflection(reflection);
 
-  const submitReflection = async () => {
     if (!currentMission) return;
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const newConfidence = completed
-        ? progress.confidenceScore + currentMission.confidenceGain
-        : progress.confidenceScore + 2; // Small gain for trying
-
-      const newCompleted = completed
-        ? [...progress.completedMissions, currentMission.id]
-        : progress.completedMissions;
+      const updatedRecent = [
+        ...recentMissions.filter((m) => Date.now() - m.date < SEVEN_DAYS_MS),
+        { id: currentMission.id, date: Date.now() }
+      ];
 
       const { data: existing } = await supabase
         .from("anxiety_trainer_progress")
@@ -185,29 +241,22 @@ const SocialTrainer = () => {
         await supabase
           .from("anxiety_trainer_progress")
           .update({
-            confidence_score: newConfidence,
-            completed_missions: newCompleted,
+            completed_missions: updatedRecent,
             current_level: selectedLevel
           })
           .eq("user_id", user.id);
       } else {
         await supabase.from("anxiety_trainer_progress").insert({
           user_id: user.id,
-          confidence_score: newConfidence,
-          completed_missions: newCompleted,
+          completed_missions: updatedRecent,
           current_level: selectedLevel
         });
       }
 
-      setProgress({
-        confidenceScore: newConfidence,
-        completedMissions: newCompleted
-      });
-
-      setStep("complete");
+      setRecentMissions(updatedRecent);
     } catch (error) {
       console.error("Error saving progress:", error);
-      toast({ title: "Couldn't save progress", variant: "destructive" });
+      toast({ title: "Couldn't save — but your effort still matters.", variant: "destructive" });
     }
   };
 
@@ -249,22 +298,6 @@ const SocialTrainer = () => {
           </div>
         </div>
 
-        {/* Confidence Score */}
-        <Card className="p-4 mb-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-full bg-primary/10">
-              <Shield className="h-5 w-5 text-primary" />
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Confidence Score</p>
-              <p className="text-2xl font-bold">{progress.confidenceScore}</p>
-            </div>
-          </div>
-          <Badge variant="secondary">
-            {progress.completedMissions.length} missions done
-          </Badge>
-        </Card>
-
         {/* Level Selection */}
         {step === "select" && (
           <Card className="p-6 space-y-6">
@@ -295,10 +328,20 @@ const SocialTrainer = () => {
               ))}
             </div>
 
-            <Button className="w-full" onClick={startMission}>
-              <Target className="h-4 w-4 mr-2" />
+            <p className="text-sm text-muted-foreground text-center italic">
+              {levelMicroCopy[selectedLevel]}
+            </p>
+
+            <Button className="w-full" onClick={pickMission}>
               Get Today's Mission
             </Button>
+
+            <button
+              onClick={() => navigate("/espresso")}
+              className="w-full text-center text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
+            >
+              Too much today? You can skip. Progress isn't lost.
+            </button>
           </Card>
         )}
 
@@ -349,22 +392,27 @@ const SocialTrainer = () => {
 
             <div className="space-y-3">
               <p className="text-center text-sm font-medium">
-                Did you complete the mission?
+                When you're back, tell us what happened.
               </p>
               <div className="grid grid-cols-2 gap-3">
                 <Button
                   variant="outline"
-                  onClick={() => handleMissionComplete(false)}
-                  className="h-12"
-                >
-                  Not this time
-                </Button>
-                <Button
-                  onClick={() => handleMissionComplete(true)}
+                  onClick={() => setStep("reflection")}
                   className="h-12"
                 >
                   <Check className="h-4 w-4 mr-2" />
-                  Yes, I did it!
+                  I'm back
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    handleReflection("I skipped it — not today");
+                    setStep("reflection");
+                  }}
+                  className="h-12 text-muted-foreground"
+                >
+                  <X className="h-4 w-4 mr-2" />
+                  Skip this one
                 </Button>
               </div>
             </div>
@@ -375,144 +423,60 @@ const SocialTrainer = () => {
         {step === "reflection" && currentMission && (
           <Card className="p-6 space-y-6">
             <div className="text-center">
-              {completed ? (
-                <>
-                  <div className="w-16 h-16 mx-auto rounded-full bg-success/20 flex items-center justify-center mb-4">
-                    <Sparkles className="h-8 w-8 text-success" />
-                  </div>
-                  <h2 className="text-xl font-bold mb-2">Amazing! 🎉</h2>
-                  <p className="text-muted-foreground">
-                    You stepped outside your comfort zone.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <div className="w-16 h-16 mx-auto rounded-full bg-primary/20 flex items-center justify-center mb-4">
-                    <Heart className="h-8 w-8 text-primary" />
-                  </div>
-                  <h2 className="text-xl font-bold mb-2">That's okay 💙</h2>
-                  <p className="text-muted-foreground">
-                    Just considering it is progress.
-                  </p>
-                </>
-              )}
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium mb-3 block">
-                  Anxiety Level Before (1 = calm, 10 = very anxious)
-                </label>
-                <Slider
-                  value={anxietyBefore}
-                  onValueChange={setAnxietyBefore}
-                  min={1}
-                  max={10}
-                  step={1}
-                />
-                <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                  <span>Calm</span>
-                  <span>{anxietyBefore[0]}</span>
-                  <span>Very Anxious</span>
-                </div>
+              <div className="w-14 h-14 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                <Heart className="h-7 w-7 text-primary" />
               </div>
-
-              <div>
-                <label className="text-sm font-medium mb-3 block">
-                  Anxiety Level After
-                </label>
-                <Slider
-                  value={anxietyAfter}
-                  onValueChange={setAnxietyAfter}
-                  min={1}
-                  max={10}
-                  step={1}
-                />
-                <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                  <span>Calm</span>
-                  <span>{anxietyAfter[0]}</span>
-                  <span>Very Anxious</span>
-                </div>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  Any thoughts to capture?
-                </label>
-                <Textarea
-                  placeholder="How did it feel? What did you notice?"
-                  value={reflection}
-                  onChange={(e) => setReflection(e.target.value)}
-                  className="min-h-[80px]"
-                />
-              </div>
-            </div>
-
-            <Button className="w-full" onClick={submitReflection}>
-              Save Reflection
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
-          </Card>
-        )}
-
-        {/* Complete */}
-        {step === "complete" && currentMission && (
-          <Card className="p-8 text-center space-y-6">
-            <div className="w-20 h-20 mx-auto rounded-full bg-primary/20 flex items-center justify-center">
-              <Trophy className="h-10 w-10 text-primary" />
-            </div>
-
-            <div>
-              <h2 className="text-2xl font-bold mb-2">
-                {completed ? "Mission Complete!" : "Progress Made!"}
-              </h2>
-              <p className="text-muted-foreground">
-                {completed
-                  ? "Your confidence is growing with every step."
-                  : "Every attempt makes the next one easier."}
+              <h2 className="text-lg font-semibold mb-1">What actually happened?</h2>
+              <p className="text-sm text-muted-foreground">
+                No wrong answers. Just pick the closest one.
               </p>
             </div>
 
-            <div className="p-4 rounded-xl bg-muted">
-              <div className="flex items-center justify-center gap-2">
-                <Zap className="h-5 w-5 text-primary" />
-                <span className="font-medium">
-                  +{completed ? currentMission.confidenceGain : 2} Confidence
-                </span>
-              </div>
+            <div className="space-y-2">
+              {reflectionOptions.map((option) => (
+                <button
+                  key={option}
+                  onClick={() => handleReflection(option)}
+                  className={`w-full text-left px-4 py-3 rounded-xl text-sm transition-all border ${
+                    selectedReflection === option
+                      ? "bg-primary/10 border-primary/30 text-foreground"
+                      : "bg-muted/50 border-transparent text-muted-foreground hover:bg-muted hover:text-foreground"
+                  }`}
+                >
+                  {option}
+                </button>
+              ))}
             </div>
 
-            {anxietyAfter[0] < anxietyBefore[0] && (
-              <div className="p-4 rounded-xl bg-success/10 border border-success/30">
-                <Star className="h-5 w-5 text-success mx-auto mb-2" />
-                <p className="text-sm">
-                  Your anxiety dropped from {anxietyBefore[0]} to {anxietyAfter[0]}!
+            {selectedReflection && (
+              <div className="p-4 rounded-xl bg-muted/50 text-center animate-in fade-in-0 duration-300">
+                <p className="text-sm text-foreground">
+                  {reassuranceMessages[selectedReflection]}
                 </p>
               </div>
             )}
 
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                className="flex-1"
-                onClick={() => navigate("/espresso")}
-              >
-                Done for today
-              </Button>
-              <Button
-                className="flex-1"
-                onClick={() => {
-                  setStep("select");
-                  setCurrentMission(null);
-                  setCompleted(false);
-                  setReflection("");
-                  setAnxietyBefore([5]);
-                  setAnxietyAfter([5]);
-                }}
-              >
-                Another mission
-              </Button>
-            </div>
+            {selectedReflection && (
+              <div className="flex gap-3 animate-in fade-in-0 duration-300">
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => navigate("/espresso")}
+                >
+                  Done for today
+                </Button>
+                <Button
+                  className="flex-1"
+                  onClick={() => {
+                    setStep("select");
+                    setCurrentMission(null);
+                    setSelectedReflection(null);
+                  }}
+                >
+                  Another mission
+                </Button>
+              </div>
+            )}
           </Card>
         )}
       </div>
