@@ -43,6 +43,9 @@ const Footer = () => {
             <Link to="/vision" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
               Vision
             </Link>
+            <a href="#features" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+              Features
+            </a>
           </div>
 
           {/* Quick Links */}
