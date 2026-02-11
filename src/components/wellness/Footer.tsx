@@ -33,12 +33,12 @@ const Footer = () => {
   return (
     <footer className="bg-card border-t border-border py-12">
       <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-4 gap-8 items-start">
           {/* Brand */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <img src={rantfreeLogo} alt="RantFree logo" className="w-8 h-8 rounded-lg object-cover" />
-              <span className="font-bold text-xl text-foreground">RantFree</span>
+          <div>
+            <div className="flex items-center space-x-2 mb-4 h-6">
+              <img src={rantfreeLogo} alt="RantFree logo" className="w-6 h-6 rounded-lg object-cover" />
+              <span className="font-semibold text-foreground">RantFree</span>
             </div>
             <ul className="space-y-2 text-sm">
               <li>
@@ -61,7 +61,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-foreground mb-4">Quick Links</h4>
+            <h4 className="font-semibold text-foreground mb-4 h-6 flex items-center">Quick Links</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <a href="#features" className="text-muted-foreground hover:text-primary transition-colors">
@@ -83,7 +83,7 @@ const Footer = () => {
 
           {/* Policies */}
           <div>
-            <h4 className="font-semibold text-foreground mb-4">Policies</h4>
+            <h4 className="font-semibold text-foreground mb-4 h-6 flex items-center">Policies</h4>
             <ul className="space-y-2 text-sm">
               {policyLinks.map((link) => (
                 <li key={link.name}>
@@ -100,7 +100,7 @@ const Footer = () => {
 
           {/* Connect */}
           <div>
-            <h4 className="font-semibold text-foreground mb-4">Connect</h4>
+            <h4 className="font-semibold text-foreground mb-4 h-6 flex items-center">Connect</h4>
             <div className="flex items-center gap-4">
               {socialLinks.map((social) => (
                 <Tooltip key={social.name}>
