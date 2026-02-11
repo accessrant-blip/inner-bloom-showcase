@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "postpartum-depression",
+    title: "Postpartum Depression: Understanding It, Talking About It, and Finding Your Way Through 💛",
+    excerpt: "Postpartum depression isn't about failing as a parent. It's a real health issue, and there's help out there.",
+    date: "2026-02-11",
+    readTime: "8 min",
+    category: "Community",
+  },
+  {
     id: "sit-with-your-feelings",
     title: "\"Sit With Your Feelings\": What Therapists Really Mean 🌿",
     excerpt: "Ever heard a therapist say 'sit with your feelings' and thought, 'Huh?' This post explains what they mean and what it doesn't mean.",
