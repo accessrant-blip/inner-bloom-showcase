@@ -25,7 +25,6 @@ const Footer = () => {
   ];
 
   const policyLinks = [
-    { name: "Vision", path: "/vision" },
     { name: "Contact Us", path: "/contact" },
     { name: "Privacy Policy", path: "/privacy-policy" },
     { name: "Terms of Service", path: "/terms-of-service" },
@@ -41,6 +40,9 @@ const Footer = () => {
               <img src={rantfreeLogo} alt="RantFree logo" className="w-8 h-8 rounded-lg object-cover" />
               <span className="font-bold text-xl text-foreground">RantFree</span>
             </div>
+            <Link to="/vision" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+              Vision
+            </Link>
           </div>
 
           {/* Quick Links */}
