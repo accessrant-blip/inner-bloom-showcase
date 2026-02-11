@@ -35,17 +35,23 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-8">
           {/* Brand */}
-          <div className="space-y-2">
+          <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <img src={rantfreeLogo} alt="RantFree logo" className="w-8 h-8 rounded-lg object-cover" />
               <span className="font-bold text-xl text-foreground">RantFree</span>
             </div>
-            <Link to="/vision" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
-              Vision
-            </Link>
-            <a href="#features" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
-              Features
-            </a>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link to="/vision" className="text-muted-foreground hover:text-primary transition-colors">
+                  Vision
+                </Link>
+              </li>
+              <li>
+                <a href="#features" className="text-muted-foreground hover:text-primary transition-colors">
+                  Features
+                </a>
+              </li>
+            </ul>
           </div>
 
           {/* Quick Links */}
