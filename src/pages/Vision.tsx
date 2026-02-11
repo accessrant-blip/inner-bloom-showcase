@@ -28,7 +28,7 @@ const Vision = () => {
 
         <section className="space-y-6 text-muted-foreground leading-relaxed">
           <p>
-            We're living in an age of constant connection — and quiet loneliness.
+            We're living in an age of constant connection and quiet loneliness.
           </p>
           <p>
             Technology is faster, smarter, and everywhere.
@@ -38,7 +38,7 @@ const Vision = () => {
             RantFree exists to restore human presence in a digital world.
           </p>
           <p>
-            Our vision is to create a space where emotions aren't optimized, analyzed, or rushed — but felt, expressed, and held with care.
+            Our vision is to create a space where emotions aren't optimized, analyzed, or rushed, but felt, expressed, and held with care.
           </p>
 
           <div className="space-y-3 py-4">
@@ -52,7 +52,7 @@ const Vision = () => {
 
           <p>
             RantFree is not here to replace therapy or human relationships.
-            It's here to protect them — by offering a safe place to pause, breathe, and speak freely.
+            It's here to protect them by offering a safe place to pause, breathe, and speak freely.
           </p>
         </section>
 
@@ -80,21 +80,21 @@ const Vision = () => {
             But it can't replace the feeling of being genuinely understood.
           </p>
           <p>
-            RantFree was built in response to something we kept seeing — people overwhelmed, overstimulated, and emotionally exhausted, yet hesitant to ask for help. Not because they didn't need it — but because they didn't want to be judged, diagnosed, or dismissed.
+            RantFree was built in response to something we kept seeing: people overwhelmed, overstimulated, and emotionally exhausted, yet hesitant to ask for help. Not because they didn't need it, but because they didn't want to be judged, diagnosed, or dismissed.
           </p>
           <p className="text-foreground font-medium">
             This platform exists for the in-between moments:
           </p>
           <ul className="space-y-2 list-disc list-inside">
             <li>When emotions are heavy but unclear</li>
-            <li>When you don't need fixing — just listening</li>
+            <li>When you don't need fixing, just listening</li>
             <li>When silence feels louder than words</li>
           </ul>
           <p>
-            Every feature in RantFree is designed with intention — from journaling and panic tools to compassionate listeners and guided grounding. Not to overwhelm you, but to meet you where you are.
+            Every feature in RantFree is designed with intention, from journaling and panic tools to compassionate listeners and guided grounding. Not to overwhelm you, but to meet you where you are.
           </p>
           <p>
-            If RantFree helps even one person feel less alone — even briefly — then it's doing what it was built to do.
+            If RantFree helps even one person feel less alone, even briefly, then it's doing what it was built to do.
           </p>
           <p>
             Thank you for trusting us with something so human.
@@ -102,7 +102,7 @@ const Vision = () => {
             We're really glad you are.
           </p>
           <p className="text-foreground font-medium mt-8">
-            — Team RantFree
+            Team RantFree
           </p>
         </section>
       </div>
