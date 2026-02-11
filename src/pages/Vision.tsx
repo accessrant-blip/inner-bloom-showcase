@@ -1,7 +1,20 @@
+import visionBg from "@/assets/vision-background.webp";
+
 const Vision = () => {
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      <div className="container mx-auto px-6 py-20 max-w-2xl">
+    <main className="min-h-screen bg-background text-foreground relative">
+      {/* Background Image */}
+      <div className="fixed inset-0 z-0">
+        <img
+          src={visionBg}
+          alt="Illustration of people embracing in a peaceful green landscape"
+          className="w-full h-full object-cover opacity-15 dark:opacity-10"
+          loading="eager"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
+      </div>
+
+      <div className="relative z-10 container mx-auto px-6 py-20 max-w-2xl">
         <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-12">Our Vision</h1>
 
         <section className="space-y-6 text-muted-foreground leading-relaxed">
