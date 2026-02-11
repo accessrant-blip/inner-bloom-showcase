@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import visionBg from "@/assets/vision-background.webp";
 
 const Vision = () => {
@@ -15,6 +17,13 @@ const Vision = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-6 py-20 max-w-2xl">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Home
+        </Link>
         <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-12">Our Vision</h1>
 
         <section className="space-y-6 text-muted-foreground leading-relaxed">
