@@ -25,6 +25,7 @@ const Footer = () => {
   ];
 
   const policyLinks = [
+    { name: "Vision", path: "/vision" },
     { name: "Contact Us", path: "/contact" },
     { name: "Privacy Policy", path: "/privacy-policy" },
     { name: "Terms of Service", path: "/terms-of-service" },
@@ -40,9 +41,6 @@ const Footer = () => {
               <img src={rantfreeLogo} alt="RantFree logo" className="w-8 h-8 rounded-lg object-cover" />
               <span className="font-bold text-xl text-foreground">RantFree</span>
             </div>
-            <p className="text-muted-foreground text-sm">
-              Your safe space for mental wellness. Express, heal, and grow with evidence-based tools and professional support.
-            </p>
           </div>
 
           {/* Quick Links */}
