@@ -10,10 +10,10 @@ const Vision = () => {
         <img
           src={visionBg}
           alt="Illustration of people embracing in a peaceful green landscape"
-          className="w-full h-full object-cover opacity-15 dark:opacity-10"
+          className="w-full h-full object-cover opacity-25 dark:opacity-15"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/65 to-background/90" />
       </div>
 
       <div className="relative z-10 container mx-auto px-6 py-20 max-w-2xl">
