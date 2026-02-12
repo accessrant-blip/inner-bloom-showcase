@@ -50,6 +50,7 @@ const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Vision = lazy(() => import("./pages/Vision"));
+const GuidedPractices = lazy(() => import("./pages/GuidedPractices"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -111,6 +112,7 @@ const App = () => {
                 <Route path="/espresso/mental-gym" element={<AppLayout><MentalGym /></AppLayout>} />
                 <Route path="/espresso/social-trainer" element={<AppLayout><SocialTrainer /></AppLayout>} />
                 <Route path="/espresso/inner-child" element={<AppLayout><InnerChild /></AppLayout>} />
+                <Route path="/guided-practices" element={<AppLayout><GuidedPractices /></AppLayout>} />
                 
                 {/* Catch-all */}
                 <Route path="*" element={<NotFound />} />
