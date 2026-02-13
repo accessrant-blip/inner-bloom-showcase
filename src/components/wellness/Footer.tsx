@@ -36,8 +36,8 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-8 items-start">
           {/* Brand */}
           <div>
-            <div className="flex items-center space-x-2 mb-4 h-6">
-              <img src={rantfreeLogo} alt="RantFree logo" className="w-6 h-6 rounded-lg object-cover" />
+            <div className="flex items-center space-x-2.5 mb-5 h-6">
+              <img src={rantfreeLogo} alt="RantFree logo" className="h-8 w-auto rounded-lg object-contain" />
               <span className="font-semibold text-foreground">RantFree</span>
             </div>
             <ul className="space-y-2 text-sm">

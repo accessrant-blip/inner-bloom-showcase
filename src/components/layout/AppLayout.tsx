@@ -157,15 +157,15 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     >
       <div className="flex flex-col h-full">
         {/* Header */}
-        <div className="p-4 border-b border-border flex items-center justify-between">
+        <div className="p-4 pl-6 border-b border-border flex items-center justify-between">
           {sidebarOpen && (
-            <div className="flex items-center space-x-2">
-              <img src={rantfreeLogo} alt="" className="w-8 h-8 rounded-lg object-cover" aria-hidden="true" />
+            <div className="flex items-center space-x-2.5">
+              <img src={rantfreeLogo} alt="" className="h-10 w-auto rounded-lg object-contain" aria-hidden="true" />
               <span className="font-semibold text-lg text-foreground">RantFree</span>
             </div>
           )}
           {!sidebarOpen && (
-            <img src={rantfreeLogo} alt="" className="w-8 h-8 rounded-lg object-cover mx-auto" aria-hidden="true" />
+            <img src={rantfreeLogo} alt="" className="h-10 w-auto rounded-lg object-contain mx-auto" aria-hidden="true" />
           )}
           <Button
             variant="ghost"
