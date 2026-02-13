@@ -53,8 +53,8 @@ const Navigation = () => {
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="/" className="flex items-center space-x-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
-            <img src={rantfreeLogo} alt="" className="w-8 h-8 rounded-lg object-cover" aria-hidden="true" />
+          <a href="/" className="flex items-center space-x-2.5 pl-4 md:pl-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg mr-8">
+            <img src={rantfreeLogo} alt="" className="h-8 md:h-10 w-auto rounded-lg object-contain" aria-hidden="true" />
             <span className="font-bold text-xl text-foreground">RantFree</span>
           </a>
           
