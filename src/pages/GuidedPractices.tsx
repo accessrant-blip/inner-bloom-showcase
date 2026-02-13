@@ -36,7 +36,7 @@ const instructors: Instructor[] = [
     ctaLabel: "Practice with Sakshi",
     experience: "5 Years Experience",
     location: "India",
-    formLink: "https://docs.google.com/forms/d/1XmXmT0hFuuOJhaWMXpotNWfutF0t8c1mdtWJtR08tY0/viewform",
+    formLink: "https://docs.google.com/forms/d/e/1FAIpQLSfdePFP7G3fBW5-uwHIglmArTGruPuIyUjYjlaO5b7B8CuKOQ/viewform",
   },
   {
     id: "amy-meditation",
@@ -48,7 +48,7 @@ const instructors: Instructor[] = [
     qualificationBadge: "Certified Meditation Guide",
     ctaLabel: "Practice with Amy",
     location: "Texas",
-    formLink: "https://docs.google.com/forms/d/1XmXmT0hFuuOJhaWMXpotNWfutF0t8c1mdtWJtR08tY0/viewform",
+    formLink: "https://docs.google.com/forms/d/e/1FAIpQLSfdePFP7G3fBW5-uwHIglmArTGruPuIyUjYjlaO5b7B8CuKOQ/viewform",
   },
 ];
 
