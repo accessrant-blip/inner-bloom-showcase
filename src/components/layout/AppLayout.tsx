@@ -42,7 +42,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     { path: "/soul-stream", icon: Wind, label: "Soul Stream" },
     { path: "/guided-practices", icon: Flower2, label: "Guided Practices" },
     { path: "/connect", icon: Users, label: "Connect" },
-    { path: "/espresso", icon: Sparkles, label: "Espresso" },
+    { path: "/espresso", icon: Sparkles, label: "Espresso ⚡" },
     { path: "/learn-grow", icon: BookOpen, label: "Learn & Grow" },
     { path: "/blog", icon: FileText, label: "Blog" },
   ];
@@ -160,12 +160,12 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         <div className="p-4 border-b border-border flex items-center justify-between">
           {sidebarOpen && (
             <div className="flex items-center space-x-2">
-              <img src={rantfreeLogo} alt="" className="w-10 h-10 rounded-lg object-cover" aria-hidden="true" />
+              <img src={rantfreeLogo} alt="" className="w-8 h-8 rounded-lg object-cover" aria-hidden="true" />
               <span className="font-semibold text-lg text-foreground">RantFree</span>
             </div>
           )}
           {!sidebarOpen && (
-            <img src={rantfreeLogo} alt="" className="w-10 h-10 rounded-lg object-cover mx-auto" aria-hidden="true" />
+            <img src={rantfreeLogo} alt="" className="w-8 h-8 rounded-lg object-cover mx-auto" aria-hidden="true" />
           )}
           <Button
             variant="ghost"

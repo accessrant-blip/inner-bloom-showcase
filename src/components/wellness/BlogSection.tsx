@@ -16,14 +16,6 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
-    id: "no-right-way-to-grieve",
-    title: "There Is No \"Right\" Way to Grieve 💛",
-    excerpt: "Grief is a personal experience, and it shows up differently for everyone. Learn why your grief is valid, no matter how it looks.",
-    date: "2026-02-13",
-    readTime: "7 min",
-    category: "Community",
-  },
-  {
     id: "postpartum-depression",
     title: "Postpartum Depression: Understanding It, Talking About It, and Finding Your Way Through 💛",
     excerpt: "Postpartum depression isn't about failing as a parent. It's a real health issue, and there's help out there.",
@@ -46,6 +38,14 @@ const blogPreviews: BlogPreview[] = [
     date: "2026-02-08",
     readTime: "4 min",
     category: "Wellness Tips",
+  },
+  {
+    id: "19",
+    title: "How Violence Messes With Your Head: What You Need to Know 🧠",
+    excerpt: "Violence isn't just physical — it can be emotional, verbal, mental, or sexual. Understanding this can help you stop blaming yourself.",
+    date: "2026-02-07",
+    readTime: "7 min",
+    category: "Mental Health",
   },
 ];
 
