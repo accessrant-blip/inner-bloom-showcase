@@ -6,15 +6,15 @@ type Phase = "inhale" | "topup" | "exhale" | "rest";
 
 const FULL_SCRIPTS: Record<Phase, string> = {
   inhale: "Inhale through your nose",
-  topup: "A little more",
-  exhale: "Long slow exhale",
+  topup: "More",
+  exhale: "Now, long slow exhale",
   rest: "",
 };
 
 const MINIMAL_SCRIPTS: Record<Phase, string> = {
-  inhale: "Inhale",
+  inhale: "In",
   topup: "More",
-  exhale: "Exhale",
+  exhale: "Out",
   rest: "",
 };
 
