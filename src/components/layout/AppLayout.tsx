@@ -42,7 +42,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     { path: "/soul-stream", icon: Wind, label: "Soul Stream" },
     { path: "/guided-practices", icon: Flower2, label: "Guided Practices" },
     { path: "/connect", icon: Users, label: "Connect" },
-    { path: "/espresso", icon: Sparkles, label: "Espresso ⚡" },
+    { path: "/espresso", icon: Sparkles, label: "Espresso" },
     { path: "/learn-grow", icon: BookOpen, label: "Learn & Grow" },
     { path: "/blog", icon: FileText, label: "Blog" },
   ];
