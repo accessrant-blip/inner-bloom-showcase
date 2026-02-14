@@ -2,100 +2,125 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import BreathingCircle from "@/components/breathing/BreathingCircle";
+import type { BreathingPhase } from "@/components/breathing/BreathingCircle";
 import BreathingControls from "@/components/breathing/BreathingControls";
 import BreathingProgressRing from "@/components/breathing/BreathingProgressRing";
-import { useBreathingAudio } from "@/hooks/useBreathingAudio";
+import { useBreathingAudio, type AudioMode } from "@/hooks/useBreathingAudio";
 import { usePrefersReducedMotion } from "@/components/accessibility/AccessibilityProvider";
 
-type Phase = "inhale1" | "inhale2" | "hold" | "exhale";
+// ── Single timeline: 4s inhale, 1s topup, 7s exhale, 1s rest = 13s per cycle ──
+const PHASES: { phase: BreathingPhase; duration: number }[] = [
+  { phase: "inhale", duration: 4000 },
+  { phase: "topup", duration: 1000 },
+  { phase: "exhale", duration: 7000 },
+  { phase: "rest", duration: 1000 },
+];
 
-const PHASE_DURATIONS: Record<Phase, number> = {
-  inhale1: 2000,
-  inhale2: 1000,
-  hold: 1000,
-  exhale: 5500,
-};
-
+const CYCLE_DURATION = PHASES.reduce((s, p) => s + p.duration, 0); // 13000ms
 const TOTAL_ROUNDS = 5;
-const CYCLE_DURATION = Object.values(PHASE_DURATIONS).reduce((a, b) => a + b, 0);
-const TOTAL_DURATION = CYCLE_DURATION * TOTAL_ROUNDS; // ~47.5s
+const TOTAL_DURATION = CYCLE_DURATION * TOTAL_ROUNDS; // 65s
+const TICK = 50; // ms per tick
+
+/**
+ * Given elapsed ms within a single cycle, returns current phase + progress within it.
+ */
+function resolvePhase(cycleElapsed: number): {
+  phase: BreathingPhase;
+  progress: number;
+  countdown: number;
+} {
+  let accumulated = 0;
+  for (const p of PHASES) {
+    if (cycleElapsed < accumulated + p.duration) {
+      const inPhase = cycleElapsed - accumulated;
+      const remaining = Math.ceil((p.duration - inPhase) / 1000);
+      return { phase: p.phase, progress: inPhase / p.duration, countdown: remaining };
+    }
+    accumulated += p.duration;
+  }
+  // Fallback – end of cycle
+  return { phase: "rest", progress: 1, countdown: 0 };
+}
+
+const AUDIO_MODES: AudioMode[] = ["full", "minimal", "silent"];
 
 const InstantRelief = () => {
   const navigate = useNavigate();
   const reduceMotion = usePrefersReducedMotion();
-  const { speak, stop: stopAudio } = useBreathingAudio();
+
+  const [audioMode, setAudioMode] = useState<AudioMode>("full");
+  const { speak, stop: stopAudio } = useBreathingAudio(audioMode);
 
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [currentRound, setCurrentRound] = useState(1);
-  const [phase, setPhase] = useState<Phase>("inhale1");
   const [isComplete, setIsComplete] = useState(false);
-  const [soundEnabled, setSoundEnabled] = useState(false);
-  const [phaseProgress, setPhaseProgress] = useState(0);
-  const [sessionElapsed, setSessionElapsed] = useState(0);
 
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const progressRef = useRef<NodeJS.Timeout | null>(null);
-  const lastPhaseRef = useRef<Phase | null>(null);
+  // Master elapsed time (ms) – the SINGLE source of truth
+  const [elapsed, setElapsed] = useState(0);
+  const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const lastSpokenPhaseRef = useRef<string | null>(null);
 
-  const clearTimers = useCallback(() => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    if (progressRef.current) clearInterval(progressRef.current);
+  // Derived state from elapsed
+  const currentRound = Math.min(Math.floor(elapsed / CYCLE_DURATION) + 1, TOTAL_ROUNDS);
+  const cycleElapsed = elapsed % CYCLE_DURATION;
+  const { phase, progress, countdown } = resolvePhase(cycleElapsed);
+  const sessionProgress = elapsed / TOTAL_DURATION;
+
+  // ── Single master tick ──
+  const clearTick = useCallback(() => {
+    if (tickRef.current) {
+      clearInterval(tickRef.current);
+      tickRef.current = null;
+    }
   }, []);
 
-  // Speak on phase change
-  useEffect(() => {
-    if (isActive && !isPaused && soundEnabled && phase !== lastPhaseRef.current) {
-      speak(phase);
-    }
-    lastPhaseRef.current = phase;
-  }, [phase, isActive, isPaused, soundEnabled, speak]);
-
-  // Main breathing loop
   useEffect(() => {
     if (!isActive || isPaused || isComplete) {
-      clearTimers();
+      clearTick();
       return;
     }
 
-    const duration = PHASE_DURATIONS[phase];
-    const tick = 50;
-    let elapsed = 0;
-
-    progressRef.current = setInterval(() => {
-      elapsed += tick;
-      setPhaseProgress(Math.min(elapsed / duration, 1));
-      setSessionElapsed((prev) => Math.min(prev + tick, TOTAL_DURATION));
-    }, tick);
-
-    timerRef.current = setTimeout(() => {
-      setPhaseProgress(0);
-      if (phase === "inhale1") setPhase("inhale2");
-      else if (phase === "inhale2") setPhase("hold");
-      else if (phase === "hold") setPhase("exhale");
-      else {
-        if (currentRound >= TOTAL_ROUNDS) {
-          setIsComplete(true);
-          setIsActive(false);
-          stopAudio();
-        } else {
-          setCurrentRound((r) => r + 1);
-          setPhase("inhale1");
+    tickRef.current = setInterval(() => {
+      setElapsed((prev) => {
+        const next = prev + TICK;
+        if (next >= TOTAL_DURATION) {
+          // Complete
+          return TOTAL_DURATION;
         }
-      }
-    }, duration);
+        return next;
+      });
+    }, TICK);
 
-    return clearTimers;
-  }, [isActive, isPaused, phase, currentRound, isComplete, clearTimers, stopAudio]);
+    return clearTick;
+  }, [isActive, isPaused, isComplete, clearTick]);
 
+  // ── Completion detection ──
+  useEffect(() => {
+    if (elapsed >= TOTAL_DURATION && isActive) {
+      setIsActive(false);
+      setIsComplete(true);
+      stopAudio();
+    }
+  }, [elapsed, isActive, stopAudio]);
+
+  // ── Audio: speak once per phase transition, driven by same timeline ──
+  useEffect(() => {
+    if (!isActive || isPaused || isComplete) return;
+
+    const phaseKey = `${currentRound}-${phase}`;
+    if (phaseKey !== lastSpokenPhaseRef.current) {
+      lastSpokenPhaseRef.current = phaseKey;
+      speak(phase);
+    }
+  }, [isActive, isPaused, isComplete, currentRound, phase, speak]);
+
+  // ── Controls ──
   const handleBegin = () => {
     setIsActive(true);
     setIsPaused(false);
     setIsComplete(false);
-    setCurrentRound(1);
-    setPhase("inhale1");
-    setPhaseProgress(0);
-    setSessionElapsed(0);
+    setElapsed(0);
+    lastSpokenPhaseRef.current = null;
   };
 
   const handlePause = () => {
@@ -104,27 +129,26 @@ const InstantRelief = () => {
   };
 
   const handleResume = () => {
+    lastSpokenPhaseRef.current = null; // re-speak current phase on resume
     setIsPaused(false);
   };
 
   const handleReset = () => {
-    clearTimers();
+    clearTick();
     setIsActive(false);
     setIsPaused(false);
     setIsComplete(false);
-    setCurrentRound(1);
-    setPhase("inhale1");
-    setPhaseProgress(0);
-    setSessionElapsed(0);
+    setElapsed(0);
+    lastSpokenPhaseRef.current = null;
     stopAudio();
   };
 
-  const handleToggleSound = () => {
-    if (soundEnabled) stopAudio();
-    setSoundEnabled((s) => !s);
+  const handleCycleAudioMode = () => {
+    const idx = AUDIO_MODES.indexOf(audioMode);
+    const next = AUDIO_MODES[(idx + 1) % AUDIO_MODES.length];
+    if (next === "silent") stopAudio();
+    setAudioMode(next);
   };
-
-  const sessionProgress = sessionElapsed / TOTAL_DURATION;
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -173,7 +197,8 @@ const InstantRelief = () => {
               <BreathingCircle
                 isActive={isActive && !isPaused}
                 phase={phase}
-                progress={phaseProgress}
+                progress={progress}
+                countdown={countdown}
                 reduceMotion={reduceMotion}
               />
             </div>
@@ -205,12 +230,12 @@ const InstantRelief = () => {
             <BreathingControls
               isActive={isActive}
               isPaused={isPaused}
-              soundEnabled={soundEnabled}
+              audioMode={audioMode}
               onBegin={handleBegin}
               onPause={handlePause}
               onResume={handleResume}
               onReset={handleReset}
-              onToggleSound={handleToggleSound}
+              onCycleAudioMode={handleCycleAudioMode}
             />
 
             {/* Helper text */}
