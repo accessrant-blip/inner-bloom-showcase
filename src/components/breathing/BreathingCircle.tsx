@@ -11,10 +11,10 @@ interface BreathingCircleProps {
 }
 
 const phaseText: Record<BreathingPhase, string> = {
-  inhale: "Inhale through your nose…",
-  topup: "…just a little more…",
-  exhale: "Slow exhale through your mouth…",
-  rest: "Let your shoulders soften…",
+  inhale: "Inhale",
+  topup: "Inhale a little more",
+  exhale: "Long Exhale",
+  rest: "Pause",
 };
 
 function getScale(phase: BreathingPhase, progress: number, isActive: boolean): number {

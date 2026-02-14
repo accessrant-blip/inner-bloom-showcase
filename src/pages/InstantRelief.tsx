@@ -8,17 +8,17 @@ import BreathingProgressRing from "@/components/breathing/BreathingProgressRing"
 import { useBreathingAudio, type AudioMode } from "@/hooks/useBreathingAudio";
 import { usePrefersReducedMotion } from "@/components/accessibility/AccessibilityProvider";
 
-// ── Single timeline: 4s inhale, 1s topup, 7s exhale, 1s rest = 13s per cycle ──
+// ── Single timeline: 3.5s inhale, 0.75s topup, 7s exhale, 1s rest ≈ 12.25s per cycle ──
 const PHASES: { phase: BreathingPhase; duration: number }[] = [
-  { phase: "inhale", duration: 4000 },
-  { phase: "topup", duration: 1000 },
+  { phase: "inhale", duration: 3500 },
+  { phase: "topup", duration: 750 },
   { phase: "exhale", duration: 7000 },
   { phase: "rest", duration: 1000 },
 ];
 
-const CYCLE_DURATION = PHASES.reduce((s, p) => s + p.duration, 0); // 13000ms
-const TOTAL_ROUNDS = 5;
-const TOTAL_DURATION = CYCLE_DURATION * TOTAL_ROUNDS; // 65s
+const CYCLE_DURATION = PHASES.reduce((s, p) => s + p.duration, 0); // 12250ms
+const TOTAL_ROUNDS = 6;
+const TOTAL_DURATION = CYCLE_DURATION * TOTAL_ROUNDS;
 const TICK = 50; // ms per tick
 
 /**
@@ -169,6 +169,9 @@ const InstantRelief = () => {
           <>
             {/* Title + Subtitle */}
             <div className="text-center mb-6 animate-fade-in max-w-md">
+              <p className="text-muted-foreground/70 text-sm mb-3 italic">
+                This is panic, not danger. Let's reset your system.
+              </p>
               <h1 className="text-foreground text-2xl sm:text-3xl font-bold mb-2">
                 Instant Calm Breathing
               </h1>
@@ -255,10 +258,13 @@ const InstantRelief = () => {
             </div>
 
             <h2 className="text-foreground text-2xl font-bold mb-3">
-              Breathing Complete
+              Your nervous system has shifted.
             </h2>
-            <p className="text-muted-foreground text-lg mb-10 leading-relaxed">
-              You did it. Your nervous system just reset a little.
+            <p className="text-muted-foreground text-lg mb-4 leading-relaxed">
+              Notice one small change in your body.
+            </p>
+            <p className="text-muted-foreground/70 text-sm mb-10">
+              You are safe. Your body is settling.
             </p>
 
             <div className="flex gap-3 justify-center flex-wrap">
@@ -266,7 +272,7 @@ const InstantRelief = () => {
                 onClick={handleBegin}
                 className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium bg-secondary/60 hover:bg-secondary text-foreground/80 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                Repeat
+                Repeat Reset
               </button>
               <button
                 onClick={() => navigate("/dashboard")}
