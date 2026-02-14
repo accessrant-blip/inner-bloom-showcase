@@ -1,15 +1,16 @@
-import { Play, Pause, RotateCcw, Volume2, VolumeX } from "lucide-react";
+import { Play, Pause, RotateCcw, Volume2, VolumeX, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { AudioMode } from "@/hooks/useBreathingAudio";
 
 interface BreathingControlsProps {
   isActive: boolean;
   isPaused: boolean;
-  soundEnabled: boolean;
+  audioMode: AudioMode;
   onBegin: () => void;
   onPause: () => void;
   onResume: () => void;
   onReset: () => void;
-  onToggleSound: () => void;
+  onCycleAudioMode: () => void;
 }
 
 function PillButton({
@@ -17,11 +18,13 @@ function PillButton({
   label,
   children,
   className,
+  active,
 }: {
   onClick: () => void;
   label: string;
   children: React.ReactNode;
   className?: string;
+  active?: boolean;
 }) {
   return (
     <button
@@ -29,8 +32,10 @@ function PillButton({
       aria-label={label}
       className={cn(
         "inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium",
-        "bg-secondary/60 hover:bg-secondary text-foreground/80 hover:text-foreground",
         "transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        active
+          ? "bg-primary/20 text-primary hover:bg-primary/30"
+          : "bg-secondary/60 hover:bg-secondary text-foreground/80 hover:text-foreground",
         className
       )}
     >
@@ -39,16 +44,30 @@ function PillButton({
   );
 }
 
+const AUDIO_LABELS: Record<AudioMode, string> = {
+  full: "Full Guidance",
+  minimal: "Minimal Cues",
+  silent: "Silent",
+};
+
+const AUDIO_ICONS: Record<AudioMode, typeof Volume2> = {
+  full: Volume2,
+  minimal: MessageCircle,
+  silent: VolumeX,
+};
+
 export default function BreathingControls({
   isActive,
   isPaused,
-  soundEnabled,
+  audioMode,
   onBegin,
   onPause,
   onResume,
   onReset,
-  onToggleSound,
+  onCycleAudioMode,
 }: BreathingControlsProps) {
+  const AudioIcon = AUDIO_ICONS[audioMode];
+
   return (
     <div className="flex flex-col items-center gap-3">
       <div className="flex items-center gap-3 flex-wrap justify-center">
@@ -78,16 +97,17 @@ export default function BreathingControls({
         )}
 
         <PillButton
-          onClick={onToggleSound}
-          label={soundEnabled ? "Disable audio guidance" : "Enable audio guidance"}
+          onClick={onCycleAudioMode}
+          label={`Audio mode: ${AUDIO_LABELS[audioMode]}. Click to change.`}
+          active={audioMode !== "silent"}
         >
-          {soundEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
-          {soundEnabled ? "On" : "Off"}
+          <AudioIcon className="h-4 w-4" />
+          {AUDIO_LABELS[audioMode]}
         </PillButton>
       </div>
 
       <span className="text-xs text-muted-foreground">
-        Audio Guidance: {soundEnabled ? "On" : "Off"}
+        Audio: {AUDIO_LABELS[audioMode]}
       </span>
     </div>
   );

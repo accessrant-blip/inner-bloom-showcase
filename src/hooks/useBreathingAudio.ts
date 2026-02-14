@@ -1,32 +1,83 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useEffect } from "react";
 
-type Phase = "inhale1" | "inhale2" | "hold" | "exhale";
+export type AudioMode = "full" | "minimal" | "silent";
 
-const phrasesMap: Record<Phase, string> = {
-  inhale1: "Inhale through your nose",
-  inhale2: "Inhale a little more",
-  hold: "Gently hold",
-  exhale: "Slow exhale through your mouth",
+type Phase = "inhale" | "topup" | "exhale" | "rest";
+
+const FULL_SCRIPTS: Record<Phase, string> = {
+  inhale: "Inhale slowly through your nose",
+  topup: "just a little more",
+  exhale: "Now long, slow exhale through your mouth",
+  rest: "Good. Let your shoulders soften.",
 };
 
-export function useBreathingAudio() {
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+const MINIMAL_SCRIPTS: Record<Phase, string> = {
+  inhale: "Inhale",
+  topup: "More",
+  exhale: "Exhale",
+  rest: "",
+};
 
-  const speak = useCallback((phase: Phase) => {
+export function useBreathingAudio(mode: AudioMode) {
+  const currentUtterance = useRef<SpeechSynthesisUtterance | null>(null);
+  const voiceRef = useRef<SpeechSynthesisVoice | null>(null);
+
+  // Select a calm-sounding voice on mount
+  useEffect(() => {
     if (!("speechSynthesis" in window)) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(phrasesMap[phase]);
-    utterance.rate = 0.8;
-    utterance.pitch = 0.9;
-    utterance.volume = 0.7;
-    utteranceRef.current = utterance;
-    window.speechSynthesis.speak(utterance);
+
+    const pickVoice = () => {
+      const voices = window.speechSynthesis.getVoices();
+      // Prefer a female en-US voice for calmer tone
+      const preferred = voices.find(
+        (v) => v.lang.startsWith("en") && v.name.toLowerCase().includes("female")
+      );
+      voiceRef.current = preferred || voices.find((v) => v.lang.startsWith("en")) || voices[0] || null;
+    };
+
+    pickVoice();
+    window.speechSynthesis.addEventListener("voiceschanged", pickVoice);
+    return () => window.speechSynthesis.removeEventListener("voiceschanged", pickVoice);
   }, []);
+
+  const speak = useCallback(
+    (phase: Phase) => {
+      if (mode === "silent" || !("speechSynthesis" in window)) return;
+
+      const scripts = mode === "full" ? FULL_SCRIPTS : MINIMAL_SCRIPTS;
+      const text = scripts[phase];
+      if (!text) return;
+
+      // Cancel previous utterance for soft transition
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.75;
+      utterance.pitch = 0.85;
+      utterance.volume = 0.65;
+      if (voiceRef.current) utterance.voice = voiceRef.current;
+
+      utterance.onerror = (e) => {
+        if (e.error !== "canceled") {
+          console.warn("Speech error:", e.error);
+        }
+        currentUtterance.current = null;
+      };
+      utterance.onend = () => {
+        currentUtterance.current = null;
+      };
+
+      currentUtterance.current = utterance;
+      window.speechSynthesis.speak(utterance);
+    },
+    [mode]
+  );
 
   const stop = useCallback(() => {
     if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
     }
+    currentUtterance.current = null;
   }, []);
 
   return { speak, stop };
