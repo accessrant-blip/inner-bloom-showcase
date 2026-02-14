@@ -5,10 +5,10 @@ export type AudioMode = "full" | "minimal" | "silent";
 type Phase = "inhale" | "topup" | "exhale" | "rest";
 
 const FULL_SCRIPTS: Record<Phase, string> = {
-  inhale: "Inhale slowly through your nose",
-  topup: "just a little more",
-  exhale: "Now long, slow exhale through your mouth",
-  rest: "Good. Let your shoulders soften.",
+  inhale: "Inhale through your nose",
+  topup: "A little more",
+  exhale: "Long slow exhale",
+  rest: "",
 };
 
 const MINIMAL_SCRIPTS: Record<Phase, string> = {
