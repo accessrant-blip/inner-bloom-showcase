@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "helping-a-friend",
+    title: "How to Help a Friend Who's Having a Tough Time (What to Say and What Not To) 💛",
+    excerpt: "Most people don't need you to solve their problems. They just need someone who's there to listen and understand.",
+    date: "2026-02-14",
+    readTime: "6 min",
+    category: "Community",
+  },
+  {
     id: "postpartum-depression",
     title: "Postpartum Depression: Understanding It, Talking About It, and Finding Your Way Through 💛",
     excerpt: "Postpartum depression isn't about failing as a parent. It's a real health issue, and there's help out there.",
