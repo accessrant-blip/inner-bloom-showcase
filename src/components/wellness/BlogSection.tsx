@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "abandoning-yourself",
+    title: "The Day You Realize You've Been Abandoning Yourself 💛",
+    excerpt: "You're not tired just because life's tough. You're beat because you haven't been taking care of yourself. Not all at once, but little by little.",
+    date: "2026-02-15",
+    readTime: "7 min",
+    category: "Wellness Tips",
+  },
+  {
     id: "helping-a-friend",
     title: "How to Help a Friend Who's Having a Tough Time (What to Say and What Not To) 💛",
     excerpt: "Most people don't need you to solve their problems. They just need someone who's there to listen and understand.",
