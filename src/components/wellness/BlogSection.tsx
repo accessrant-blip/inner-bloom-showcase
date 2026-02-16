@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "duality-of-healing",
+    title: "The Duality of Healing: Why You Can Be Growing and Struggling at the Same Time 🌿",
+    excerpt: "Healing isn't a straight line. You can feel stronger and still be sad. That doesn't mean you're failing — it means you're human.",
+    date: "2026-02-16",
+    readTime: "7 min",
+    category: "Mental Health",
+  },
+  {
     id: "abandoning-yourself",
     title: "The Day You Realize You've Been Abandoning Yourself 💛",
     excerpt: "You're not tired just because life's tough. You're beat because you haven't been taking care of yourself. Not all at once, but little by little.",
@@ -54,14 +62,6 @@ const blogPreviews: BlogPreview[] = [
     date: "2026-02-08",
     readTime: "4 min",
     category: "Wellness Tips",
-  },
-  {
-    id: "19",
-    title: "How Violence Messes With Your Head: What You Need to Know 🧠",
-    excerpt: "Violence isn't just physical — it can be emotional, verbal, mental, or sexual. Understanding this can help you stop blaming yourself.",
-    date: "2026-02-07",
-    readTime: "7 min",
-    category: "Mental Health",
   },
 ];
 
