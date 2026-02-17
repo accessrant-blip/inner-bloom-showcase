@@ -21,6 +21,124 @@ interface BlogPost {
 // Blog posts data - shared with Blog.tsx
 export const blogPosts: BlogPost[] = [
   {
+    id: "fine-during-day-fall-apart-at-night",
+    title: "Why You Feel Fine During the Day But Fall Apart at Night 🌙",
+    excerpt: "You get through the day just fine. Then night comes, the house gets quiet, and everything feels heavy. There are real reasons why this happens.",
+    content: `You do your thing during the day. You answer messages. You finish tasks. You even smile when you need to. You just **keep going**.
+
+Then night comes. The house gets quiet. The things that distract you are gone. The lights are off. Everything feels really **heavy** all of a sudden.
+
+If you've ever wondered why you seem fine during the day but then fall apart at night — **you are not alone**. There are real reasons why this happens. 💛
+
+---
+
+## ☀️ During the Day, You Are Busy
+
+You're doing things like:
+
+- 📱 **Responding to people**
+- 💼 **Working and solving problems**
+- 🗣️ **Talking to others**
+- ✅ **Trying to be productive**
+
+Your brain is thinking about all the things you have to do. Being busy helps you **not think about your feelings**. It gives your mind something to focus on.
+
+> 💡 You're not really fine — you're just **distracted**.
+
+---
+
+## 🌙 At Night, the Distractions Are Gone
+
+When it gets quiet at night, your mind starts to wander. You don't have:
+
+- 📧 Emails to answer
+- 👥 People to talk to
+- 📋 Tasks to keep you busy
+
+The feelings you **pushed aside** during the day? They're still there. They don't just disappear.
+
+When it's quiet, you start to think about things that bother you:
+
+- 😟 Things that could go wrong
+- 😔 Sadness or loneliness
+- 🧠 Unprocessed emotions from the day
+
+Your brain finally shifts from **doing** to **feeling**.
+
+---
+
+## 🔋 Your Nervous System Is Tired
+
+By nighttime, you're **exhausted**. You've been using a lot of energy to:
+
+- 💪 Keep going during the day
+- 🎭 Stay strong and not show your feelings
+- 🧱 Hold everything together
+
+When you're tired, it's **harder to control your emotions**.
+
+> 🌿 It's not that you're weak — you're just **tired**.
+
+---
+
+## 🧠 Why You Overthink at Night
+
+At night, your brain starts to process things more deeply. You might:
+
+- 🔄 **Replay** what you said or did during the day
+- 😰 **Worry** about things coming up
+- 🤔 **Try to figure out** your feelings
+
+Sometimes this overthinking just makes you feel **worse**. Your mind is trying to catch up with everything you didn't let yourself feel earlier.
+
+---
+
+## 🪞 You Weren't Fine — You Were Just Keeping Going
+
+There's a big difference between **being fine** and **just keeping going**:
+
+| | Just Keeping Going | Actually Fine |
+|---|---|---|
+| ☀️ Day | Doing things, getting by | Happy and peaceful inside |
+| 🌙 Night | Feelings come flooding in | Calm and at ease |
+
+You can keep going and do things **even if you're not feeling fine**. But at night, your true feelings come out. 💛
+
+---
+
+## 🛠️ What Can Help You
+
+You don't have to dread nighttime. Here are things you can try:
+
+1. 🧘 **Create a wind-down routine** — Take a walk, listen to music, or do some gentle stretching before bed. This helps your body and mind **transition** from doing to resting.
+
+2. 📝 **Write down your thoughts** — Journaling before bed can help you **release** what's been building up inside. You don't have to write a lot — just be honest.
+
+3. 💛 **Be kind to yourself** — Don't say mean things to yourself for feeling this way. Instead, try: *"My mind is finally processing things. That's okay."*
+
+4. 🗣️ **Talk to someone** — If nighttime sadness keeps happening, consider talking to a **trusted friend or professional**. You don't have to carry this alone.
+
+5. 🌿 **Practice grounding** — Try the 5-4-3-2-1 technique: Name **5 things you see, 4 you touch, 3 you hear, 2 you smell, 1 you taste**. It brings you back to the present.
+
+---
+
+## 💛 One Last Thought
+
+It's **okay** to feel things at night. It doesn't mean you're weak or broken.
+
+It just means your mind is finally **catching up** with what your heart has been carrying all day.
+
+> 🌙 *You can learn to sit with your feelings instead of running from them. It will get better over time.*
+
+**Be patient with yourself.** The fact that you feel deeply is not a flaw — it's part of being **human**. 🌿`,
+    author: "RantFree Team",
+    date: "2026-02-17",
+    readTime: "6 min",
+    category: "Mental Health",
+    tags: ["nighttime anxiety", "emotional processing", "mental health", "self-care"],
+    featured: false,
+  },
+  {
     id: "1",
     title: "Day 1: Why Getting Stuff Off Your Chest Is Good for You 💭",
     excerpt: "We all have stuff we're dealing with—work stress, personal problems, thoughts we can't shake. When you keep it all inside, it just builds up. Talking about it, if you do it right, can really take the pressure off.",

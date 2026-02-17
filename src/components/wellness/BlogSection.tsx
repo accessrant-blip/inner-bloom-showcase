@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "fine-during-day-fall-apart-at-night",
+    title: "Why You Feel Fine During the Day But Fall Apart at Night 🌙",
+    excerpt: "You get through the day just fine. Then night comes, the house gets quiet, and everything feels heavy. There are real reasons why this happens.",
+    date: "2026-02-17",
+    readTime: "6 min",
+    category: "Mental Health",
+  },
+  {
     id: "duality-of-healing",
     title: "The Duality of Healing: Why You Can Be Growing and Struggling at the Same Time 🌿",
     excerpt: "Healing isn't a straight line. You can feel stronger and still be sad. That doesn't mean you're failing — it means you're human.",
