@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "growth-vs-self-pressure",
+    title: "The Difference Between Growth and Self-Pressure 🌱",
+    excerpt: "Self-improvement is everywhere. But when does healthy growth cross the line into self-pressure? Here's how to tell the difference.",
+    date: "2026-02-17",
+    readTime: "7 min",
+    category: "Self Improvement",
+  },
+  {
     id: "fine-during-day-fall-apart-at-night",
     title: "Why You Feel Fine During the Day But Fall Apart at Night 🌙",
     excerpt: "You get through the day just fine. Then night comes, the house gets quiet, and everything feels heavy. There are real reasons why this happens.",
