@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "10-things-to-say-to-help",
+    title: "Here Are 10 Things You Can Say to Help Someone Feel Better 💬",
+    excerpt: "When someone you care about is having a tough time, you want to say the right thing. But most people aren't looking for perfect advice — they just need words that feel safe and real.",
+    date: "2026-02-18",
+    readTime: "5 min",
+    category: "Community",
+  },
+  {
     id: "growth-vs-self-pressure",
     title: "The Difference Between Growth and Self-Pressure 🌱",
     excerpt: "Self-improvement is everywhere. But when does healthy growth cross the line into self-pressure? Here's how to tell the difference.",
