@@ -5114,6 +5114,124 @@ And however it shows up for you — quietly, loudly, slowly, suddenly — **it's
     featured: false,
   },
   {
+    id: "10-things-to-say-to-help",
+    title: "Here Are 10 Things You Can Say to Help Someone Feel Better 💬",
+    excerpt: "When someone you care about is having a tough time, you want to say the right thing. But most people aren't looking for perfect advice — they just need words that feel safe and real.",
+    content: `When someone you care about is having a tough time, you obviously want to say the **right thing**.
+
+But most people aren't looking for **perfect advice**.
+
+They just need words that feel **safe and real**. 💛
+
+> 💡 What usually helps isn't a quick fix — it's knowing they're **understood**.
+
+So, here are **10 easy, helpful things** you can say when someone's struggling.
+
+---
+
+## 1️⃣ "I'm here with you."
+
+It's **simple**, steadying, and means a lot.
+
+- 🤝 You aren't fixing their problem — you're just **there**
+- 💚 Being present helps them feel **less alone**
+
+---
+
+## 2️⃣ "That sounds really hard."
+
+- 💡 It's better to **show you get it** than to try to be positive
+- 🫂 You don't have to know exactly what they're going through to know it **feels bad**
+
+---
+
+## 3️⃣ "You don't have to go through this alone."
+
+- 😔 When things get too much, people often feel they're the **only one**
+- 💪 This tells them they have **backup**
+
+---
+
+## 4️⃣ "It makes sense that you feel this way."
+
+- ✅ You're not agreeing with everything — just that their **feelings are okay**
+- 🧘 Feeling understood can be really **calming**
+
+---
+
+## 5️⃣ "Do you want me to just listen, or help you think through it?"
+
+- 🎯 This lets them **decide what they need** instead of you guessing
+- 💭 Sometimes people want ideas. Sometimes they just need to **talk**
+
+---
+
+## 6️⃣ "You've handled difficult things before."
+
+- 🌟 This reminds them how **strong** they are without ignoring how they feel now
+- 💪 It gives them a **boost** without adding pressure
+
+---
+
+## 7️⃣ "Take your time. There's no rush."
+
+- ⏳ When people are stressed, rushing makes it **worse**
+- 🌊 Saying it's okay to **slow down** cuts the stress
+
+---
+
+## 8️⃣ "I care about you."
+
+- 💛 Just saying it can mean a lot
+- 👀 Especially when someone's feeling **down on themselves** or invisible
+
+---
+
+## 9️⃣ "What would feel supportive right now?"
+
+- 🎯 Instead of guessing, just **ask**
+- 💚 Help is better when it's **made for them**
+
+---
+
+## 🔟 "I'm proud of you for talking about this."
+
+- 💪 It takes **guts** to open up
+- 🛡️ Saying you see that effort makes them feel **safer sharing more**
+
+---
+
+## 🌿 What Often Doesn't Help (Even If You Mean Well)
+
+Try **not** to say:
+
+- ❌ **"At least…"**
+- ❌ **"Everything happens for a reason."**
+- ❌ **"Just stay positive."**
+- ❌ **"I know exactly how you feel."**
+- ❌ Or **give advice before listening**
+
+> ⚠️ These can accidentally make their feelings seem **small** or change the subject.
+
+---
+
+## 💛 A Quick Tip
+
+You don't need the **perfect words**.
+
+- 🫶 **How you say it** matters more than what you say
+- 🧘 Being **patient** and just **being there** is enough
+- 💬 The best support feels **safe**, not scripted
+
+> 🌱 Sometimes the most powerful thing you can do is simply **show up**.`,
+    author: "RantFree Team",
+    date: "2026-02-18",
+    readTime: "5 min read",
+    category: "Community",
+    tags: ["community", "support", "friendship", "empathy", "mental health", "communication"],
+    featured: false,
+  },
+  {
     id: "helping-a-friend",
     title: "How to Help a Friend Who's Having a Tough Time (What to Say and What Not To) 💛",
     excerpt: "Most people don't need you to solve their problems. They just need someone who's there to listen and understand. Here's how to be that person.",
