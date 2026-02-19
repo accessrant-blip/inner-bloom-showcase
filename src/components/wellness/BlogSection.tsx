@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "decoding-mood-swings-menstrual-cycle",
+    title: "Decoding Your Mood Swings: It's All About Your Menstrual Cycle 🌙",
+    excerpt: "Ever wonder why you feel like you can conquer the world one week, but just want to hide under the covers the next? It's not random — it's your hormones doing their thing.",
+    date: "2026-02-19",
+    readTime: "8 min",
+    category: "Community",
+  },
+  {
     id: "10-things-to-say-to-help",
     title: "Here Are 10 Things You Can Say to Help Someone Feel Better 💬",
     excerpt: "When someone you care about is having a tough time, you want to say the right thing. But most people aren't looking for perfect advice — they just need words that feel safe and real.",
