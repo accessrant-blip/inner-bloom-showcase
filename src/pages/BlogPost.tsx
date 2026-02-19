@@ -5232,6 +5232,217 @@ You don't need the **perfect words**.
     featured: false,
   },
   {
+    id: "decoding-mood-swings-menstrual-cycle",
+    title: "Decoding Your Mood Swings: It's All About Your Menstrual Cycle 🌙",
+    excerpt: "Ever wonder why you feel like you can conquer the world one week, but just want to hide under the covers the next? It's not random — it's your hormones doing their thing.",
+    content: `Ever wonder why you feel like you can **conquer the world** one week, but just want to **hide under the covers** the next? 🤔
+
+It's not just you. And it's definitely **not random**.
+
+> 🌊 It's your **hormones** doing their thing.
+
+Your menstrual cycle does a lot more than just bring on your period. It messes with your:
+
+- 😊 **Mood**
+- ⚡ **Energy Levels**
+- 🧠 **Ability to Focus**
+- 💪 **Self-Confidence**
+- 🤝 **Desire to Socialize**
+- 💭 **Emotional Reactivity**
+
+Getting to know your cycle can help you **chill out on the self-judgment** and start working *with* your body, not against it. 🌿
+
+---
+
+## 🔄 The 4 Main Stages of Your Cycle
+
+A normal cycle is about **21–35 days** long and has four key parts:
+
+1. 🩸 **Menstrual Phase** (Period)
+2. 🌱 **Follicular Phase** (Pre-Ovulation)
+3. ☀️ **Ovulation Phase** (Mid-Cycle)
+4. 🌙 **Luteal Phase** (Pre-Period)
+
+Each of these stages comes with different hormone changes — and, yeah, **different feelings**.
+
+---
+
+## 🩸 1. Menstrual Phase (Your Period)
+
+**What's going on:**
+
+Your estrogen and progesterone levels hit **rock bottom**. Your body sheds the lining of your uterus (aka, your period).
+
+**How you might feel:**
+
+- 😴 Tired
+- 🪞 Reflective
+- 🥺 Sensitive
+- 🏠 Like you need space
+- 💭 In tune with your emotions
+
+This phase can feel **slow and heavy**.
+
+**What helps:**
+
+- 🛏️ **Rest**
+- 📝 **Writing in a journal**
+- 🧘 **Easy exercise**
+- 🤫 **Quiet time**
+- 🚫 **Less social stuff**
+
+> 💡 This is your time to **chill and think**, not to push yourself.
+
+---
+
+## 🌱 2. Follicular Phase (After Your Period)
+
+**What's going on:**
+
+Estrogen starts to **rise again**, and your energy starts coming back.
+
+**How you might feel:**
+
+- 🚀 Motivated
+- 😄 Positive
+- 🧠 Like you can think straight
+- 🌟 Open to doing new things
+- 🎯 More able to focus
+
+This phase often feels like a **fresh start**. ✨
+
+**What helps:**
+
+- 📋 **Starting new projects**
+- 🗓️ **Making plans**
+- 💪 **Trying out new habits**
+- 🤝 **Hanging out with friends**
+
+> 🌿 This is a good time for **new things and growth**.
+
+---
+
+## ☀️ 3. Ovulation Phase (Mid-Cycle)
+
+**What's going on:**
+
+Estrogen hits its **peak**. Testosterone goes up a bit. An egg is released.
+
+**How you might feel:**
+
+- 💪 Self-assured
+- 🎉 Sociable
+- 🗣️ Like expressing yourself
+- ✨ Attractive
+- 🌍 Outgoing
+
+You may feel like your **most energetic and social self** during this phase. 🔥
+
+**What helps:**
+
+- 💬 **Having important talks**
+- 🎤 **Giving presentations**
+- 🥂 **Going to social events**
+- 🤝 **Making connections**
+- 👥 **Working with others**
+
+> ☀️ This is a great time to **put yourself out there**.
+
+---
+
+## 🌙 4. Luteal Phase (Before Your Period)
+
+**What's going on:**
+
+Progesterone increases. If you don't get pregnant, your hormone levels start to **drop**.
+
+**How you might feel:**
+
+- 😤 More touchy
+- 😠 Easily annoyed
+- 😟 Worried
+- 😩 Like things are too much
+- 🏠 Wanting to be alone
+- 😔 Less motivated
+
+A lot of people struggle with this phase, especially if they have **PMS or PMDD**.
+
+**What helps:**
+
+- 🧘 **Less craziness**
+- 🚧 **Setting limits**
+- 😴 **Getting enough sleep**
+- ✋ **Not doing too much**
+- 💛 **Being kind to yourself**
+
+> 🌿 It's **not a sign of weakness** — it's just your hormones.
+
+---
+
+## 🧠 Why the Mood Swings Happen
+
+**Estrogen** helps with:
+- 😊 **Serotonin** (which controls mood)
+- 🧠 **Being able to think clearly**
+- ⚡ **Energy**
+
+> When estrogen drops, your mood can feel **down**.
+
+**Progesterone** affects:
+- 🧘 **Feeling calm**
+- 😴 **How tired you feel**
+- 🥺 **How sensitive you are**
+
+Hormone changes mess with your **nervous system**, which then affects your feelings.
+
+> 💡 You're not just moody. Your body is **reacting to chemicals**.
+
+---
+
+## 🌿 Working With Your Cycle
+
+1. 📝 **Track your cycle** for a few months
+2. 🔍 **See if you notice patterns** in your mood and energy
+3. 🚀 **Plan to do big things** when you have the most energy
+4. 🛏️ **Take it easy** when your energy is low
+5. 💛 **Be nice to yourself** before your period
+
+> 🌱 Understanding your patterns can make you feel **less ashamed** of your mood swings.
+
+---
+
+## 🏥 When to Get Help
+
+Think about talking to a doctor if:
+
+- 😰 Your mood swings are **intense**
+- 🚫 Your symptoms get in the way of **everyday life**
+- 😢 You feel really **down** before your period
+- 💭 You think you might have **PMDD**
+
+> 💛 You deserve to feel **supported**.
+
+---
+
+## 💫 Final Thoughts
+
+You're not all over the place. You're **cyclical**. 🌙
+
+Some weeks you're ready to go, and some weeks you need to **slow down**.
+
+Understanding your menstrual phases helps you **explain how you feel** — and lets you work **with** your body instead of fighting it.
+
+> 🌿 **Your cycle isn't a flaw. It's a feature.**
+
+👉 **Need support understanding your emotions? RantFree.in is here for you.**`,
+    author: "RantFree Team",
+    date: "2026-02-19",
+    readTime: "8 min read",
+    category: "Community",
+    tags: ["community", "women's health", "menstrual cycle", "mood", "hormones", "self-care"],
+    featured: false,
+  },
+  {
     id: "helping-a-friend",
     title: "How to Help a Friend Who's Having a Tough Time (What to Say and What Not To) 💛",
     excerpt: "Most people don't need you to solve their problems. They just need someone who's there to listen and understand. Here's how to be that person.",
