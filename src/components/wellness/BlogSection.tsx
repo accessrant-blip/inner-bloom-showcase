@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "loneliness-men-dont-talk-about",
+    title: "The Loneliness Men Don't Talk About 🤐",
+    excerpt: "There's a certain kind of loneliness that's hard to spot. It looks like going to work like always, answering emails, and saying you're fine. A lot of guys are dealing with it silently.",
+    date: "2026-02-20",
+    readTime: "9 min",
+    category: "Community",
+  },
+  {
     id: "decoding-mood-swings-menstrual-cycle",
     title: "Decoding Your Mood Swings: It's All About Your Menstrual Cycle 🌙",
     excerpt: "Ever wonder why you feel like you can conquer the world one week, but just want to hide under the covers the next? It's not random — it's your hormones doing their thing.",
