@@ -21,6 +21,190 @@ interface BlogPost {
 // Blog posts data - shared with Blog.tsx
 export const blogPosts: BlogPost[] = [
   {
+    id: "building-habits-that-stick",
+    title: "10 Proven Ways to Build Habits That Actually Stick 🧠",
+    excerpt: "Building habits isn't about trying hard. Studies show that habits come from doing things regularly in a steady situation, not from sudden bursts of motivation.",
+    content: `Building habits isn't about **trying hard**. 💪
+
+Studies show that habits come from doing things **regularly** in a steady situation — not from sudden bursts of motivation.
+
+> 💡 If you have trouble sticking to something, it's **not because you're lazy**. Usually, it's because you don't have a good **system** set up.
+
+Here are **10 ways** that are proven to help you form habits:
+
+---
+
+## 1️⃣ Start Really Small (Tiny Habits)
+
+Studies on changing how you act show that doing **smaller things** makes it easier to be consistent.
+
+**Instead of:**
+- ❌ *"Do exercise for 30 minutes every day"*
+
+**Start with:**
+- ✅ Do **5 pushups**
+- ✅ Walk for **2 minutes**
+
+> 🌱 Small habits make your brain feel **less threatened** and help you keep going. **Being consistent** is more important than doing a lot at once.
+
+---
+
+## 2️⃣ Connect the Habit to Something You Already Do (Habit Stacking)
+
+Studies show that habits stick better when you **connect them** to something you already do.
+
+**Here's the formula:**
+
+> 🔗 *"After I [current habit], I will [new habit]."*
+
+**For example:**
+- 🪥 After brushing my teeth → **floss one tooth**
+- ☕ After making coffee → **read one page**
+
+The habit you already have **reminds you** to do the new one.
+
+---
+
+## 3️⃣ Use Obvious Reminders in Your Surroundings 🏠
+
+Habits depend on **where you are** and what's around you. Studies show that what you do is really affected by your **environment**.
+
+**For example:**
+- 📖 Keep a **book on your pillow** so you remember to read at night
+- 👟 Put your **workout shoes by the door**
+- 💧 Keep **water where you can see it** on your desk
+
+> 🧠 If you just try to remember, you'll have a hard time. **Set up your surroundings** to help you instead.
+
+---
+
+## 4️⃣ Make It Easy to Start 🚀
+
+The toughest part of any habit is **getting going**. Make it easier:
+
+- 👕 Get your **clothes ready** the night before
+- 🍎 Keep **healthy snacks** where you can see them
+- 📓 Have your **journal and pen** ready
+
+> ✅ The less work it takes to start, the more likely you are to **keep doing** the habit.
+
+---
+
+## 5️⃣ Focus on Doing It Often, Not for a Long Time ⏱️
+
+Studies suggest that doing something **regularly** in a steady place helps it become automatic.
+
+**It's better to:**
+- ✅ Meditate for **2 minutes every day**
+
+**Than:**
+- ❌ Meditate for **20 minutes once a week**
+
+> 🔄 Habits are created by doing things **again and again**.
+
+---
+
+## 6️⃣ Keep Track of How You're Doing 📊
+
+Watching what you do helps you **stick to it**. Even just marking off days on a calendar can help.
+
+**This is because:**
+- 📈 Seeing **progress** makes you feel good
+- 🔥 Seeing **streaks** helps you keep going
+- 🪞 Tracking makes you **responsible**, even if you're the only one who sees it
+
+---
+
+## 7️⃣ Give Yourself a Reward Right Away 🎁
+
+Habits get stronger when you pair them with a reward that you **get right away**.
+
+Your brain starts to **like doing** the thing that gets you the reward.
+
+**Rewards can be small:**
+- ✅ Checking it off
+- 💬 Saying something **nice to yourself**
+- ☕ Doing a little **ritual you like**
+
+> ⚡ Rewards that take a long time to get (like success later) don't help as much as **immediate rewards**.
+
+---
+
+## 8️⃣ Expect It to Be Uncomfortable 😤
+
+Changing what you do often makes you want to **resist** it. Studies show that feeling uncomfortable doesn't mean something is wrong — it just means it's **new**.
+
+**Expect:**
+- 😑 To **not feel like doing it** sometimes
+- 😣 To feel a little **frustrated**
+- 🔄 To **not be consistent** at first
+
+> 🌿 Be ready for things to **not be perfect**.
+
+---
+
+## 9️⃣ Connect It to Who You Want to Be 🪞
+
+Studies suggest that habits stick better when they're linked to **who you see yourself as**.
+
+**Instead of:**
+- ❌ *"I want to run."*
+
+**Think:**
+- ✅ *"I'm becoming someone who **runs**."*
+
+> 💛 When what you do matches who you **think you are**, it helps you commit to the habit.
+
+---
+
+## 🔟 Plan for Slip-Ups 📋
+
+Studies show that planning *"if this happens, then I'll do this"* helps you **keep going**.
+
+**For example:**
+- 🔄 If I miss one day → I **start again the next day**
+- 😴 If I feel too tired → I do the **smallest version** of the habit
+
+> 🌱 Planning for problems helps you avoid thinking that it's all ruined if you mess up once. **Missing one time** doesn't erase all the progress you've made.
+
+---
+
+## 🧠 What Really Makes a Habit?
+
+Forming a habit depends on:
+
+- 🔄 Doing it **again and again**
+- 🏠 Doing it in a **steady situation**
+- ✅ Making it **easy**
+- 🔗 Having something that **reminds you** to do it, doing it, and getting a **reward**
+
+**Not** how much you want to do it. **Not** how hard it is. **Not** doing it perfectly.
+
+> ⏳ It can take **weeks or months** for things to become automatic, and it's different for everyone.
+
+---
+
+## 💛 One Last Thing
+
+The science is clear:
+
+> 🌿 Doing **small things** again and again, that don't take much effort, is **what works**.
+
+If you have trouble with habits, don't ask:
+- ❌ *"Why am I lazy?"*
+
+Ask:
+- ✅ *"How can I make this **easier**?"*
+
+**Habits aren't built by pushing yourself. They're built by setting things up right.** 🧱`,
+    author: "RantFree Team",
+    date: "2026-02-21",
+    readTime: "8 min",
+    category: "Self Improvement",
+    tags: ["habits", "self-improvement", "productivity", "behavior change"],
+    featured: false,
+  },
+  {
     id: "loneliness-men-dont-talk-about",
     title: "The Loneliness Men Don't Talk About 🤐",
     excerpt: "There's a certain kind of loneliness that's hard to spot. It looks like going to work like always, answering emails, and saying you're fine. A lot of guys are dealing with it silently.",
