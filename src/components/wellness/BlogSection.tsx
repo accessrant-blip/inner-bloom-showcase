@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "building-habits-that-stick",
+    title: "10 Proven Ways to Build Habits That Actually Stick 🧠",
+    excerpt: "Building habits isn't about trying hard. Studies show that habits come from doing things regularly in a steady situation, not from sudden bursts of motivation.",
+    date: "2026-02-21",
+    readTime: "8 min",
+    category: "Self Improvement",
+  },
+  {
     id: "loneliness-men-dont-talk-about",
     title: "The Loneliness Men Don't Talk About 🤐",
     excerpt: "There's a certain kind of loneliness that's hard to spot. It looks like going to work like always, answering emails, and saying you're fine. A lot of guys are dealing with it silently.",
