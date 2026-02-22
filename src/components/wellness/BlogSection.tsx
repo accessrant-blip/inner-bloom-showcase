@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "gut-emotions-connected",
+    title: "Your Gut & Your Emotions Are Connected 🧠🦠",
+    excerpt: "Most people assume emotions are all in your head. But science says your gut and brain are always chatting with each other.",
+    date: "2026-02-22",
+    readTime: "6 min",
+    category: "Self Improvement",
+  },
+  {
     id: "building-habits-that-stick",
     title: "10 Proven Ways to Build Habits That Actually Stick 🧠",
     excerpt: "Building habits isn't about trying hard. Studies show that habits come from doing things regularly in a steady situation, not from sudden bursts of motivation.",

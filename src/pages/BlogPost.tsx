@@ -21,6 +21,127 @@ interface BlogPost {
 // Blog posts data - shared with Blog.tsx
 export const blogPosts: BlogPost[] = [
   {
+    id: "gut-emotions-connected",
+    title: "Your Gut & Your Emotions Are Connected 🧠🦠",
+    excerpt: "Most people assume emotions are all in your head. But science says your gut and brain are always chatting with each other. It's called the gut-brain connection.",
+    content: `Most people assume emotions are **all in your head**. 🧠
+
+But guess what? Science says your **gut and brain** are always chatting with each other.
+
+> 🔗 It's called the **gut-brain connection**.
+
+---
+
+## 🤔 Why Your Gut Messes With Your Mood
+
+Your gut is packed with **tons of nerve cells** and a crazy amount of bacteria that mess with:
+
+- 😰 **How you handle stress**
+- 😟 **How anxious you get**
+- ⚡ **How much energy you have**
+- 😴 **How well you sleep**
+- ⚖️ **How stable you feel**
+
+> 💡 Seriously, a lot of the stuff that makes you happy (**serotonin**) is **made in your gut**.
+
+So, when your gut is a mess, your emotions usually are, too.
+
+**You might notice:**
+
+- 😤 Getting **annoyed super easily**
+- 🌫️ Feeling **spacey**
+- 😶 **Not wanting** to do anything
+- 😰 Feeling **anxious** for no clear reason
+- 😩 Being **tired** even after chilling out
+
+> 🌿 Sometimes, it's not just in your head — **it's your body talking**.
+
+---
+
+## 🌿 Signs Your Gut Could Use Some Love
+
+- 🫄 Always feeling **bloated** or uncomfortable
+- 🍬 Really wanting **sweets**
+- 🎭 **Mood** all over the place
+- 😴 Sleeping **badly**
+- 🔋 Having **no energy**
+
+> 💛 Your body might just want some **balance**, not a lecture.
+
+---
+
+## 🥗 Easy Ways to Help Your Gut
+
+### 1️⃣ Feed the Good Guys
+
+**Eat:**
+
+- 🥛 **Yogurt**
+- 🥒 **Fermented stuff**
+- 🥦 **Fruits and veggies**
+- 🌾 **Whole grains**
+
+---
+
+### 2️⃣ Eat Regularly
+
+Eating at **different times** stresses your gut and your nerves.
+
+> ⏰ Try to keep a **consistent eating schedule**.
+
+---
+
+### 3️⃣ Take Your Time Eating
+
+Your gut works better when you're **chill**, not rushing.
+
+> 🧘 Slow down and **enjoy your meals**.
+
+---
+
+### 4️⃣ Handle Stress Gently
+
+Being stressed all the time **messes with your gut bacteria**.
+
+- 🌬️ Just **breathing**
+- 📝 **Writing in a journal**
+- 🤫 Having **quiet time**
+
+> 💆 These all help **a lot**.
+
+---
+
+### 5️⃣ Sleep Is Important
+
+Your gut bugs **follow your sleep schedule** too.
+
+> 😴 Better sleep = **happier gut**.
+
+---
+
+### 6️⃣ Drink Enough Water
+
+**Water** helps with digestion and keeping your emotions steady.
+
+> 💧 Stay hydrated — your gut will thank you.
+
+---
+
+## 🤍 Important Thing to Remember
+
+Taking care of your gut isn't about being **perfect**.
+
+It's about helping your body **feel good** so it can work right.
+
+> 🌟 When your gut's happy, your **mind often feels better too**.`,
+    author: "RantFree Team",
+    date: "2026-02-22",
+    readTime: "6 min",
+    category: "Self Improvement",
+    tags: ["gut health", "mental health", "self improvement", "wellness", "mind-body"],
+    featured: true,
+  },
+  {
     id: "building-habits-that-stick",
     title: "10 Proven Ways to Build Habits That Actually Stick 🧠",
     excerpt: "Building habits isn't about trying hard. Studies show that habits come from doing things regularly in a steady situation, not from sudden bursts of motivation.",
