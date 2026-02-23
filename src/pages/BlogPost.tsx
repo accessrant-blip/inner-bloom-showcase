@@ -21,6 +21,218 @@ interface BlogPost {
 // Blog posts data - shared with Blog.tsx
 export const blogPosts: BlogPost[] = [
   {
+    id: "emotional-hangover",
+    title: "The Emotional Hangover No One Talks About 😶‍🌫️",
+    excerpt: "You know when you wake up and just feel… blah? Not exactly sad, but just heavy? There's a name for that: an emotional hangover.",
+    content: `So, you know when you wake up and just feel… **blah?**
+
+Like, not exactly sad, but just **heavy?**
+
+It's not like anything bad happened. Yesterday might have been great, full of talks, laughs, and good moments.
+
+But today? You're just **tired, quiet**, and maybe a little too sensitive.
+
+> 💡 Guess what? There's a name for that: an **emotional hangover**.
+
+---
+
+## 🌿 What's an Emotional Hangover?
+
+Basically, it's that **mental and physical tiredness** you get after having some big emotions – even if they were **good** emotions.
+
+Just like your body needs to chill after you work out, your **brain needs to chill** after feeling a lot.
+
+**It can happen after stuff like:**
+
+- 💬 **Deep talks**
+- 👥 **Hanging out with a lot of people**
+- 😤 **Fights or tough talks**
+- 🤔 **Making big choices**
+- 🧠 **Therapy**
+- 🤝 **Helping someone out**
+- 🎉 **Really good news**
+- 🥳 **Parties or big events**
+
+> 🔋 Your brain worked hard, and now it's **catching up**.
+
+---
+
+## 🧠 Why It Happens
+
+Your brain doesn't really care if the emotion is **good or bad** — it just knows it was **a lot**.
+
+Either way, it turns on the **emotional processing bits**.
+
+**When you're having these big feelings:**
+
+- 😰 **Stress stuff goes up**
+- 👀 You **pay extra attention** to everything
+- 🧠 Your brain is **working overtime** with all the information
+
+After it's all done, your brain goes from **go mode** to **recovery mode**.
+
+**And that recovery can feel like:**
+
+- 🌫️ Your brain is **foggy**
+- 🔋 You have **no energy**
+- 😤 You're **easily annoyed**
+- 🚪 You want to **be alone**
+- 💔 You're **extra sensitive**
+
+> 🌿 Don't worry, nothing's wrong. Your brain is just **getting back to normal**.
+
+---
+
+## 🌊 Even Good Times Can Make You Tired
+
+It can be confusing to feel tired after something **fun**.
+
+But even **joy, feeling close to people, being open**, and getting excited takes energy.
+
+**Like:**
+
+- 💒 A **wedding** or a party
+- 🤗 Meeting **new friends**
+- 💬 Telling someone **how you feel**
+- 👨‍👩‍👧‍👦 Hanging out with **family**
+
+> 🧠 Your brain is still **thinking about it all** for a while after it's over.
+
+It's the **strong feelings**, not if they're good or bad, that make you tired.
+
+---
+
+## 💭 How to Know If You Have One
+
+**You might notice:**
+
+- 🚪 Wanting to **be alone** after being with people
+- 🤫 Being **quieter** than usual
+- 🌫️ **Hard to focus**
+- 😶 **Not wanting** to do anything
+- 😤 Things **bother you** more
+- 😴 You're **tired** even if you slept enough
+- 🔄 You keep **thinking about** what happened
+
+> 💛 You're not avoiding people. You're just **taking it all in**.
+
+---
+
+## 🧠 How Your Brain Works
+
+Your brain has different modes:
+
+- ⚡ **Active:** you're doing things, paying attention, feeling strong emotions
+- 😌 **Calm:** you're just relaxed
+- 🔄 **Recovery:** you're resting and taking things in
+
+An emotional hangover is just your brain going from **active to recovery**.
+
+> 💪 Think of it like when your muscles are sore after the gym. You used your **emotional energy**, and now your brain needs a break.
+
+---
+
+## 🌱 Why Ignoring It Makes It Worse
+
+A lot of people just try to **get back to work** right away.
+
+**They think:**
+
+- 😤 *"I shouldn't be this tired."*
+- 🤷 *"It wasn't a big deal."*
+- 🏃 *"I need to get back to normal."*
+
+**But if you don't let yourself recover, you could:**
+
+- 🔥 Get **burned out**
+- 😠 Get **cranky**
+- 🧊 **Shut down** emotionally
+- 😵 Feel **overwhelmed** all the time
+
+> 💛 Taking time to recover is part of **staying healthy** — it doesn't mean you're weak.
+
+---
+
+## 💛 How to Get Over It
+
+### 1️⃣ Chill Out
+
+Take a break from **people and screens**.
+
+> 🤫 Quiet helps you think.
+
+### 2️⃣ Know It's Normal
+
+Tell yourself: *"My brain is just recovering."*
+
+> 🧠 Knowing what it is makes it **less scary**.
+
+### 3️⃣ Do Easy Stuff
+
+- 🚶 Go for a **walk**
+- 📝 Write in a **journal**
+- 🎵 Listen to **music**
+- 😌 **Rest** without feeling guilty
+- 🔄 Do your usual routine, but **slowly**
+
+> 🌿 Don't try to do too much right away.
+
+### 4️⃣ Take Care of Your Body
+
+Feeling emotions takes **a lot out of you**.
+
+> 😴 Sleep, food, and moving around helps your brain **reset**.
+
+### 5️⃣ Just Let It Be
+
+You don't have to think about everything so hard.
+
+> 🌊 Sometimes you just need to let things **settle on their own**.
+
+---
+
+## 🌿 It Means You Really Felt Something
+
+People who get emotional hangovers are usually:
+
+- 💛 **Caring**
+- 🎯 **Really involved**
+- 🧠 **In touch with their feelings**
+- 💭 **Thoughtful**
+
+> 🌟 Being tired isn't a bad thing. It means you **really put yourself into it**.
+
+---
+
+## 🌱 Think About It Differently
+
+Instead of saying: *"Why am I so tired?"*
+
+Try asking: **"What did I just go through?"**
+
+> 🔄 Recovery isn't avoiding things. It's **processing things**.
+
+---
+
+## 💛 One Last Thing
+
+We know we need to rest after working out.
+
+But **feeling emotions is work too**.
+
+> 🧠 An emotional hangover is just your brain saying: *"That was important. Let's take it easy and think about it."*
+
+Sometimes, feeling better isn't about **pushing forward**.
+
+It's about **letting yourself recover**. 🌿`,
+    author: "RantFree Team",
+    date: "2026-02-23",
+    readTime: "8 min",
+    category: "Mental Health",
+    tags: ["mental health", "emotional wellness", "self-care", "recovery", "feelings"],
+    featured: true,
+  },
+  {
     id: "gut-emotions-connected",
     title: "Your Gut & Your Emotions Are Connected 🧠🦠",
     excerpt: "Most people assume emotions are all in your head. But science says your gut and brain are always chatting with each other. It's called the gut-brain connection.",

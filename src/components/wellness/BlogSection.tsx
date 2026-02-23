@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "emotional-hangover",
+    title: "The Emotional Hangover No One Talks About 😶‍🌫️",
+    excerpt: "You know when you wake up and just feel… blah? Not exactly sad, but just heavy? There's a name for that: an emotional hangover.",
+    date: "2026-02-23",
+    readTime: "8 min",
+    category: "Mental Health",
+  },
+  {
     id: "gut-emotions-connected",
     title: "Your Gut & Your Emotions Are Connected 🧠🦠",
     excerpt: "Most people assume emotions are all in your head. But science says your gut and brain are always chatting with each other.",
