@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "nervous-system-personality",
+    title: "Your Nervous System Has a Personality: Why You React the Way You Do 🧠",
+    excerpt: "Ever wonder why people react so differently to the same situation? A lot of what we think of as personality is actually based on how our nervous system handles feelings of safety and danger.",
+    date: "2026-02-24",
+    readTime: "10 min",
+    category: "Mental Health",
+  },
+  {
     id: "emotional-hangover",
     title: "The Emotional Hangover No One Talks About 😶‍🌫️",
     excerpt: "You know when you wake up and just feel… blah? Not exactly sad, but just heavy? There's a name for that: an emotional hangover.",
