@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "brain-replays-old-conversations",
+    title: "Why Your Brain Replays Old Conversations (And Why You Can't Just \"Stop Thinking About It\") 🧠💬",
+    excerpt: "You're trying to relax, then out of nowhere your brain drags up some old talk. You start replaying what you said, thinking about what you should have said instead. There's actually a reason for it.",
+    date: "2026-02-25",
+    readTime: "10 min",
+    category: "Community",
+  },
+  {
     id: "nervous-system-personality",
     title: "Your Nervous System Has a Personality: Why You React the Way You Do 🧠",
     excerpt: "Ever wonder why people react so differently to the same situation? A lot of what we think of as personality is actually based on how our nervous system handles feelings of safety and danger.",
