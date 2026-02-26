@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "loneliness-shapes-decisions",
+    title: "How Loneliness Shapes Your Decisions 🧠💔",
+    excerpt: "Being surrounded by people doesn't stop you from feeling super lonely. Feeling lonely all the time can mess with how you think, what you decide, and you might not even realize it.",
+    date: "2026-02-26",
+    readTime: "10 min",
+    category: "Community",
+  },
+  {
     id: "brain-replays-old-conversations",
     title: "Why Your Brain Replays Old Conversations (And Why You Can't Just \"Stop Thinking About It\") 🧠💬",
     excerpt: "You're trying to relax, then out of nowhere your brain drags up some old talk. You start replaying what you said, thinking about what you should have said instead. There's actually a reason for it.",
