@@ -50,7 +50,7 @@ const HowItWorksSection = () => {
             >
               <CardContent className="p-6">
                 {/* Step Number */}
-                <div className="absolute top-4 right-4 text-6xl font-bold text-primary/10">
+                <div className="absolute top-4 right-4 text-6xl font-bold text-primary/10" aria-hidden="true">
                   {step.step}
                 </div>
                 
