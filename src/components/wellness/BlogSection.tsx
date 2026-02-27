@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "becoming-someone-you-can-trust-again",
+    title: "Becoming Someone You Can Trust Again 🌿",
+    excerpt: "There's a type of tired that isn't from work, people, or pressure. It comes from not trusting yourself. Under all the self-improvement advice is something quieter: trusting yourself.",
+    date: "2026-02-27",
+    readTime: "8 min",
+    category: "Self Improvement",
+  },
+  {
     id: "loneliness-shapes-decisions",
     title: "How Loneliness Shapes Your Decisions 🧠💔",
     excerpt: "Being surrounded by people doesn't stop you from feeling super lonely. Feeling lonely all the time can mess with how you think, what you decide, and you might not even realize it.",
