@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "stop-seeking-validation",
+    title: "How to Stop Seeking Validation Constantly 🌿",
+    excerpt: "A lot of people do this thing without even knowing it: they wait for others to approve before they feel good about themselves. This isn't just wanting attention — it's wanting people to say you're okay.",
+    date: "2026-02-28",
+    readTime: "8 min",
+    category: "Self Improvement",
+  },
+  {
     id: "becoming-someone-you-can-trust-again",
     title: "Becoming Someone You Can Trust Again 🌿",
     excerpt: "There's a type of tired that isn't from work, people, or pressure. It comes from not trusting yourself. Under all the self-improvement advice is something quieter: trusting yourself.",
