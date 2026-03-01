@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "outgrow-old-versions",
+    title: "Learning to Outgrow Old Versions of Yourself 🌿",
+    excerpt: "Growing up doesn't usually feel like a big, dramatic thing. Most of the time, it's just confusing. You're not lost, though — you're just getting too big for your old self.",
+    date: "2026-03-01",
+    readTime: "8 min",
+    category: "Community",
+  },
+  {
     id: "stop-seeking-validation",
     title: "How to Stop Seeking Validation Constantly 🌿",
     excerpt: "A lot of people do this thing without even knowing it: they wait for others to approve before they feel good about themselves. This isn't just wanting attention — it's wanting people to say you're okay.",
