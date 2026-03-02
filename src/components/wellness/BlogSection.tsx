@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "designing-a-life",
+    title: "Designing a Life Instead of Escaping One 🌿",
+    excerpt: "A lot of people don't really want a completely different life. What they want is a break from the one they have. Here's how to start designing instead of escaping.",
+    date: "2026-03-02",
+    readTime: "9 min",
+    category: "Self Improvement",
+  },
+  {
     id: "outgrow-old-versions",
     title: "Learning to Outgrow Old Versions of Yourself 🌿",
     excerpt: "Growing up doesn't usually feel like a big, dramatic thing. Most of the time, it's just confusing. You're not lost, though — you're just getting too big for your old self.",
