@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "positive-mindset",
+    title: "What's a Positive Mindset, and How Do You Get One? 🌿",
+    excerpt: "Having a positive mindset isn't about pretending everything's perfect. It's about choosing to think in helpful ways instead of harmful ones.",
+    date: "2026-03-03",
+    readTime: "9 min",
+    category: "Self Improvement",
+  },
+  {
     id: "designing-a-life",
     title: "Designing a Life Instead of Escaping One 🌿",
     excerpt: "A lot of people don't really want a completely different life. What they want is a break from the one they have. Here's how to start designing instead of escaping.",
