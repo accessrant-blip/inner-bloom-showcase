@@ -25,6 +25,58 @@ function calculateCyclePhase(lastPeriodDate: string, cycleLength: number) {
   return { phase, phaseLabel, dayInCycle, cycleLength };
 }
 
+function buildRhythmMap(logs: any[], cycleLength: number) {
+  const positiveBehaviors = new Set(["Happy", "Confident", "Motivated"]);
+  const negativeBehaviors = new Set(["Sad", "Irritated", "Anxious", "Low Energy", "Brain Fog"]);
+  const physicalBehaviors = new Set(["Craving Sugar", "Overeating", "Bloated", "Insomnia", "Screen Binge"]);
+
+  // Group by cycle day
+  const dayData: Record<number, { energy: number[]; mood: number[]; physical: number[]; count: number }> = {};
+  
+  for (let d = 1; d <= cycleLength; d++) {
+    dayData[d] = { energy: [], mood: [], physical: [], count: 0 };
+  }
+
+  for (const log of logs) {
+    const day = log.cycle_day;
+    if (day < 1 || day > cycleLength) continue;
+    const behaviors: string[] = log.behaviors || [];
+    
+    let posCount = 0, negCount = 0, physCount = 0;
+    for (const b of behaviors) {
+      if (positiveBehaviors.has(b)) posCount++;
+      if (negativeBehaviors.has(b)) negCount++;
+      if (physicalBehaviors.has(b)) physCount++;
+    }
+    
+    // Energy: positive signals boost, negative reduce (scale 0-10)
+    const energyScore = Math.min(10, Math.max(0, 5 + posCount * 2 - negCount * 1.5));
+    // Mood: positive boosts, negative reduces
+    const moodScore = Math.min(10, Math.max(0, 5 + posCount * 2 - negCount * 2));
+    // Physical discomfort
+    const physicalScore = Math.min(10, physCount * 2.5);
+
+    dayData[day].energy.push(energyScore);
+    dayData[day].mood.push(moodScore);
+    dayData[day].physical.push(physicalScore);
+    dayData[day].count++;
+  }
+
+  const rhythmMap: { day: number; energy: number; mood: number; physical: number; samples: number }[] = [];
+  for (let d = 1; d <= cycleLength; d++) {
+    const dd = dayData[d];
+    rhythmMap.push({
+      day: d,
+      energy: dd.energy.length > 0 ? Math.round(dd.energy.reduce((a, b) => a + b, 0) / dd.energy.length * 10) / 10 : -1,
+      mood: dd.mood.length > 0 ? Math.round(dd.mood.reduce((a, b) => a + b, 0) / dd.mood.length * 10) / 10 : -1,
+      physical: dd.physical.length > 0 ? Math.round(dd.physical.reduce((a, b) => a + b, 0) / dd.physical.length * 10) / 10 : -1,
+      samples: dd.count,
+    });
+  }
+
+  return rhythmMap;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -70,14 +122,16 @@ serve(async (req) => {
       .select('cycle_day, cycle_phase, behaviors, logged_at')
       .eq('user_id', user.id)
       .order('logged_at', { ascending: false })
-      .limit(90);
+      .limit(180);
 
     const logs = behaviorLogs || [];
     const logCount = logs.length;
 
+    // Build rhythm map from all logs
+    const rhythmMap = buildRhythmMap(logs, cycleInfo.cycleLength);
+
     // Build behavior context from logs
     const currentPhaseLogs = logs.filter((l: any) => l.cycle_phase === cycleInfo.phase);
-    const otherPhaseLogs = logs.filter((l: any) => l.cycle_phase !== cycleInfo.phase);
 
     const behaviorFrequency: Record<string, number> = {};
     currentPhaseLogs.forEach((l: any) => {
@@ -291,6 +345,7 @@ Return ONLY a JSON object:
         insights: parsed.insights || [],
         hasEnoughData: true,
         logCount,
+        rhythmMap,
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
