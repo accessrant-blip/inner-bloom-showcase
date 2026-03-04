@@ -27,27 +27,39 @@ const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
-  const filteredPosts = blogPosts
-    .filter((post) => {
-      const query = searchQuery.toLowerCase();
-      const matchesSearch = !searchQuery || 
-        post.title.toLowerCase().includes(query) ||
-        post.excerpt.toLowerCase().includes(query) ||
-        post.tags.some(tag => tag.toLowerCase().includes(query));
-      
-      const matchesCategory = selectedCategory === "All" || 
-        post.category === selectedCategory;
-      
-      return matchesSearch && matchesCategory;
-    })
+  const searchedPosts = blogPosts.filter((post) => {
+    const query = searchQuery.toLowerCase();
+    return !searchQuery || 
+      post.title.toLowerCase().includes(query) ||
+      post.excerpt.toLowerCase().includes(query) ||
+      post.tags.some(tag => tag.toLowerCase().includes(query));
+  });
+
+  const categoryFilteredPosts = selectedCategory === "All"
+    ? searchedPosts
+    : searchedPosts.filter((post) => post.category === selectedCategory);
+
+  const sortedCategoryPosts = [...categoryFilteredPosts].sort((a, b) => {
+    const dateA = new Date(a.date).getTime();
+    const dateB = new Date(b.date).getTime();
+    return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
+  });
+
+  const featuredFromAllPosts = [...searchedPosts]
+    .filter((post) => post.featured)
     .sort((a, b) => {
       const dateA = new Date(a.date).getTime();
       const dateB = new Date(b.date).getTime();
       return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
     });
 
-  const featuredPosts = filteredPosts.filter(post => post.featured);
-  const regularPosts = filteredPosts.filter(post => !post.featured);
+  const featuredPosts = selectedCategory === "All"
+    ? sortedCategoryPosts.filter((post) => post.featured)
+    : featuredFromAllPosts;
+
+  const regularPosts = selectedCategory === "All"
+    ? sortedCategoryPosts.filter((post) => !post.featured)
+    : sortedCategoryPosts;
 
   return (
     <div className="min-h-screen bg-background">
@@ -114,7 +126,7 @@ const Blog = () => {
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
           <p className="text-sm text-muted-foreground">
             Showing: <span className="font-medium text-foreground">{selectedCategory}</span> • <span className="font-medium text-foreground">{sortOrder === "newest" ? "Newest First" : "Oldest First"}</span>
-            <span className="ml-1 text-xs">({filteredPosts.length} {filteredPosts.length === 1 ? "post" : "posts"})</span>
+            <span className="ml-1 text-xs">({categoryFilteredPosts.length} {categoryFilteredPosts.length === 1 ? "post" : "posts"})</span>
           </p>
           <Button
             variant="outline"
@@ -127,123 +139,228 @@ const Blog = () => {
           </Button>
         </div>
 
-        {/* Featured Posts */}
-        {featuredPosts.length > 0 && (
-          <section className="mb-12" aria-labelledby="featured-heading">
-            <h3 id="featured-heading" className="text-2xl font-semibold mb-6 text-foreground">
-              Featured Articles
-            </h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              {featuredPosts.map((post) => (
-                <article key={post.id}>
-                  <Link to={`/blog/${post.id}`}>
-                    <Card className="h-full hover:shadow-lg transition-all duration-300 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent hover:border-primary/40">
-                      <CardHeader className="pb-3">
-                        <Badge variant="secondary" className="w-fit mb-2">
-                          {post.category}
-                        </Badge>
-                        <h4 className="text-xl font-semibold text-foreground leading-tight hover:text-primary transition-colors">
-                          {post.title}
-                        </h4>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-muted-foreground mb-4 line-clamp-3">
-                          {post.excerpt}
-                        </p>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
-                          <span className="flex items-center gap-1">
-                            <User className="h-4 w-4" />
-                            {post.author}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Calendar className="h-4 w-4" />
-                            <time dateTime={post.date}>
-                              {new Date(post.date).toLocaleDateString('en-US', { 
-                                month: 'short', 
-                                day: 'numeric', 
-                                year: 'numeric' 
-                              })}
-                            </time>
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Clock className="h-4 w-4" />
-                            {post.readTime}
-                          </span>
-                        </div>
-                        <div className="flex gap-2 mt-4 flex-wrap">
-                          {post.tags.map((tag) => (
-                            <Badge key={tag} variant="outline" className="text-xs">
-                              <Tag className="h-3 w-3 mr-1" />
-                              {tag}
+        {selectedCategory === "All" ? (
+          <>
+            {/* Featured Posts */}
+            {featuredPosts.length > 0 && (
+              <section className="mb-12" aria-labelledby="featured-heading">
+                <h3 id="featured-heading" className="text-2xl font-semibold mb-6 text-foreground">
+                  Featured Articles
+                </h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  {featuredPosts.map((post) => (
+                    <article key={post.id}>
+                      <Link to={`/blog/${post.id}`}>
+                        <Card className="h-full hover:shadow-lg transition-all duration-300 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent hover:border-primary/40">
+                          <CardHeader className="pb-3">
+                            <Badge variant="secondary" className="w-fit mb-2">
+                              {post.category}
                             </Badge>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                </article>
-              ))}
-            </div>
-          </section>
+                            <h4 className="text-xl font-semibold text-foreground leading-tight hover:text-primary transition-colors">
+                              {post.title}
+                            </h4>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-muted-foreground mb-4 line-clamp-3">
+                              {post.excerpt}
+                            </p>
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+                              <span className="flex items-center gap-1">
+                                <User className="h-4 w-4" />
+                                {post.author}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Calendar className="h-4 w-4" />
+                                <time dateTime={post.date}>
+                                  {new Date(post.date).toLocaleDateString('en-US', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: 'numeric'
+                                  })}
+                                </time>
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-4 w-4" />
+                                {post.readTime}
+                              </span>
+                            </div>
+                            <div className="flex gap-2 mt-4 flex-wrap">
+                              {post.tags.map((tag) => (
+                                <Badge key={tag} variant="outline" className="text-xs">
+                                  <Tag className="h-3 w-3 mr-1" />
+                                  {tag}
+                                </Badge>
+                              ))}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </Link>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* All Posts */}
+            {regularPosts.length > 0 && (
+              <section aria-labelledby="all-posts-heading">
+                <h3 id="all-posts-heading" className="text-2xl font-semibold mb-6 text-foreground">
+                  All Articles
+                </h3>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {regularPosts.map((post) => (
+                    <article key={post.id}>
+                      <Link to={`/blog/${post.id}`}>
+                        <Card className="h-full hover:shadow-lg transition-all duration-300 hover:border-primary/30">
+                          <CardHeader className="pb-3">
+                            <Badge variant="secondary" className="w-fit mb-2">
+                              {post.category}
+                            </Badge>
+                            <h4 className="text-lg font-semibold text-foreground leading-tight hover:text-primary transition-colors">
+                              {post.title}
+                            </h4>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                              {post.excerpt}
+                            </p>
+                            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <Calendar className="h-3 w-3" />
+                                <time dateTime={post.date}>
+                                  {new Date(post.date).toLocaleDateString('en-US', {
+                                    month: 'short',
+                                    day: 'numeric'
+                                  })}
+                                </time>
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                {post.readTime}
+                              </span>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </Link>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            )}
+          </>
+        ) : (
+          <>
+            {/* Selected Category Posts */}
+            {regularPosts.length > 0 && (
+              <section className="mb-12" aria-labelledby="selected-category-heading">
+                <h3 id="selected-category-heading" className="text-2xl font-semibold mb-6 text-foreground">
+                  {selectedCategory} Articles
+                </h3>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {regularPosts.map((post) => (
+                    <article key={post.id}>
+                      <Link to={`/blog/${post.id}`}>
+                        <Card className="h-full hover:shadow-lg transition-all duration-300 hover:border-primary/30">
+                          <CardHeader className="pb-3">
+                            <Badge variant="secondary" className="w-fit mb-2">
+                              {post.category}
+                            </Badge>
+                            <h4 className="text-lg font-semibold text-foreground leading-tight hover:text-primary transition-colors">
+                              {post.title}
+                            </h4>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                              {post.excerpt}
+                            </p>
+                            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <Calendar className="h-3 w-3" />
+                                <time dateTime={post.date}>
+                                  {new Date(post.date).toLocaleDateString('en-US', {
+                                    month: 'short',
+                                    day: 'numeric'
+                                  })}
+                                </time>
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                {post.readTime}
+                              </span>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </Link>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Featured Posts from any category */}
+            {featuredPosts.length > 0 && (
+              <section aria-labelledby="featured-heading">
+                <h3 id="featured-heading" className="text-2xl font-semibold mb-6 text-foreground">
+                  Featured Articles
+                </h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  {featuredPosts.map((post) => (
+                    <article key={post.id}>
+                      <Link to={`/blog/${post.id}`}>
+                        <Card className="h-full hover:shadow-lg transition-all duration-300 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent hover:border-primary/40">
+                          <CardHeader className="pb-3">
+                            <Badge variant="secondary" className="w-fit mb-2">
+                              {post.category}
+                            </Badge>
+                            <h4 className="text-xl font-semibold text-foreground leading-tight hover:text-primary transition-colors">
+                              {post.title}
+                            </h4>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-muted-foreground mb-4 line-clamp-3">
+                              {post.excerpt}
+                            </p>
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+                              <span className="flex items-center gap-1">
+                                <User className="h-4 w-4" />
+                                {post.author}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Calendar className="h-4 w-4" />
+                                <time dateTime={post.date}>
+                                  {new Date(post.date).toLocaleDateString('en-US', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: 'numeric'
+                                  })}
+                                </time>
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-4 w-4" />
+                                {post.readTime}
+                              </span>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </Link>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            )}
+          </>
         )}
 
-        {/* All Posts */}
-        {regularPosts.length > 0 && (
-          <section aria-labelledby="all-posts-heading">
-            <h3 id="all-posts-heading" className="text-2xl font-semibold mb-6 text-foreground">
-              {selectedCategory === "All" ? "All Articles" : selectedCategory}
-            </h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {regularPosts.map((post) => (
-                <article key={post.id}>
-                  <Link to={`/blog/${post.id}`}>
-                    <Card className="h-full hover:shadow-lg transition-all duration-300 hover:border-primary/30">
-                      <CardHeader className="pb-3">
-                        <Badge variant="secondary" className="w-fit mb-2">
-                          {post.category}
-                        </Badge>
-                        <h4 className="text-lg font-semibold text-foreground leading-tight hover:text-primary transition-colors">
-                          {post.title}
-                        </h4>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                          {post.excerpt}
-                        </p>
-                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="h-3 w-3" />
-                            <time dateTime={post.date}>
-                              {new Date(post.date).toLocaleDateString('en-US', { 
-                                month: 'short', 
-                                day: 'numeric'
-                              })}
-                            </time>
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            {post.readTime}
-                          </span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                </article>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Empty State - only when no posts at all */}
-        {filteredPosts.length === 0 && (
+        {/* Empty State */}
+        {categoryFilteredPosts.length === 0 && (
           <div className="text-center py-12">
             <p className="text-muted-foreground">
-              {selectedCategory !== "All" && !searchQuery
-                ? `No posts available in ${selectedCategory} yet.`
+              {selectedCategory !== "All"
+                ? "No articles available in this category yet."
                 : "No articles found matching your search."}
             </p>
-            <Button 
-              variant="link" 
+            <Button
+              variant="link"
               onClick={() => { setSearchQuery(""); setSelectedCategory("All"); }}
               className="mt-2"
             >
