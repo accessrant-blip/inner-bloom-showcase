@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
   RefreshCw, Eye, TrendingUp, Shield, Heart, Compass,
-  Sparkles, Brain, Lightbulb, Activity, Calendar, X
+  Sparkles, Brain, Lightbulb, Activity, Calendar, X, Check
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -48,49 +48,74 @@ interface CycleData {
   hasEnoughData: boolean;
   needsCycleData?: boolean;
   message?: string;
+  logCount?: number;
 }
 
 const phaseConfig: Record<string, { label: string; icon: typeof Shield; gradient: string; color: string }> = {
-  menstrual: {
-    label: "Menstrual",
-    icon: Shield,
-    gradient: "from-destructive/5 via-muted/20 to-card/60",
-    color: "text-destructive/70",
-  },
-  follicular: {
-    label: "Follicular",
-    icon: TrendingUp,
-    gradient: "from-accent/10 via-primary/5 to-card/60",
-    color: "text-primary/70",
-  },
-  ovulation: {
-    label: "Ovulation",
-    icon: Sparkles,
-    gradient: "from-primary/10 via-accent/10 to-card/60",
-    color: "text-primary",
-  },
-  luteal: {
-    label: "Luteal",
-    icon: Eye,
-    gradient: "from-muted/40 via-secondary/20 to-card/60",
-    color: "text-muted-foreground",
-  },
+  menstrual: { label: "Menstrual", icon: Shield, gradient: "from-destructive/5 via-muted/20 to-card/60", color: "text-destructive/70" },
+  follicular: { label: "Follicular", icon: TrendingUp, gradient: "from-accent/10 via-primary/5 to-card/60", color: "text-primary/70" },
+  ovulation: { label: "Ovulation", icon: Sparkles, gradient: "from-primary/10 via-accent/10 to-card/60", color: "text-primary" },
+  luteal: { label: "Luteal", icon: Eye, gradient: "from-muted/40 via-secondary/20 to-card/60", color: "text-muted-foreground" },
 };
 
 const insightIcons = { pattern: Eye, prediction: Compass, bridge: Heart };
 const insightLabels = { pattern: "Pattern", prediction: "Prediction", bridge: "Suggestion" };
 
-const BEHAVIOR_OPTIONS = [
-  "Cravings", "Brain fog", "Low energy", "Screen binge",
-  "Mood swings", "Anxiety", "Irritability", "Bloating",
-  "Insomnia", "Motivation dip",
+const BEHAVIOR_CHIPS = [
+  { label: "Happy", category: "positive" },
+  { label: "Confident", category: "positive" },
+  { label: "Motivated", category: "positive" },
+  { label: "Emotional", category: "mood" },
+  { label: "Sad", category: "mood" },
+  { label: "Irritated", category: "mood" },
+  { label: "Anxious", category: "mood" },
+  { label: "Brain Fog", category: "cognitive" },
+  { label: "Low Energy", category: "physical" },
+  { label: "Screen Binge", category: "behavioral" },
+  { label: "Craving Sugar", category: "physical" },
+  { label: "Overeating", category: "physical" },
+  { label: "Bloated", category: "physical" },
+  { label: "Insomnia", category: "physical" },
 ];
+
+const chipColors: Record<string, string> = {
+  positive: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20 hover:bg-emerald-500/20",
+  mood: "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20 hover:bg-amber-500/20",
+  cognitive: "bg-violet-500/10 text-violet-700 dark:text-violet-400 border-violet-500/20 hover:bg-violet-500/20",
+  physical: "bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/20 hover:bg-rose-500/20",
+  behavioral: "bg-sky-500/10 text-sky-700 dark:text-sky-400 border-sky-500/20 hover:bg-sky-500/20",
+};
+
+const chipSelectedColors: Record<string, string> = {
+  positive: "bg-emerald-500/25 text-emerald-800 dark:text-emerald-300 border-emerald-500/40",
+  mood: "bg-amber-500/25 text-amber-800 dark:text-amber-300 border-amber-500/40",
+  cognitive: "bg-violet-500/25 text-violet-800 dark:text-violet-300 border-violet-500/40",
+  physical: "bg-rose-500/25 text-rose-800 dark:text-rose-300 border-rose-500/40",
+  behavioral: "bg-sky-500/25 text-sky-800 dark:text-sky-300 border-sky-500/40",
+};
+
+function calculateCyclePhase(lastPeriodDate: string, cycleLength: number) {
+  const today = new Date();
+  const periodStart = new Date(lastPeriodDate);
+  const diffMs = today.getTime() - periodStart.getTime();
+  const dayInCycle = Math.floor(diffMs / (1000 * 60 * 60 * 24)) % cycleLength + 1;
+  const menstrualEnd = Math.min(5, cycleLength);
+  const follicularEnd = Math.round(cycleLength * 0.45);
+  const ovulationEnd = Math.round(cycleLength * 0.55);
+
+  let phase: string, phaseLabel: string;
+  if (dayInCycle <= menstrualEnd) { phase = "menstrual"; phaseLabel = "Menstrual"; }
+  else if (dayInCycle <= follicularEnd) { phase = "follicular"; phaseLabel = "Follicular"; }
+  else if (dayInCycle <= ovulationEnd) { phase = "ovulation"; phaseLabel = "Ovulation"; }
+  else { phase = "luteal"; phaseLabel = "Luteal"; }
+
+  return { phase, phaseLabel, dayInCycle, cycleLength };
+}
 
 function MiniGraph({ data, label }: { data: PatternGraph; label: string }) {
   const allVals = [...data.previousCycle, ...data.currentCycle];
   const max = Math.max(...allVals, 1);
   const w = 200, h = 60, pad = 4;
-
   const toPath = (points: number[]) =>
     points.map((v, i) => {
       const x = pad + (i / (points.length - 1)) * (w - pad * 2);
@@ -144,25 +169,20 @@ function InsightCard({ insight, index }: { insight: Insight; index: number }) {
             <span className="text-[9px] text-primary/50 font-medium bg-primary/5 px-2 py-0.5 rounded-full shrink-0">Strong</span>
           )}
         </div>
-
         <p className="text-sm text-muted-foreground leading-relaxed">{insight.patternReflection}</p>
-
         {insight.patternGraph && <MiniGraph data={insight.patternGraph} label={insight.graphLabel || "Trend"} />}
-
         {insight.bridgeSuggestion && (
           <div className="flex gap-2.5 p-3 rounded-xl bg-accent/30 border border-accent-foreground/5">
             <Lightbulb className="h-3.5 w-3.5 text-primary/60 mt-0.5 shrink-0" />
             <p className="text-xs text-foreground/80 leading-relaxed">{insight.bridgeSuggestion}</p>
           </div>
         )}
-
         {insight.bioEducation && (
           <div className="flex gap-2.5 p-3 rounded-xl bg-muted/40">
             <Brain className="h-3.5 w-3.5 text-muted-foreground/50 mt-0.5 shrink-0" />
             <p className="text-[11px] text-muted-foreground leading-relaxed italic">{insight.bioEducation}</p>
           </div>
         )}
-
         {insight.reassurance && (
           <p className="text-xs text-primary/70 font-medium pt-1 border-t border-border/30">{insight.reassurance}</p>
         )}
@@ -174,13 +194,21 @@ function InsightCard({ insight, index }: { insight: Insight; index: number }) {
 function CycleSetup({ userId, onComplete }: { userId: string; onComplete: () => void }) {
   const [lastPeriod, setLastPeriod] = useState("");
   const [cycleLength, setCycleLength] = useState("28");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
 
-  const toggleTag = (tag: string) => {
-    setSelectedTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]);
-  };
+  useEffect(() => {
+    (async () => {
+      const { data } = await (supabase.from as any)('user_cycle_data')
+        .select('last_period_date, cycle_length')
+        .eq('user_id', userId)
+        .maybeSingle();
+      if (data) {
+        setLastPeriod(data.last_period_date || "");
+        setCycleLength(String(data.cycle_length || 28));
+      }
+    })();
+  }, [userId]);
 
   const save = async () => {
     if (!lastPeriod) {
@@ -192,12 +220,13 @@ function CycleSetup({ userId, onComplete }: { userId: string; onComplete: () => 
       user_id: userId,
       last_period_date: lastPeriod,
       cycle_length: parseInt(cycleLength) || 28,
-      behavior_tags: selectedTags,
+      behavior_tags: [],
     }, { onConflict: 'user_id' });
 
     if (error) {
       toast({ title: "Could not save", description: error.message, variant: "destructive" });
     } else {
+      toast({ title: "Cycle data saved" });
       onComplete();
     }
     setSaving(false);
@@ -212,63 +241,149 @@ function CycleSetup({ userId, onComplete }: { userId: string; onComplete: () => 
           </div>
           <h3 className="text-sm font-semibold text-foreground">Set Up Your Cycle</h3>
           <p className="text-xs text-muted-foreground leading-relaxed max-w-xs mx-auto">
-            Share a few details so Cycle Mirror can understand your personal rhythm and generate meaningful predictions.
+            Share a few details so Cycle Mirror can understand your personal rhythm.
           </p>
         </div>
-
         <div className="space-y-4">
           <div className="space-y-1.5">
             <Label className="text-xs text-muted-foreground">Last Period Start Date</Label>
-            <Input
-              type="date"
-              value={lastPeriod}
-              onChange={(e) => setLastPeriod(e.target.value)}
+            <Input type="date" value={lastPeriod} onChange={(e) => setLastPeriod(e.target.value)}
               max={new Date().toISOString().split('T')[0]}
-              className="rounded-xl border-border/50 bg-muted/20 h-10 text-sm"
-            />
+              className="rounded-xl border-border/50 bg-muted/20 h-10 text-sm" />
           </div>
-
           <div className="space-y-1.5">
             <Label className="text-xs text-muted-foreground">Average Cycle Length (days)</Label>
-            <Input
-              type="number"
-              value={cycleLength}
-              onChange={(e) => setCycleLength(e.target.value)}
+            <Input type="number" value={cycleLength} onChange={(e) => setCycleLength(e.target.value)}
               min="20" max="45"
-              className="rounded-xl border-border/50 bg-muted/20 h-10 text-sm"
-            />
+              className="rounded-xl border-border/50 bg-muted/20 h-10 text-sm" />
           </div>
+        </div>
+        <Button onClick={save} disabled={saving || !lastPeriod}
+          className="w-full rounded-xl h-11 bg-primary/90 hover:bg-primary text-primary-foreground">
+          {saving ? "Saving..." : "Save and Continue"}
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
 
-          <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">Recent Behaviors (optional)</Label>
-            <div className="flex flex-wrap gap-1.5">
-              {BEHAVIOR_OPTIONS.map(tag => (
-                <Badge
-                  key={tag}
-                  variant={selectedTags.includes(tag) ? "default" : "outline"}
-                  className={cn(
-                    "cursor-pointer text-[11px] rounded-full transition-all",
-                    selectedTags.includes(tag)
-                      ? "bg-primary/15 text-primary border-primary/30 hover:bg-primary/20"
-                      : "bg-transparent text-muted-foreground border-border/50 hover:bg-muted/40"
-                  )}
-                  onClick={() => toggleTag(tag)}
-                >
-                  {tag}
-                  {selectedTags.includes(tag) && <X className="h-3 w-3 ml-1" />}
-                </Badge>
-              ))}
-            </div>
+function BehaviorLogger({ userId, cycleInfo }: { userId: string; cycleInfo: CycleInfo }) {
+  const [selected, setSelected] = useState<string[]>([]);
+  const [saving, setSaving] = useState(false);
+  const [loggedToday, setLoggedToday] = useState(false);
+  const [todayBehaviors, setTodayBehaviors] = useState<string[]>([]);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    checkTodayLog();
+  }, [userId]);
+
+  const checkTodayLog = async () => {
+    const today = new Date().toISOString().split('T')[0];
+    const { data } = await (supabase.from as any)('cycle_behavior_logs')
+      .select('behaviors')
+      .eq('user_id', userId)
+      .eq('logged_at', today)
+      .maybeSingle();
+    if (data) {
+      setLoggedToday(true);
+      setTodayBehaviors(data.behaviors || []);
+    }
+  };
+
+  const toggle = (label: string) => {
+    setSelected(prev => prev.includes(label) ? prev.filter(l => l !== label) : [...prev, label]);
+  };
+
+  const logToday = async () => {
+    if (selected.length === 0) {
+      toast({ title: "Select at least one signal", variant: "destructive" });
+      return;
+    }
+    setSaving(true);
+    const today = new Date().toISOString().split('T')[0];
+    const { error } = await (supabase.from as any)('cycle_behavior_logs').upsert({
+      user_id: userId,
+      cycle_day: cycleInfo.dayInCycle,
+      cycle_phase: cycleInfo.phase,
+      behaviors: selected,
+      logged_at: today,
+    }, { onConflict: 'user_id,logged_at' });
+
+    if (error) {
+      toast({ title: "Could not save", description: error.message, variant: "destructive" });
+    } else {
+      setLoggedToday(true);
+      setTodayBehaviors(selected);
+      toast({ title: "Logged for today", description: `${selected.length} signal${selected.length > 1 ? 's' : ''} recorded` });
+    }
+    setSaving(false);
+  };
+
+  return (
+    <Card className="rounded-2xl border-border/40 shadow-soft bg-card/80 backdrop-blur-sm overflow-hidden animate-fade-in">
+      <CardContent className="p-5 space-y-4">
+        <div className="flex items-center gap-2.5">
+          <div className="p-2 rounded-xl bg-primary/8">
+            <Activity className="h-4 w-4 text-primary/60" />
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-foreground">
+              {loggedToday ? "Today's Log" : "How are you feeling today?"}
+            </h3>
+            <p className="text-[11px] text-muted-foreground">
+              {loggedToday
+                ? `Day ${cycleInfo.dayInCycle} - ${phaseConfig[cycleInfo.phase]?.label || cycleInfo.phase} phase`
+                : "Select the signals that resonate with you right now"}
+            </p>
           </div>
         </div>
 
-        <Button
-          onClick={save}
-          disabled={saving || !lastPeriod}
-          className="w-full rounded-xl h-11 bg-primary/90 hover:bg-primary text-primary-foreground"
-        >
-          {saving ? "Saving..." : "Save and Continue"}
-        </Button>
+        {loggedToday ? (
+          <div className="space-y-3">
+            <div className="flex flex-wrap gap-1.5">
+              {todayBehaviors.map(b => {
+                const chip = BEHAVIOR_CHIPS.find(c => c.label === b);
+                const cat = chip?.category || "mood";
+                return (
+                  <Badge key={b} className={cn("text-[11px] rounded-full border", chipSelectedColors[cat])}>
+                    <Check className="h-3 w-3 mr-1" />{b}
+                  </Badge>
+                );
+              })}
+            </div>
+            <Button variant="ghost" size="sm" className="text-xs text-muted-foreground"
+              onClick={() => { setLoggedToday(false); setSelected(todayBehaviors); }}>
+              Update today's log
+            </Button>
+          </div>
+        ) : (
+          <>
+            <div className="flex flex-wrap gap-1.5">
+              {BEHAVIOR_CHIPS.map(chip => {
+                const isSelected = selected.includes(chip.label);
+                return (
+                  <Badge
+                    key={chip.label}
+                    variant="outline"
+                    className={cn(
+                      "cursor-pointer text-[11px] rounded-full transition-all border",
+                      isSelected ? chipSelectedColors[chip.category] : chipColors[chip.category]
+                    )}
+                    onClick={() => toggle(chip.label)}
+                  >
+                    {isSelected && <Check className="h-3 w-3 mr-1" />}
+                    {chip.label}
+                  </Badge>
+                );
+              })}
+            </div>
+            <Button onClick={logToday} disabled={saving || selected.length === 0}
+              className="w-full rounded-xl h-10 bg-primary/90 hover:bg-primary text-primary-foreground text-sm">
+              {saving ? "Saving..." : `Log Today (${selected.length} selected)`}
+            </Button>
+          </>
+        )}
       </CardContent>
     </Card>
   );
@@ -299,23 +414,14 @@ function PhaseIndicator({ cycleInfo, phaseDescription, phaseTip }: { cycleInfo: 
               <p className="text-[11px] text-muted-foreground mt-0.5">{phaseDescription}</p>
             </div>
           </div>
-
-          {/* Cycle progress bar */}
           <div className="space-y-1">
             <div className="h-1.5 rounded-full bg-muted/50 overflow-hidden">
-              <div
-                className="h-full rounded-full bg-primary/50 transition-all duration-500"
-                style={{ width: `${progress}%` }}
-              />
+              <div className="h-full rounded-full bg-primary/50 transition-all duration-500" style={{ width: `${progress}%` }} />
             </div>
             <div className="flex justify-between text-[9px] text-muted-foreground/50">
-              <span>Menstrual</span>
-              <span>Follicular</span>
-              <span>Ovulation</span>
-              <span>Luteal</span>
+              <span>Menstrual</span><span>Follicular</span><span>Ovulation</span><span>Luteal</span>
             </div>
           </div>
-
           {phaseTip && (
             <div className="flex gap-2 p-2.5 rounded-xl bg-accent/20 border border-accent-foreground/5">
               <Lightbulb className="h-3.5 w-3.5 text-primary/50 mt-0.5 shrink-0" />
@@ -328,25 +434,65 @@ function PhaseIndicator({ cycleInfo, phaseDescription, phaseTip }: { cycleInfo: 
   );
 }
 
+function LogCountBanner({ count }: { count: number }) {
+  const needed = 20;
+  const pct = Math.min((count / needed) * 100, 100);
+  const ready = count >= needed;
+
+  return (
+    <Card className="rounded-2xl border-border/40 shadow-soft bg-card/60 backdrop-blur-sm">
+      <CardContent className="p-4 space-y-2">
+        <div className="flex items-center justify-between">
+          <p className="text-xs font-medium text-foreground/80">
+            {ready ? "Enough data for AI predictions" : "Building your pattern profile"}
+          </p>
+          <span className="text-[11px] text-muted-foreground">{count}/{needed} logs</span>
+        </div>
+        <div className="h-1.5 rounded-full bg-muted/50 overflow-hidden">
+          <div className={cn("h-full rounded-full transition-all duration-500", ready ? "bg-emerald-500/60" : "bg-primary/40")}
+            style={{ width: `${pct}%` }} />
+        </div>
+        {!ready && (
+          <p className="text-[10px] text-muted-foreground/60">
+            Log your daily signals to unlock cycle-aware predictions. {needed - count} more entries needed.
+          </p>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 export function CycleMirror({ userId }: CycleMirrorProps) {
   const [cycleData, setCycleData] = useState<CycleData | null>(null);
   const [hasCycleSetup, setHasCycleSetup] = useState<boolean | null>(null);
+  const [localCycleInfo, setLocalCycleInfo] = useState<CycleInfo | null>(null);
+  const [logCount, setLogCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [showSetup, setShowSetup] = useState(false);
   const { toast } = useToast();
 
-  useEffect(() => {
-    checkCycleSetup();
-  }, [userId]);
-
-  const checkCycleSetup = async () => {
+  const checkCycleSetup = useCallback(async () => {
     const { data } = await (supabase.from as any)('user_cycle_data')
-      .select('id')
+      .select('id, last_period_date, cycle_length')
       .eq('user_id', userId)
       .maybeSingle();
 
     setHasCycleSetup(!!data);
-    if (data) loadCachedInsights();
+    if (data) {
+      const info = calculateCyclePhase(data.last_period_date, data.cycle_length);
+      setLocalCycleInfo(info);
+      loadCachedInsights();
+      fetchLogCount();
+    }
+  }, [userId]);
+
+  useEffect(() => { checkCycleSetup(); }, [checkCycleSetup]);
+
+  const fetchLogCount = async () => {
+    const { count } = await (supabase.from as any)('cycle_behavior_logs')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', userId);
+    setLogCount(count || 0);
   };
 
   const loadCachedInsights = async () => {
@@ -405,7 +551,7 @@ export function CycleMirror({ userId }: CycleMirrorProps) {
       }
       setCycleData(data);
     } catch (error: any) {
-      console.error('Error generating cycle insights:', error);
+      console.error('Error:', error);
       toast({ title: "Something went wrong", description: "Please try again in a moment", variant: "destructive" });
     } finally {
       setLoading(false);
@@ -419,18 +565,21 @@ export function CycleMirror({ userId }: CycleMirrorProps) {
   if (!hasCycleSetup || showSetup) {
     return (
       <div className="space-y-5 animate-fade-in">
-        <CycleSetup userId={userId} onComplete={() => { setHasCycleSetup(true); setShowSetup(false); }} />
+        <CycleSetup userId={userId} onComplete={() => { setHasCycleSetup(true); setShowSetup(false); checkCycleSetup(); }} />
       </div>
     );
   }
 
+  const displayCycleInfo = cycleData?.cycleInfo || localCycleInfo;
+
   return (
     <div className="space-y-5 animate-fade-in">
-      {cycleData?.cycleInfo ? (
+      {/* Phase Indicator */}
+      {displayCycleInfo ? (
         <PhaseIndicator
-          cycleInfo={cycleData.cycleInfo}
-          phaseDescription={cycleData.phaseDescription}
-          phaseTip={cycleData.phaseTip}
+          cycleInfo={displayCycleInfo}
+          phaseDescription={cycleData?.phaseDescription || ""}
+          phaseTip={cycleData?.phaseTip || ""}
         />
       ) : (
         <Card className="rounded-3xl shadow-soft border-border/40 overflow-hidden bg-card/80 backdrop-blur-sm">
@@ -444,6 +593,15 @@ export function CycleMirror({ userId }: CycleMirrorProps) {
         </Card>
       )}
 
+      {/* Behavior Logger */}
+      {displayCycleInfo && (
+        <BehaviorLogger userId={userId} cycleInfo={displayCycleInfo} />
+      )}
+
+      {/* Log Count Progress */}
+      <LogCountBanner count={logCount} />
+
+      {/* AI Insight Cards */}
       {cycleData?.insights && cycleData.insights.length > 0 ? (
         <div className="space-y-4">
           {cycleData.insights.map((insight, i) => (
@@ -459,39 +617,31 @@ export function CycleMirror({ userId }: CycleMirrorProps) {
             <div className="space-y-2 max-w-xs mx-auto">
               <h3 className="text-sm font-semibold text-foreground">Discover Your Cycle Rhythm</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Cycle Mirror connects your mood, energy, and behaviors with your cycle phase to reveal patterns unique to you.
+                Log your daily signals and Cycle Mirror will reveal patterns unique to you across your cycle phases.
               </p>
             </div>
           </CardContent>
         </Card>
       ) : null}
 
+      {/* Action Buttons */}
       <div className="flex gap-2">
-        <Button
-          onClick={generateInsights}
-          disabled={loading}
-          variant="outline"
-          className="flex-1 rounded-xl border-primary/20 hover:bg-primary/5 text-foreground h-11"
-        >
+        <Button onClick={generateInsights} disabled={loading} variant="outline"
+          className="flex-1 rounded-xl border-primary/20 hover:bg-primary/5 text-foreground h-11">
           {loading ? (
             <><RefreshCw className="mr-2 h-4 w-4 animate-spin" />Analyzing your rhythm...</>
           ) : (
             <><Sparkles className="mr-2 h-4 w-4" />{cycleData?.hasEnoughData ? "Refresh Predictions" : "Reveal My Rhythm"}</>
           )}
         </Button>
-        <Button
-          onClick={() => setShowSetup(true)}
-          variant="ghost"
-          size="icon"
-          className="rounded-xl h-11 w-11 text-muted-foreground hover:text-foreground"
-          title="Update cycle info"
-        >
+        <Button onClick={() => setShowSetup(true)} variant="ghost" size="icon"
+          className="rounded-xl h-11 w-11 text-muted-foreground hover:text-foreground" title="Update cycle info">
           <Calendar className="h-4 w-4" />
         </Button>
       </div>
 
       <p className="text-[10px] text-center text-muted-foreground/50">
-        Predictions drawn from your mood, journal, energy data, and cycle phase over the last 60 days
+        Predictions drawn from your behavior logs, mood, journal entries, and cycle phase
       </p>
     </div>
   );

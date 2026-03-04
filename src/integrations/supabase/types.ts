@@ -250,6 +250,36 @@ export type Database = {
         }
         Relationships: []
       }
+      cycle_behavior_logs: {
+        Row: {
+          behaviors: string[]
+          created_at: string
+          cycle_day: number
+          cycle_phase: string
+          id: string
+          logged_at: string
+          user_id: string
+        }
+        Insert: {
+          behaviors?: string[]
+          created_at?: string
+          cycle_day: number
+          cycle_phase: string
+          id?: string
+          logged_at?: string
+          user_id: string
+        }
+        Update: {
+          behaviors?: string[]
+          created_at?: string
+          cycle_day?: number
+          cycle_phase?: string
+          id?: string
+          logged_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       cycle_mirror_insights: {
         Row: {
           confidence_score: number | null
