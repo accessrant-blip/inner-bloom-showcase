@@ -6,6 +6,35 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+function calculateCyclePhase(lastPeriodDate: string, cycleLength: number) {
+  const today = new Date();
+  const periodStart = new Date(lastPeriodDate);
+  const diffMs = today.getTime() - periodStart.getTime();
+  const dayInCycle = Math.floor(diffMs / (1000 * 60 * 60 * 24)) % cycleLength + 1;
+
+  const menstrualEnd = Math.min(5, cycleLength);
+  const follicularEnd = Math.round(cycleLength * 0.45);
+  const ovulationEnd = Math.round(cycleLength * 0.55);
+
+  let phase: string;
+  let phaseLabel: string;
+  if (dayInCycle <= menstrualEnd) {
+    phase = "menstrual";
+    phaseLabel = "Menstrual";
+  } else if (dayInCycle <= follicularEnd) {
+    phase = "follicular";
+    phaseLabel = "Follicular";
+  } else if (dayInCycle <= ovulationEnd) {
+    phase = "ovulation";
+    phaseLabel = "Ovulation";
+  } else {
+    phase = "luteal";
+    phaseLabel = "Luteal";
+  }
+
+  return { phase, phaseLabel, dayInCycle, cycleLength };
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -30,57 +59,48 @@ serve(async (req) => {
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     if (userError || !user) throw new Error('Invalid user token');
 
+    // Get cycle data
+    const { data: cycleData } = await supabase
+      .from('user_cycle_data')
+      .select('*')
+      .eq('user_id', user.id)
+      .single();
+
+    if (!cycleData) {
+      return new Response(
+        JSON.stringify({
+          needsCycleData: true,
+          message: "Set your last period date to unlock cycle-aware insights.",
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const cycleInfo = calculateCyclePhase(cycleData.last_period_date, cycleData.cycle_length);
+    const behaviorTags = (cycleData.behavior_tags as string[]) || [];
+
     const sixtyDaysAgo = new Date();
     sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
 
     const [moodRes, journalRes, dayPlanRes, rantRes] = await Promise.all([
-      supabase
-        .from('mood_journal')
-        .select('mood, note, created_at')
-        .eq('user_id', user.id)
-        .gte('created_at', sixtyDaysAgo.toISOString())
-        .order('created_at', { ascending: false })
-        .limit(100),
-      supabase
-        .from('journal')
-        .select('content, created_at')
-        .eq('user_id', user.id)
-        .gte('created_at', sixtyDaysAgo.toISOString())
-        .order('created_at', { ascending: false })
-        .limit(50),
-      supabase
-        .from('day_plans')
-        .select('mood, energy_level, goals, completed_tasks, plan_date')
-        .eq('user_id', user.id)
-        .gte('created_at', sixtyDaysAgo.toISOString())
-        .order('plan_date', { ascending: false })
-        .limit(30),
-      supabase
-        .from('rants')
-        .select('content, mood, created_at')
-        .eq('user_id', user.id)
-        .gte('created_at', sixtyDaysAgo.toISOString())
-        .order('created_at', { ascending: false })
-        .limit(30),
+      supabase.from('mood_journal').select('mood, note, created_at')
+        .eq('user_id', user.id).gte('created_at', sixtyDaysAgo.toISOString())
+        .order('created_at', { ascending: false }).limit(100),
+      supabase.from('journal').select('content, created_at')
+        .eq('user_id', user.id).gte('created_at', sixtyDaysAgo.toISOString())
+        .order('created_at', { ascending: false }).limit(50),
+      supabase.from('day_plans').select('mood, energy_level, goals, completed_tasks, plan_date')
+        .eq('user_id', user.id).gte('created_at', sixtyDaysAgo.toISOString())
+        .order('plan_date', { ascending: false }).limit(30),
+      supabase.from('rants').select('content, mood, created_at')
+        .eq('user_id', user.id).gte('created_at', sixtyDaysAgo.toISOString())
+        .order('created_at', { ascending: false }).limit(30),
     ]);
 
     const moods = moodRes.data || [];
     const journals = journalRes.data || [];
     const dayPlans = dayPlanRes.data || [];
     const rants = rantRes.data || [];
-
-    const totalDataPoints = moods.length + journals.length + dayPlans.length + rants.length;
-
-    if (totalDataPoints < 3) {
-      return new Response(
-        JSON.stringify({
-          insights: [],
-          message: "Keep checking in with yourself. After a few more entries, your personal patterns will begin to emerge.",
-          hasEnoughData: false,
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
 
     const moodContext = moods.slice(0, 30).map(m =>
       `${new Date(m.created_at).toLocaleDateString()}: mood="${m.mood}"${m.note ? `, note="${m.note}"` : ''}`
@@ -98,9 +118,11 @@ serve(async (req) => {
       `${new Date(r.created_at).toLocaleDateString()}: mood="${r.mood || 'unset'}", "${r.content.slice(0, 150)}"`
     ).join('\n');
 
-    const prompt = `You are a compassionate personal pattern analyst for a wellness app. Analyze this person's emotional and behavioral data to identify recurring patterns and provide gentle, actionable guidance.
+    const prompt = `You are a compassionate cycle-aware wellness analyst. The user is currently on Day ${cycleInfo.dayInCycle} of their ${cycleInfo.cycleLength}-day cycle, in the ${cycleInfo.phaseLabel} phase.
 
-EMOTIONAL DATA (last 60 days):
+Their recent behavior tags: ${behaviorTags.length > 0 ? behaviorTags.join(', ') : 'none tagged yet'}
+
+EMOTIONAL & BEHAVIORAL DATA (last 60 days):
 
 Mood Check-ins:
 ${moodContext || 'No mood data yet'}
@@ -114,44 +136,46 @@ ${energyContext || 'No energy data yet'}
 Rant/Venting Entries:
 ${rantContext || 'No rant data yet'}
 
-Generate exactly 4 rich insight cards. Each card MUST have ALL of these fields:
+Generate exactly 3 cycle-phase-specific insight cards. Each MUST have ALL fields:
 
-1. "type" - One of: "pattern", "prediction", "bridge", "reassurance"
-2. "title" - A warm, relatable title (e.g. "You've felt this before", "Your focus window is shifting", "Your cravings follow a pattern")
-3. "patternReflection" - A short insight explaining when this behavior appeared previously. Reference specific timeframes from the data. (1-2 sentences)
-4. "bridgeSuggestion" - A gentle, low-pressure alternative behavior (NOT a correction). Examples: screen binge -> "Try watching one documentary or a short educational video." Cravings -> "Enjoy the snack, but pairing it with water or protein may stabilize energy." Brain fog -> "Switch to Admin Mode: organizing files or clearing emails."
-5. "bioEducation" - A simple educational explanation of WHY this pattern happens biologically/psychologically. Use warm language, no clinical jargon. (1 sentence)
-6. "reassurance" - A supportive closing message like "You've navigated this phase before." or "Your energy usually returns in a few days."
-7. "confidence" - 0.0 to 1.0
-8. "patternGraph" - An object with two arrays of exactly 7 numbers (0-10 scale) representing a weekly pattern: { "previousCycle": [5,6,4,3,2,4,5], "currentCycle": [6,5,4,3,3,5,6] }. Make these reflect the actual pattern being described.
-9. "graphLabel" - What the graph measures, e.g. "Energy Level", "Focus", "Mood Stability", "Screen Activity"
+1. "title" - Warm, relatable (e.g. "You've felt this before", "Your cravings follow a pattern", "Your focus window is shifting")
+2. "patternReflection" - Reference WHEN this behavior appeared in previous cycles. Be specific about the phase and timing. (1-2 sentences)
+3. "bridgeSuggestion" - A gentle, low-pressure alternative behavior (NOT a correction). Examples: screen binge -> "Try watching one documentary first." Cravings -> "Enjoy the snack, but pairing with water or protein may stabilize energy." Brain fog -> "Switch to Admin Mode: organizing files or clearing emails."
+4. "bioEducation" - A simple explanation of WHY this pattern happens during the ${cycleInfo.phaseLabel} phase, biologically. Use warm language, no clinical jargon. (1-2 sentences)
+5. "reassurance" - A supportive closing like "You've navigated this phase before." or "Your energy usually returns in a few days."
+6. "confidence" - 0.0 to 1.0
+7. "patternGraph" - Object with two arrays of 7 numbers (0-10): { "previousCycle": [...], "currentCycle": [...] } reflecting the pattern described
+8. "graphLabel" - What the graph measures (e.g. "Energy Level", "Focus", "Cravings")
+9. "type" - One of: "pattern", "prediction", "bridge"
 
-Also determine the user's current emotional phase: "restoration" (low energy, needs rest), "emergence" (building energy), "radiance" (high energy, creative), or "reflection" (turning inward).
+Also provide:
+- "phaseDescription": one sentence describing what typically happens emotionally during the ${cycleInfo.phaseLabel} phase
+- "phaseTip": one actionable self-care tip for this specific phase
 
 RULES:
-- Use warm, human language throughout
+- Warm, human language throughout
 - No clinical or medical terminology
 - No emojis
-- Be specific to their actual data patterns
+- Be specific to their actual data patterns AND cycle phase
 - Bridge suggestions should be gentle alternatives, never corrections
-- Bio-education should be simple and empowering
-- Reassurance must feel genuine and personal
+- Bio-education should reference the cycle phase naturally
+- Reassurance must feel genuine
 
 Return ONLY a JSON object:
 {
-  "phase": "restoration|emergence|radiance|reflection",
-  "phaseDescription": "one sentence describing their current phase",
+  "phaseDescription": "...",
+  "phaseTip": "...",
   "insights": [
     {
-      "type": "pattern|prediction|bridge|reassurance",
-      "title": "warm title",
-      "patternReflection": "when this pattern appeared before",
-      "bridgeSuggestion": "gentle alternative",
-      "bioEducation": "simple why explanation",
-      "reassurance": "supportive closing",
+      "type": "pattern|prediction|bridge",
+      "title": "...",
+      "patternReflection": "...",
+      "bridgeSuggestion": "...",
+      "bioEducation": "...",
+      "reassurance": "...",
       "confidence": 0.0-1.0,
       "patternGraph": { "previousCycle": [7 numbers], "currentCycle": [7 numbers] },
-      "graphLabel": "what the graph measures"
+      "graphLabel": "..."
     }
   ]
 }`;
@@ -165,10 +189,7 @@ Return ONLY a JSON object:
       body: JSON.stringify({
         model: 'google/gemini-3-flash-preview',
         messages: [
-          {
-            role: 'system',
-            content: 'You are a compassionate pattern analyst. Return only valid JSON. No markdown, no code fences.'
-          },
+          { role: 'system', content: 'You are a compassionate cycle-aware pattern analyst. Return only valid JSON. No markdown, no code fences.' },
           { role: 'user', content: prompt }
         ],
         temperature: 0.6,
@@ -181,14 +202,12 @@ Return ONLY a JSON object:
       console.error('AI API error:', aiResponse.status, errorText);
       if (aiResponse.status === 429) {
         return new Response(JSON.stringify({ error: 'Rate limit reached. Please try again in a moment.' }), {
-          status: 429,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
       if (aiResponse.status === 402) {
         return new Response(JSON.stringify({ error: 'Service temporarily unavailable.' }), {
-          status: 402,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
       throw new Error(`AI API error: ${aiResponse.status}`);
@@ -203,11 +222,7 @@ Return ONLY a JSON object:
       parsed = JSON.parse(rawContent);
     } catch {
       console.error('Failed to parse AI response:', rawContent);
-      parsed = {
-        phase: 'reflection',
-        phaseDescription: 'Taking a moment to look inward.',
-        insights: []
-      };
+      parsed = { phaseDescription: 'Taking a moment to tune in.', phaseTip: '', insights: [] };
     }
 
     // Store insights
@@ -222,17 +237,19 @@ Return ONLY a JSON object:
         user_id: user.id,
         insight_type: insight.type,
         title: insight.title,
-        content: insight.patternReflection || insight.content || '',
-        phase: parsed.phase,
+        content: insight.patternReflection || '',
+        phase: cycleInfo.phase,
         confidence_score: insight.confidence || 0.5,
         suggested_actions: insight.bridgeSuggestion ? [insight.bridgeSuggestion] : [],
         pattern_data: {
           phaseDescription: parsed.phaseDescription,
+          phaseTip: parsed.phaseTip,
           bioEducation: insight.bioEducation,
           reassurance: insight.reassurance,
           patternGraph: insight.patternGraph,
           graphLabel: insight.graphLabel,
           bridgeSuggestion: insight.bridgeSuggestion,
+          cycleInfo,
         },
         is_active: true,
         expires_at: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
@@ -243,11 +260,11 @@ Return ONLY a JSON object:
 
     return new Response(
       JSON.stringify({
-        phase: parsed.phase,
+        cycleInfo,
         phaseDescription: parsed.phaseDescription,
+        phaseTip: parsed.phaseTip,
         insights: parsed.insights || [],
         hasEnoughData: true,
-        dataPoints: totalDataPoints,
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
@@ -255,13 +272,8 @@ Return ONLY a JSON object:
   } catch (error) {
     console.error('Error in generate-cycle-insights:', error);
     return new Response(
-      JSON.stringify({
-        error: error instanceof Error ? error.message : 'Unknown error',
-      }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      }
+      JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
