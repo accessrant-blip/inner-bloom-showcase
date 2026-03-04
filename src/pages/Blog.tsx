@@ -45,21 +45,10 @@ const Blog = () => {
     return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
   });
 
-  const featuredFromAllPosts = [...searchedPosts]
-    .filter((post) => post.featured)
-    .sort((a, b) => {
-      const dateA = new Date(a.date).getTime();
-      const dateB = new Date(b.date).getTime();
-      return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
-    });
 
-  const featuredPosts = selectedCategory === "All"
-    ? sortedCategoryPosts.filter((post) => post.featured)
-    : featuredFromAllPosts;
+  const featuredPosts = sortedCategoryPosts.filter((post) => post.featured);
 
-  const regularPosts = selectedCategory === "All"
-    ? sortedCategoryPosts.filter((post) => !post.featured)
-    : sortedCategoryPosts;
+  const regularPosts = sortedCategoryPosts.filter((post) => !post.featured);
 
   return (
     <div className="min-h-screen bg-background">
