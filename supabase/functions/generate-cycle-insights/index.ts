@@ -188,15 +188,42 @@ serve(async (req) => {
       `${new Date(r.created_at).toLocaleDateString()}: mood="${r.mood || 'unset'}", "${r.content.slice(0, 150)}"`
     ).join('\n');
 
-    const prompt = `You are a compassionate cycle-aware wellness analyst. The user is currently on Day ${cycleInfo.dayInCycle} of their ${cycleInfo.cycleLength}-day cycle, in the ${cycleInfo.phaseLabel} phase.
+    // Get the most recent log to identify what the user is feeling RIGHT NOW
+    const todayStr = new Date().toISOString().split('T')[0];
+    const { data: todayLog } = await supabase
+      .from('cycle_behavior_logs')
+      .select('behaviors')
+      .eq('user_id', user.id)
+      .eq('logged_at', todayStr)
+      .maybeSingle();
 
-BEHAVIOR LOGS (${logCount} total entries):
+    const currentSignals: string[] = todayLog?.behaviors || [];
+    const currentSignalsList = currentSignals.length > 0
+      ? currentSignals.join(', ')
+      : 'No signals logged today';
+
+    const prompt = `You are a compassionate cycle-aware wellness analyst. The user is on Day ${cycleInfo.dayInCycle} of their ${cycleInfo.cycleLength}-day cycle, in the ${cycleInfo.phaseLabel} phase.
+
+CRITICAL RULES — READ BEFORE GENERATING:
+1. ONLY reference signals the user has ACTUALLY logged. The user's logged signals are the SOLE source of truth about how they feel.
+2. NEVER infer, assume, or fabricate states the user did not log. If they did not log "low energy", "fatigue", or "brain fog", do NOT mention tiredness or exhaustion.
+3. If the user logged POSITIVE signals like "confident", "motivated", or "happy", the reflection MUST center on those positive signals. Do NOT contradict them with negative assumptions based on cycle phase.
+4. Cycle phase context is ONLY for biological education — it must NEVER override or contradict the user's actual logged signals.
+5. Each insight MUST follow this exact order:
+   a) Reference the user's specific logged signals first
+   b) Connect those signals to their current cycle phase
+   c) Offer a supportive suggestion that builds on their logged state
+   d) Provide a short biological explanation if relevant
+
+TODAY'S LOGGED SIGNALS: ${currentSignalsList}
+
+HISTORICAL BEHAVIOR LOGS (${logCount} total entries):
 Top behaviors during ${cycleInfo.phaseLabel} phase: ${topBehaviors.length > 0 ? topBehaviors.join(', ') : 'none yet'}
 
 Recent logs during this phase:
 ${behaviorLogContext || 'No behavior logs for this phase yet'}
 
-EMOTIONAL & BEHAVIORAL DATA (last 60 days):
+SUPPLEMENTARY DATA (last 60 days — use only to add context, never to override logged signals):
 
 Mood Check-ins:
 ${moodContext || 'No mood data yet'}
@@ -210,35 +237,26 @@ ${energyContext || 'No energy data yet'}
 Rant/Venting Entries:
 ${rantContext || 'No rant data yet'}
 
-Generate exactly 3 cycle-phase-specific insight cards. Each MUST have ALL fields:
+Generate exactly 3 insight cards based on the user's ACTUAL logged signals. Each MUST have ALL fields:
 
-1. "title" - Warm, relatable (e.g. "You've felt this before", "Your cravings follow a pattern", "Your focus window is shifting")
-2. "patternReflection" - Reference WHEN this behavior appeared in previous cycles or logs. Be specific about the phase and timing. (1-2 sentences)
-3. "bridgeSuggestion" - A gentle, low-pressure alternative behavior (NOT a correction). Examples:
-   - Screen binge -> "Try watching one documentary or a short educational video first."
-   - Craving Sugar / Overeating -> "Enjoy the snack, but pairing it with water or dry fruits may stabilize energy."
-   - Brain fog -> "Switch to Admin Mode: organizing files or clearing emails."
-   - Low Energy -> "A 10-minute walk or gentle stretching can shift your energy without pushing too hard."
-   - Insomnia -> "Try a warm drink and dim screens an hour before bed."
-4. "bioEducation" - A simple explanation of WHY this pattern happens during the ${cycleInfo.phaseLabel} phase, biologically. Use warm language, no clinical jargon. Include hormonal context naturally. (1-2 sentences)
-5. "reassurance" - A supportive closing like "You've navigated this phase before." or "Your energy usually returns in a few days."
-6. "confidence" - 0.0 to 1.0
-7. "patternGraph" - Object with two arrays of 7 numbers (0-10): { "previousCycle": [...], "currentCycle": [...] } reflecting the pattern described
-8. "graphLabel" - What the graph measures (e.g. "Energy Level", "Focus", "Cravings")
+1. "title" - Warm, relatable, directly referencing a logged signal (e.g. if they logged "confident": "Your confidence is showing up right on time")
+2. "patternReflection" - Start by naming the user's logged signal(s). Then note if/when this signal appeared in previous cycles during this phase. Be observational, not assumptive. (1-2 sentences)
+3. "bridgeSuggestion" - A suggestion that BUILDS ON the user's current state:
+   - If positive signals (confident, motivated, happy): suggest ways to channel or sustain that energy
+   - If challenging signals (screen binge, cravings, brain fog): offer gentle low-pressure alternatives
+   - NEVER suggest rest/recovery to someone who logged "motivated" or "confident"
+4. "bioEducation" - Explain WHY this signal often appears during the ${cycleInfo.phaseLabel} phase. Warm language, no clinical jargon. (1-2 sentences)
+5. "reassurance" - Must align with the logged signals. For positive signals: affirm and celebrate. For challenging signals: normalize and comfort.
+6. "confidence" - 0.0 to 1.0 (higher when the signal has appeared in multiple previous logs for this phase)
+7. "patternGraph" - { "previousCycle": [7 numbers 0-10], "currentCycle": [7 numbers 0-10] }
+8. "graphLabel" - What the graph measures, matching the logged signal
 9. "type" - One of: "pattern", "prediction", "bridge"
 
 Also provide:
-- "phaseDescription": one sentence describing what typically happens emotionally during the ${cycleInfo.phaseLabel} phase
-- "phaseTip": one actionable self-care tip for this specific phase
+- "phaseDescription": one sentence about the ${cycleInfo.phaseLabel} phase emotionally
+- "phaseTip": one actionable self-care tip for this phase
 
-RULES:
-- Warm, human language throughout
-- No clinical or medical terminology
-- No emojis
-- Be specific to their actual data patterns AND cycle phase
-- Bridge suggestions should be gentle alternatives, never corrections
-- Bio-education should reference hormonal shifts during the cycle phase naturally
-- Reassurance must feel genuine
+TONE: Supportive, observational, never assumptive. The app helps users understand their rhythm — it does not tell them how they should feel.
 
 Return ONLY a JSON object:
 {
