@@ -1,21 +1,33 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { RefreshCw, Eye, TrendingUp, Shield, Heart, Compass } from "lucide-react";
+import {
+  RefreshCw, Eye, TrendingUp, Shield, Heart, Compass,
+  Sparkles, Brain, Lightbulb, Activity
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CycleMirrorProps {
   userId: string;
 }
 
+interface PatternGraph {
+  previousCycle: number[];
+  currentCycle: number[];
+}
+
 interface Insight {
   type: "pattern" | "prediction" | "bridge" | "reassurance";
   title: string;
-  content: string;
+  patternReflection: string;
+  bridgeSuggestion: string;
+  bioEducation: string;
+  reassurance: string;
   confidence: number;
-  suggestedActions: string[];
+  patternGraph: PatternGraph;
+  graphLabel: string;
 }
 
 interface CycleData {
@@ -23,52 +35,208 @@ interface CycleData {
   phaseDescription: string;
   insights: Insight[];
   hasEnoughData: boolean;
-  dataPoints?: number;
   message?: string;
 }
 
 const phaseConfig = {
   restoration: {
     label: "Restoration",
-    gradient: "from-[hsl(var(--primary)/0.08)] to-[hsl(var(--muted)/0.5)]",
-    accent: "text-primary/70",
     icon: Shield,
-    bg: "bg-primary/5",
+    description: "A time for gentle rest and recovery",
+    gradient: "from-primary/5 to-muted/30",
   },
   emergence: {
     label: "Emergence",
-    gradient: "from-[hsl(var(--accent)/0.1)] to-[hsl(var(--muted)/0.3)]",
-    accent: "text-accent-foreground/70",
     icon: TrendingUp,
-    bg: "bg-accent/5",
+    description: "Building momentum and fresh energy",
+    gradient: "from-accent/10 to-primary/5",
   },
   radiance: {
     label: "Radiance",
-    gradient: "from-[hsl(var(--primary)/0.12)] to-[hsl(var(--accent)/0.08)]",
-    accent: "text-primary",
-    icon: Compass,
-    bg: "bg-primary/8",
+    icon: Sparkles,
+    description: "Creative energy and clarity at their peak",
+    gradient: "from-primary/10 to-accent/10",
   },
   reflection: {
     label: "Reflection",
-    gradient: "from-[hsl(var(--muted)/0.6)] to-[hsl(var(--card)/0.8)]",
-    accent: "text-muted-foreground",
     icon: Eye,
-    bg: "bg-muted/10",
+    description: "Turning inward with awareness",
+    gradient: "from-muted/40 to-card/60",
   },
 };
 
-const insightTypeConfig = {
-  pattern: { icon: Eye, label: "Pattern", borderColor: "border-primary/20" },
-  prediction: { icon: Compass, label: "Anticipation", borderColor: "border-accent/30" },
-  bridge: { icon: Heart, label: "Suggestion", borderColor: "border-primary/25" },
-  reassurance: { icon: Shield, label: "Affirmation", borderColor: "border-muted-foreground/20" },
+const insightIcons = {
+  pattern: Eye,
+  prediction: Compass,
+  bridge: Heart,
+  reassurance: Shield,
 };
+
+const insightLabels = {
+  pattern: "Pattern",
+  prediction: "Anticipation",
+  bridge: "Suggestion",
+  reassurance: "Affirmation",
+};
+
+// Mini sparkline graph component
+function MiniGraph({ data, label }: { data: PatternGraph; label: string }) {
+  const allVals = [...data.previousCycle, ...data.currentCycle];
+  const max = Math.max(...allVals, 1);
+  const w = 200;
+  const h = 60;
+  const pad = 4;
+
+  const toPath = (points: number[]) => {
+    return points.map((v, i) => {
+      const x = pad + (i / (points.length - 1)) * (w - pad * 2);
+      const y = h - pad - (v / max) * (h - pad * 2);
+      return `${i === 0 ? "M" : "L"} ${x} ${y}`;
+    }).join(" ");
+  };
+
+  return (
+    <div className="mt-3">
+      <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest mb-1.5">
+        {label}
+      </p>
+      <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-14 rounded-lg bg-muted/30">
+        {/* Previous cycle - dashed, muted */}
+        <path
+          d={toPath(data.previousCycle)}
+          fill="none"
+          stroke="hsl(var(--muted-foreground) / 0.25)"
+          strokeWidth="1.5"
+          strokeDasharray="4 3"
+        />
+        {/* Current cycle - solid, primary */}
+        <path
+          d={toPath(data.currentCycle)}
+          fill="none"
+          stroke="hsl(var(--primary))"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        {/* Current cycle dots */}
+        {data.currentCycle.map((v, i) => {
+          const x = pad + (i / (data.currentCycle.length - 1)) * (w - pad * 2);
+          const y = h - pad - (v / max) * (h - pad * 2);
+          return (
+            <circle key={i} cx={x} cy={y} r="2" fill="hsl(var(--primary))" />
+          );
+        })}
+      </svg>
+      <div className="flex justify-between mt-1 px-0.5">
+        <span className="text-[9px] text-muted-foreground/50 flex items-center gap-1">
+          <span className="w-3 h-px bg-muted-foreground/25 inline-block" style={{ borderTop: "1px dashed" }} />
+          Previous
+        </span>
+        <span className="text-[9px] text-primary/60 flex items-center gap-1">
+          <span className="w-3 h-0.5 bg-primary rounded inline-block" />
+          Current
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function InsightCard({ insight }: { insight: Insight }) {
+  const Icon = insightIcons[insight.type] || Eye;
+  const label = insightLabels[insight.type] || "Insight";
+
+  return (
+    <Card className="rounded-2xl border-border/40 shadow-soft backdrop-blur-sm bg-card/80 overflow-hidden transition-all duration-300 hover:shadow-md">
+      <CardContent className="p-5 space-y-4">
+        {/* Header */}
+        <div className="flex items-start gap-3">
+          <div className="p-2 rounded-xl bg-primary/8 shrink-0">
+            <Icon className="h-4 w-4 text-primary/70" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <span className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest">
+              {label}
+            </span>
+            <h4 className="text-sm font-semibold text-foreground leading-snug mt-0.5">
+              {insight.title}
+            </h4>
+          </div>
+          {insight.confidence >= 0.7 && (
+            <span className="text-[9px] text-primary/50 font-medium bg-primary/5 px-2 py-0.5 rounded-full shrink-0">
+              Strong
+            </span>
+          )}
+        </div>
+
+        {/* Pattern Reflection */}
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {insight.patternReflection}
+        </p>
+
+        {/* Mini Graph */}
+        {insight.patternGraph && (
+          <MiniGraph data={insight.patternGraph} label={insight.graphLabel || "Trend"} />
+        )}
+
+        {/* Bridge Suggestion */}
+        {insight.bridgeSuggestion && (
+          <div className="flex gap-2.5 p-3 rounded-xl bg-accent/30 border border-accent-foreground/5">
+            <Lightbulb className="h-3.5 w-3.5 text-primary/60 mt-0.5 shrink-0" />
+            <p className="text-xs text-foreground/80 leading-relaxed">
+              {insight.bridgeSuggestion}
+            </p>
+          </div>
+        )}
+
+        {/* Bio-Education Micro Lesson */}
+        {insight.bioEducation && (
+          <div className="flex gap-2.5 p-3 rounded-xl bg-muted/40">
+            <Brain className="h-3.5 w-3.5 text-muted-foreground/50 mt-0.5 shrink-0" />
+            <p className="text-[11px] text-muted-foreground leading-relaxed italic">
+              {insight.bioEducation}
+            </p>
+          </div>
+        )}
+
+        {/* Reassurance */}
+        {insight.reassurance && (
+          <p className="text-xs text-primary/70 font-medium pt-1 border-t border-border/30">
+            {insight.reassurance}
+          </p>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+// Preview / empty state before generation
+function PreviewState() {
+  return (
+    <Card className="rounded-2xl border-border/40 shadow-soft bg-card/60 backdrop-blur-sm overflow-hidden">
+      <CardContent className="py-10 px-6 text-center space-y-4">
+        <div className="mx-auto w-12 h-12 rounded-2xl bg-primary/8 flex items-center justify-center">
+          <Activity className="h-6 w-6 text-primary/40" />
+        </div>
+        <div className="space-y-2 max-w-xs mx-auto">
+          <h3 className="text-sm font-semibold text-foreground">
+            Discover Your Emotional Rhythm
+          </h3>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Cycle Mirror analyzes your mood check-ins, journal entries, energy levels,
+            and behavioral patterns over the last 60 days to reveal your unique emotional rhythms.
+          </p>
+          <p className="text-[11px] text-muted-foreground/60 leading-relaxed">
+            The more you check in, the richer your pattern insights become.
+          </p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
 
 export function CycleMirror({ userId }: CycleMirrorProps) {
   const [cycleData, setCycleData] = useState<CycleData | null>(null);
   const [loading, setLoading] = useState(false);
-  const [cachedInsights, setCachedInsights] = useState<any[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -85,19 +253,25 @@ export function CycleMirror({ userId }: CycleMirrorProps) {
       .limit(4);
 
     if (data && data.length > 0) {
-      setCachedInsights(data);
-      const phase = data[0]?.phase as CycleData["phase"] || "reflection";
-      const phaseDesc = (data[0]?.pattern_data as any)?.phaseDescription || "";
+      const phase = (data[0]?.phase as CycleData["phase"]) || "reflection";
+      const patternData = data[0]?.pattern_data as any;
       setCycleData({
         phase,
-        phaseDescription: phaseDesc,
-        insights: data.map((d) => ({
-          type: d.insight_type as Insight["type"],
-          title: d.title,
-          content: d.content,
-          confidence: Number(d.confidence_score) || 0.5,
-          suggestedActions: (d.suggested_actions as string[]) || [],
-        })),
+        phaseDescription: patternData?.phaseDescription || "",
+        insights: data.map((d) => {
+          const pd = d.pattern_data as any;
+          return {
+            type: d.insight_type as Insight["type"],
+            title: d.title,
+            patternReflection: d.content,
+            bridgeSuggestion: pd?.bridgeSuggestion || "",
+            bioEducation: pd?.bioEducation || "",
+            reassurance: pd?.reassurance || "",
+            confidence: Number(d.confidence_score) || 0.5,
+            patternGraph: pd?.patternGraph || { previousCycle: [5,5,5,5,5,5,5], currentCycle: [5,5,5,5,5,5,5] },
+            graphLabel: pd?.graphLabel || "Trend",
+          };
+        }),
         hasEnoughData: true,
       });
     }
@@ -139,113 +313,62 @@ export function CycleMirror({ userId }: CycleMirrorProps) {
 
   return (
     <div className="space-y-5 animate-fade-in">
-      {/* Header */}
-      <Card className="rounded-3xl shadow-soft border-border overflow-hidden">
-        <div className={cn("bg-gradient-to-br", phase.gradient)}>
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2.5 text-foreground text-lg tracking-tight">
-              <Compass className="h-5 w-5 text-primary/80" />
-              Cycle Mirror — Your Pattern Navigator
-            </CardTitle>
-            <p className="text-sm text-muted-foreground mt-1">
-              An evolving map of your emotional rhythms
-            </p>
-          </CardHeader>
+      {/* Header Card */}
+      <Card className="rounded-3xl shadow-soft border-border/40 overflow-hidden bg-card/80 backdrop-blur-sm">
+        <div className={cn("bg-gradient-to-br p-6", phase.gradient)}>
+          <div className="flex items-center gap-2.5 mb-1">
+            <Compass className="h-5 w-5 text-primary/70" />
+            <h2 className="text-lg font-semibold text-foreground tracking-tight">
+              Cycle Mirror
+            </h2>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Your personal pattern navigator
+          </p>
 
-          {/* Phase indicator */}
+          {/* Phase Indicator */}
           {cycleData?.hasEnoughData && (
-            <CardContent className="pt-0 pb-5">
-              <div className={cn("flex items-center gap-3 p-4 rounded-2xl backdrop-blur-sm border border-border/40", phase.bg)}>
-                <PhaseIcon className={cn("h-8 w-8", phase.accent)} />
-                <div>
-                  <p className={cn("text-sm font-medium", phase.accent)}>
-                    Current Phase: {phase.label}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    {cycleData.phaseDescription}
-                  </p>
-                </div>
+            <div className="mt-4 flex items-center gap-3 p-3.5 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30">
+              <PhaseIcon className="h-7 w-7 text-primary/60" />
+              <div>
+                <p className="text-xs font-semibold text-foreground/80">
+                  Current Phase: {phase.label}
+                </p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  {cycleData.phaseDescription}
+                </p>
               </div>
-            </CardContent>
+            </div>
           )}
         </div>
       </Card>
 
-      {/* Insights */}
+      {/* Content Area */}
       {cycleData?.hasEnoughData && cycleData.insights.length > 0 ? (
-        <div className="grid gap-4 sm:grid-cols-2">
-          {cycleData.insights.map((insight, i) => {
-            const config = insightTypeConfig[insight.type];
-            const InsightIcon = config.icon;
-            return (
-              <Card
-                key={i}
-                className={cn(
-                  "rounded-2xl shadow-soft border transition-all duration-300 hover:shadow-md",
-                  config.borderColor
-                )}
-              >
-                <CardContent className="pt-5 pb-4 space-y-3">
-                  <div className="flex items-center gap-2">
-                    <InsightIcon className="h-4 w-4 text-primary/60" />
-                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                      {config.label}
-                    </span>
-                    {insight.confidence >= 0.7 && (
-                      <span className="ml-auto text-[10px] text-primary/50 font-medium">
-                        Strong pattern
-                      </span>
-                    )}
-                  </div>
-                  <h4 className="text-sm font-semibold text-foreground leading-snug">
-                    {insight.title}
-                  </h4>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {insight.content}
-                  </p>
-                  {insight.suggestedActions.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 pt-1">
-                      {insight.suggestedActions.map((action, j) => (
-                        <span
-                          key={j}
-                          className="text-xs px-2.5 py-1 rounded-full bg-primary/8 text-primary/70 border border-primary/10"
-                        >
-                          {action}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          })}
+        <div className="space-y-4">
+          {cycleData.insights.map((insight, i) => (
+            <InsightCard key={i} insight={insight} />
+          ))}
         </div>
       ) : !cycleData?.hasEnoughData && cycleData?.message ? (
-        <Card className="rounded-2xl shadow-soft border-border">
-          <CardContent className="pt-6 pb-6 text-center space-y-2">
-            <Eye className="h-8 w-8 mx-auto text-muted-foreground/40" />
+        <Card className="rounded-2xl shadow-soft border-border/40 bg-card/60">
+          <CardContent className="py-8 text-center space-y-2">
+            <Eye className="h-7 w-7 mx-auto text-muted-foreground/30" />
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
               {cycleData.message}
             </p>
           </CardContent>
         </Card>
       ) : !cycleData ? (
-        <Card className="rounded-2xl shadow-soft border-border">
-          <CardContent className="pt-6 pb-6 text-center space-y-2">
-            <Compass className="h-8 w-8 mx-auto text-muted-foreground/30" />
-            <p className="text-sm text-muted-foreground">
-              Generate your first pattern analysis to begin
-            </p>
-          </CardContent>
-        </Card>
+        <PreviewState />
       ) : null}
 
-      {/* Generate / Refresh button */}
+      {/* Generate Button */}
       <Button
         onClick={generateInsights}
         disabled={loading}
         variant="outline"
-        className="w-full rounded-xl border-primary/20 hover:bg-primary/5 text-foreground"
+        className="w-full rounded-xl border-primary/20 hover:bg-primary/5 text-foreground h-11"
       >
         {loading ? (
           <>
@@ -254,14 +377,14 @@ export function CycleMirror({ userId }: CycleMirrorProps) {
           </>
         ) : (
           <>
-            <RefreshCw className="mr-2 h-4 w-4" />
-            {cycleData ? "Refresh Pattern Analysis" : "Discover My Patterns"}
+            <Sparkles className="mr-2 h-4 w-4" />
+            {cycleData?.hasEnoughData ? "Refresh My Patterns" : "Reveal My Patterns"}
           </>
         )}
       </Button>
 
-      <p className="text-xs text-center text-muted-foreground/60">
-        Insights are drawn from your mood, journal, and energy data over the last 60 days
+      <p className="text-[10px] text-center text-muted-foreground/50">
+        Insights drawn from your mood, journal, and energy data over the last 60 days
       </p>
     </div>
   );

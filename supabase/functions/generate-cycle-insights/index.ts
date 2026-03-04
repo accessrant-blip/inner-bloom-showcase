@@ -30,11 +30,10 @@ serve(async (req) => {
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     if (userError || !user) throw new Error('Invalid user token');
 
-    // Fetch mood entries (last 60 days)
     const sixtyDaysAgo = new Date();
     sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
 
-    const [moodRes, journalRes, dayPlanRes, rantRes, existingInsights] = await Promise.all([
+    const [moodRes, journalRes, dayPlanRes, rantRes] = await Promise.all([
       supabase
         .from('mood_journal')
         .select('mood, note, created_at')
@@ -63,13 +62,6 @@ serve(async (req) => {
         .gte('created_at', sixtyDaysAgo.toISOString())
         .order('created_at', { ascending: false })
         .limit(30),
-      supabase
-        .from('cycle_mirror_insights')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('is_active', true)
-        .order('created_at', { ascending: false })
-        .limit(10),
     ]);
 
     const moods = moodRes.data || [];
@@ -90,8 +82,7 @@ serve(async (req) => {
       );
     }
 
-    // Build context for AI
-    const moodContext = moods.slice(0, 30).map((m, i) =>
+    const moodContext = moods.slice(0, 30).map(m =>
       `${new Date(m.created_at).toLocaleDateString()}: mood="${m.mood}"${m.note ? `, note="${m.note}"` : ''}`
     ).join('\n');
 
@@ -107,7 +98,7 @@ serve(async (req) => {
       `${new Date(r.created_at).toLocaleDateString()}: mood="${r.mood || 'unset'}", "${r.content.slice(0, 150)}"`
     ).join('\n');
 
-    const prompt = `You are a compassionate personal pattern analyst. Analyze this person's emotional and behavioral data to identify recurring patterns, predict upcoming shifts, and provide gentle, actionable guidance.
+    const prompt = `You are a compassionate personal pattern analyst for a wellness app. Analyze this person's emotional and behavioral data to identify recurring patterns and provide gentle, actionable guidance.
 
 EMOTIONAL DATA (last 60 days):
 
@@ -123,35 +114,44 @@ ${energyContext || 'No energy data yet'}
 Rant/Venting Entries:
 ${rantContext || 'No rant data yet'}
 
-Based on this data, generate exactly 4 insight cards in valid JSON format. Each insight must be one of these types:
+Generate exactly 4 rich insight cards. Each card MUST have ALL of these fields:
 
-1. "pattern" - A recurring emotional or behavioral pattern you've identified
-2. "prediction" - A gentle anticipatory insight about what they may experience soon
-3. "bridge" - A coping suggestion based on what has helped them before
-4. "reassurance" - An affirming message about their resilience
+1. "type" - One of: "pattern", "prediction", "bridge", "reassurance"
+2. "title" - A warm, relatable title (e.g. "You've felt this before", "Your focus window is shifting", "Your cravings follow a pattern")
+3. "patternReflection" - A short insight explaining when this behavior appeared previously. Reference specific timeframes from the data. (1-2 sentences)
+4. "bridgeSuggestion" - A gentle, low-pressure alternative behavior (NOT a correction). Examples: screen binge -> "Try watching one documentary or a short educational video." Cravings -> "Enjoy the snack, but pairing it with water or protein may stabilize energy." Brain fog -> "Switch to Admin Mode: organizing files or clearing emails."
+5. "bioEducation" - A simple educational explanation of WHY this pattern happens biologically/psychologically. Use warm language, no clinical jargon. (1 sentence)
+6. "reassurance" - A supportive closing message like "You've navigated this phase before." or "Your energy usually returns in a few days."
+7. "confidence" - 0.0 to 1.0
+8. "patternGraph" - An object with two arrays of exactly 7 numbers (0-10 scale) representing a weekly pattern: { "previousCycle": [5,6,4,3,2,4,5], "currentCycle": [6,5,4,3,3,5,6] }. Make these reflect the actual pattern being described.
+9. "graphLabel" - What the graph measures, e.g. "Energy Level", "Focus", "Mood Stability", "Screen Activity"
 
 Also determine the user's current emotional phase: "restoration" (low energy, needs rest), "emergence" (building energy), "radiance" (high energy, creative), or "reflection" (turning inward).
 
 RULES:
-- Use warm, human language
+- Use warm, human language throughout
 - No clinical or medical terminology
 - No emojis
 - Be specific to their actual data patterns
-- Predictions should be gentle and empowering, never alarming
-- Bridge suggestions should reference actual patterns from the data
-- Keep each insight to 1-2 sentences
+- Bridge suggestions should be gentle alternatives, never corrections
+- Bio-education should be simple and empowering
+- Reassurance must feel genuine and personal
 
-Return ONLY a JSON object with this structure:
+Return ONLY a JSON object:
 {
   "phase": "restoration|emergence|radiance|reflection",
   "phaseDescription": "one sentence describing their current phase",
   "insights": [
     {
       "type": "pattern|prediction|bridge|reassurance",
-      "title": "short title",
-      "content": "the insight text",
+      "title": "warm title",
+      "patternReflection": "when this pattern appeared before",
+      "bridgeSuggestion": "gentle alternative",
+      "bioEducation": "simple why explanation",
+      "reassurance": "supportive closing",
       "confidence": 0.0-1.0,
-      "suggestedActions": ["action1", "action2"]
+      "patternGraph": { "previousCycle": [7 numbers], "currentCycle": [7 numbers] },
+      "graphLabel": "what the graph measures"
     }
   ]
 }`;
@@ -163,7 +163,7 @@ Return ONLY a JSON object with this structure:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'google/gemini-3-flash-preview',
         messages: [
           {
             role: 'system',
@@ -172,7 +172,7 @@ Return ONLY a JSON object with this structure:
           { role: 'user', content: prompt }
         ],
         temperature: 0.6,
-        max_tokens: 1000,
+        max_tokens: 2000,
       }),
     });
 
@@ -196,8 +196,6 @@ Return ONLY a JSON object with this structure:
 
     const aiData = await aiResponse.json();
     let rawContent = aiData.choices[0]?.message?.content || '{}';
-    
-    // Clean markdown fences if present
     rawContent = rawContent.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
 
     let parsed;
@@ -212,7 +210,7 @@ Return ONLY a JSON object with this structure:
       };
     }
 
-    // Store insights in database (clear old ones first)
+    // Store insights
     await supabase
       .from('cycle_mirror_insights')
       .update({ is_active: false })
@@ -224,11 +222,18 @@ Return ONLY a JSON object with this structure:
         user_id: user.id,
         insight_type: insight.type,
         title: insight.title,
-        content: insight.content,
+        content: insight.patternReflection || insight.content || '',
         phase: parsed.phase,
         confidence_score: insight.confidence || 0.5,
-        suggested_actions: insight.suggestedActions || [],
-        pattern_data: { phaseDescription: parsed.phaseDescription },
+        suggested_actions: insight.bridgeSuggestion ? [insight.bridgeSuggestion] : [],
+        pattern_data: {
+          phaseDescription: parsed.phaseDescription,
+          bioEducation: insight.bioEducation,
+          reassurance: insight.reassurance,
+          patternGraph: insight.patternGraph,
+          graphLabel: insight.graphLabel,
+          bridgeSuggestion: insight.bridgeSuggestion,
+        },
         is_active: true,
         expires_at: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
       }));
