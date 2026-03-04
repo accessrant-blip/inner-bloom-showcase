@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Calendar, Clock, User, Search, Tag } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, User, Search, Tag, ArrowDownUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -25,20 +25,27 @@ const categories = ["All", "Wellness Tips", "Mental Health", "Self Improvement",
 const Blog = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
-  const filteredPosts = blogPosts.filter((post) => {
-    const query = searchQuery.toLowerCase();
-    const matchesSearch = !searchQuery || 
-      post.title.toLowerCase().includes(query) ||
-      post.excerpt.toLowerCase().includes(query) ||
-      post.tags.some(tag => tag.toLowerCase().includes(query));
-    
-    const matchesCategory = selectedCategory === "All" || 
-      post.category === selectedCategory ||
-      post.tags.some(tag => tag.toLowerCase().includes(selectedCategory.toLowerCase()));
-    
-    return matchesSearch && matchesCategory;
-  });
+  const filteredPosts = blogPosts
+    .filter((post) => {
+      const query = searchQuery.toLowerCase();
+      const matchesSearch = !searchQuery || 
+        post.title.toLowerCase().includes(query) ||
+        post.excerpt.toLowerCase().includes(query) ||
+        post.tags.some(tag => tag.toLowerCase().includes(query));
+      
+      const matchesCategory = selectedCategory === "All" || 
+        post.category === selectedCategory ||
+        post.tags.some(tag => tag.toLowerCase().includes(selectedCategory.toLowerCase()));
+      
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
+    });
 
   const featuredPosts = filteredPosts.filter(post => post.featured);
   const regularPosts = filteredPosts.filter(post => !post.featured);
@@ -103,6 +110,23 @@ const Blog = () => {
             ))}
           </div>
         </nav>
+
+        {/* Sort + Active State Label */}
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+          <p className="text-sm text-muted-foreground">
+            Showing: <span className="font-medium text-foreground">{selectedCategory}</span> • <span className="font-medium text-foreground">{sortOrder === "newest" ? "Newest First" : "Oldest First"}</span>
+            <span className="ml-1 text-xs">({filteredPosts.length} {filteredPosts.length === 1 ? "post" : "posts"})</span>
+          </p>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setSortOrder(prev => prev === "newest" ? "oldest" : "newest")}
+            className="rounded-full gap-1.5"
+          >
+            <ArrowDownUp className="h-3.5 w-3.5" />
+            {sortOrder === "newest" ? "Newest First" : "Oldest First"}
+          </Button>
+        </div>
 
         {/* Featured Posts */}
         {featuredPosts.length > 0 && (
