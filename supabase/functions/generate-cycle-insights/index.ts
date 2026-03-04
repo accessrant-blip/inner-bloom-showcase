@@ -16,21 +16,11 @@ function calculateCyclePhase(lastPeriodDate: string, cycleLength: number) {
   const follicularEnd = Math.round(cycleLength * 0.45);
   const ovulationEnd = Math.round(cycleLength * 0.55);
 
-  let phase: string;
-  let phaseLabel: string;
-  if (dayInCycle <= menstrualEnd) {
-    phase = "menstrual";
-    phaseLabel = "Menstrual";
-  } else if (dayInCycle <= follicularEnd) {
-    phase = "follicular";
-    phaseLabel = "Follicular";
-  } else if (dayInCycle <= ovulationEnd) {
-    phase = "ovulation";
-    phaseLabel = "Ovulation";
-  } else {
-    phase = "luteal";
-    phaseLabel = "Luteal";
-  }
+  let phase: string, phaseLabel: string;
+  if (dayInCycle <= menstrualEnd) { phase = "menstrual"; phaseLabel = "Menstrual"; }
+  else if (dayInCycle <= follicularEnd) { phase = "follicular"; phaseLabel = "Follicular"; }
+  else if (dayInCycle <= ovulationEnd) { phase = "ovulation"; phaseLabel = "Ovulation"; }
+  else { phase = "luteal"; phaseLabel = "Luteal"; }
 
   return { phase, phaseLabel, dayInCycle, cycleLength };
 }
@@ -59,7 +49,6 @@ serve(async (req) => {
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     if (userError || !user) throw new Error('Invalid user token');
 
-    // Get cycle data
     const { data: cycleData } = await supabase
       .from('user_cycle_data')
       .select('*')
@@ -68,16 +57,43 @@ serve(async (req) => {
 
     if (!cycleData) {
       return new Response(
-        JSON.stringify({
-          needsCycleData: true,
-          message: "Set your last period date to unlock cycle-aware insights.",
-        }),
+        JSON.stringify({ needsCycleData: true, message: "Set your last period date to unlock cycle-aware insights." }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
     const cycleInfo = calculateCyclePhase(cycleData.last_period_date, cycleData.cycle_length);
-    const behaviorTags = (cycleData.behavior_tags as string[]) || [];
+
+    // Fetch behavior logs
+    const { data: behaviorLogs } = await supabase
+      .from('cycle_behavior_logs')
+      .select('cycle_day, cycle_phase, behaviors, logged_at')
+      .eq('user_id', user.id)
+      .order('logged_at', { ascending: false })
+      .limit(90);
+
+    const logs = behaviorLogs || [];
+    const logCount = logs.length;
+
+    // Build behavior context from logs
+    const currentPhaseLogs = logs.filter((l: any) => l.cycle_phase === cycleInfo.phase);
+    const otherPhaseLogs = logs.filter((l: any) => l.cycle_phase !== cycleInfo.phase);
+
+    const behaviorFrequency: Record<string, number> = {};
+    currentPhaseLogs.forEach((l: any) => {
+      (l.behaviors || []).forEach((b: string) => {
+        behaviorFrequency[b] = (behaviorFrequency[b] || 0) + 1;
+      });
+    });
+
+    const topBehaviors = Object.entries(behaviorFrequency)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8)
+      .map(([b, count]) => `${b} (${count}x)`);
+
+    const behaviorLogContext = currentPhaseLogs.slice(0, 20).map((l: any) =>
+      `Day ${l.cycle_day} (${l.cycle_phase}): ${(l.behaviors || []).join(', ')}`
+    ).join('\n');
 
     const sixtyDaysAgo = new Date();
     sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
@@ -102,25 +118,29 @@ serve(async (req) => {
     const dayPlans = dayPlanRes.data || [];
     const rants = rantRes.data || [];
 
-    const moodContext = moods.slice(0, 30).map(m =>
+    const moodContext = moods.slice(0, 30).map((m: any) =>
       `${new Date(m.created_at).toLocaleDateString()}: mood="${m.mood}"${m.note ? `, note="${m.note}"` : ''}`
     ).join('\n');
 
-    const journalContext = journals.slice(0, 15).map(j =>
+    const journalContext = journals.slice(0, 15).map((j: any) =>
       `${new Date(j.created_at).toLocaleDateString()}: "${j.content.slice(0, 200)}"`
     ).join('\n');
 
-    const energyContext = dayPlans.slice(0, 15).map(d =>
+    const energyContext = dayPlans.slice(0, 15).map((d: any) =>
       `${d.plan_date}: energy=${d.energy_level}/5, mood="${d.mood || 'not recorded'}"`
     ).join('\n');
 
-    const rantContext = rants.slice(0, 10).map(r =>
+    const rantContext = rants.slice(0, 10).map((r: any) =>
       `${new Date(r.created_at).toLocaleDateString()}: mood="${r.mood || 'unset'}", "${r.content.slice(0, 150)}"`
     ).join('\n');
 
     const prompt = `You are a compassionate cycle-aware wellness analyst. The user is currently on Day ${cycleInfo.dayInCycle} of their ${cycleInfo.cycleLength}-day cycle, in the ${cycleInfo.phaseLabel} phase.
 
-Their recent behavior tags: ${behaviorTags.length > 0 ? behaviorTags.join(', ') : 'none tagged yet'}
+BEHAVIOR LOGS (${logCount} total entries):
+Top behaviors during ${cycleInfo.phaseLabel} phase: ${topBehaviors.length > 0 ? topBehaviors.join(', ') : 'none yet'}
+
+Recent logs during this phase:
+${behaviorLogContext || 'No behavior logs for this phase yet'}
 
 EMOTIONAL & BEHAVIORAL DATA (last 60 days):
 
@@ -139,9 +159,14 @@ ${rantContext || 'No rant data yet'}
 Generate exactly 3 cycle-phase-specific insight cards. Each MUST have ALL fields:
 
 1. "title" - Warm, relatable (e.g. "You've felt this before", "Your cravings follow a pattern", "Your focus window is shifting")
-2. "patternReflection" - Reference WHEN this behavior appeared in previous cycles. Be specific about the phase and timing. (1-2 sentences)
-3. "bridgeSuggestion" - A gentle, low-pressure alternative behavior (NOT a correction). Examples: screen binge -> "Try watching one documentary first." Cravings -> "Enjoy the snack, but pairing with water or protein may stabilize energy." Brain fog -> "Switch to Admin Mode: organizing files or clearing emails."
-4. "bioEducation" - A simple explanation of WHY this pattern happens during the ${cycleInfo.phaseLabel} phase, biologically. Use warm language, no clinical jargon. (1-2 sentences)
+2. "patternReflection" - Reference WHEN this behavior appeared in previous cycles or logs. Be specific about the phase and timing. (1-2 sentences)
+3. "bridgeSuggestion" - A gentle, low-pressure alternative behavior (NOT a correction). Examples:
+   - Screen binge -> "Try watching one documentary or a short educational video first."
+   - Craving Sugar / Overeating -> "Enjoy the snack, but pairing it with water or dry fruits may stabilize energy."
+   - Brain fog -> "Switch to Admin Mode: organizing files or clearing emails."
+   - Low Energy -> "A 10-minute walk or gentle stretching can shift your energy without pushing too hard."
+   - Insomnia -> "Try a warm drink and dim screens an hour before bed."
+4. "bioEducation" - A simple explanation of WHY this pattern happens during the ${cycleInfo.phaseLabel} phase, biologically. Use warm language, no clinical jargon. Include hormonal context naturally. (1-2 sentences)
 5. "reassurance" - A supportive closing like "You've navigated this phase before." or "Your energy usually returns in a few days."
 6. "confidence" - 0.0 to 1.0
 7. "patternGraph" - Object with two arrays of 7 numbers (0-10): { "previousCycle": [...], "currentCycle": [...] } reflecting the pattern described
@@ -158,7 +183,7 @@ RULES:
 - No emojis
 - Be specific to their actual data patterns AND cycle phase
 - Bridge suggestions should be gentle alternatives, never corrections
-- Bio-education should reference the cycle phase naturally
+- Bio-education should reference hormonal shifts during the cycle phase naturally
 - Reassurance must feel genuine
 
 Return ONLY a JSON object:
@@ -265,6 +290,7 @@ Return ONLY a JSON object:
         phaseTip: parsed.phaseTip,
         insights: parsed.insights || [],
         hasEnoughData: true,
+        logCount,
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
