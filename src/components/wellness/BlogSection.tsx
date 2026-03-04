@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "identity-crisis-20s-30s",
+    title: "The Identity Crisis Nobody Talks About in Your 20s/30s 🌿",
+    excerpt: "A lot of people go through a weird stage in their 20s and 30s, but no one really talks about it. It's not failing — it's your sense of self changing.",
+    date: "2026-03-04",
+    readTime: "10 min",
+    category: "Self Improvement",
+  },
+  {
     id: "positive-mindset",
     title: "What's a Positive Mindset, and How Do You Get One? 🌿",
     excerpt: "Having a positive mindset isn't about pretending everything's perfect. It's about choosing to think in helpful ways instead of harmful ones.",
