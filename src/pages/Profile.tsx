@@ -15,6 +15,7 @@ import { PrivateInfoSection } from "@/components/profile/PrivateInfoSection";
 import { WellnessToolkit } from "@/components/profile/WellnessToolkit";
 import { AIReflection } from "@/components/profile/AIReflection";
 import { SafetyPolicy } from "@/components/profile/SafetyPolicy";
+import { CycleMirror } from "@/components/profile/CycleMirror";
 import FeedbackForm from "@/components/profile/FeedbackForm";
 import { AccessibilitySettings } from "@/components/accessibility/AccessibilitySettings";
 
@@ -154,7 +155,7 @@ export default function Profile() {
 
         {/* Tabs for Profile Sections */}
         <Tabs defaultValue="private-info" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 rounded-xl h-auto p-1">
+          <TabsList className="grid w-full grid-cols-6 rounded-xl h-auto p-1">
             <TabsTrigger value="private-info" className="rounded-lg text-xs sm:text-sm py-2 px-1 sm:px-3">
               Private Info
             </TabsTrigger>
@@ -167,6 +168,9 @@ export default function Profile() {
             </TabsTrigger>
             <TabsTrigger value="wellness-toolkit" className="rounded-lg text-xs sm:text-sm py-2 px-1 sm:px-3">
               Wellness
+            </TabsTrigger>
+            <TabsTrigger value="cycle-mirror" className="rounded-lg text-xs sm:text-sm py-2 px-1 sm:px-3">
+              Cycle Mirror
             </TabsTrigger>
             <TabsTrigger value="safety-policy" className="rounded-lg text-xs sm:text-sm py-2 px-1 sm:px-3">
               Safety
@@ -187,6 +191,10 @@ export default function Profile() {
 
           <TabsContent value="wellness-toolkit" className="mt-6">
             <WellnessToolkit />
+          </TabsContent>
+
+          <TabsContent value="cycle-mirror" className="mt-6">
+            <CycleMirror userId={user?.id} />
           </TabsContent>
 
           <TabsContent value="safety-policy" className="mt-6">

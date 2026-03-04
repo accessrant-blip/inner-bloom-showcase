@@ -250,6 +250,51 @@ export type Database = {
         }
         Relationships: []
       }
+      cycle_mirror_insights: {
+        Row: {
+          confidence_score: number | null
+          content: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          insight_type: string
+          is_active: boolean | null
+          pattern_data: Json | null
+          phase: string | null
+          suggested_actions: Json | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          content: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          insight_type: string
+          is_active?: boolean | null
+          pattern_data?: Json | null
+          phase?: string | null
+          suggested_actions?: Json | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          confidence_score?: number | null
+          content?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          insight_type?: string
+          is_active?: boolean | null
+          pattern_data?: Json | null
+          phase?: string | null
+          suggested_actions?: Json | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       day_plans: {
         Row: {
           completed_tasks: string[] | null
