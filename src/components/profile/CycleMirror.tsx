@@ -188,7 +188,7 @@ function CycleSetup({ userId, onComplete }: { userId: string; onComplete: () => 
       return;
     }
     setSaving(true);
-    const { error } = await supabase.from('user_cycle_data').upsert({
+    const { error } = await (supabase.from as any)('user_cycle_data').upsert({
       user_id: userId,
       last_period_date: lastPeriod,
       cycle_length: parseInt(cycleLength) || 28,
@@ -340,8 +340,7 @@ export function CycleMirror({ userId }: CycleMirrorProps) {
   }, [userId]);
 
   const checkCycleSetup = async () => {
-    const { data } = await supabase
-      .from('user_cycle_data')
+    const { data } = await (supabase.from as any)('user_cycle_data')
       .select('id')
       .eq('user_id', userId)
       .maybeSingle();
