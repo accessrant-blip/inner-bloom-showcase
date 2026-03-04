@@ -36,8 +36,7 @@ const Blog = () => {
         post.tags.some(tag => tag.toLowerCase().includes(query));
       
       const matchesCategory = selectedCategory === "All" || 
-        post.category === selectedCategory ||
-        post.tags.some(tag => tag.toLowerCase().includes(selectedCategory.toLowerCase()));
+        post.category === selectedCategory;
       
       return matchesSearch && matchesCategory;
     })
@@ -238,7 +237,11 @@ const Blog = () => {
         {/* Empty State - only when no posts at all */}
         {filteredPosts.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">No articles found matching your search.</p>
+            <p className="text-muted-foreground">
+              {selectedCategory !== "All" && !searchQuery
+                ? `No posts available in ${selectedCategory} yet.`
+                : "No articles found matching your search."}
+            </p>
             <Button 
               variant="link" 
               onClick={() => { setSearchQuery(""); setSelectedCategory("All"); }}
