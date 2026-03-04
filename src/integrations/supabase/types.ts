@@ -1295,6 +1295,36 @@ export type Database = {
           },
         ]
       }
+      user_cycle_data: {
+        Row: {
+          behavior_tags: Json | null
+          created_at: string
+          cycle_length: number
+          id: string
+          last_period_date: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          behavior_tags?: Json | null
+          created_at?: string
+          cycle_length?: number
+          id?: string
+          last_period_date: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          behavior_tags?: Json | null
+          created_at?: string
+          cycle_length?: number
+          id?: string
+          last_period_date?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_game_progress: {
         Row: {
           completed_at: string | null
