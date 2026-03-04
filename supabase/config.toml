@@ -3,6 +3,9 @@ project_id = "izfvkmqtwrgpncxmjbhe"
 [functions.generate-reflection]
 verify_jwt = true
 
+[functions.generate-cycle-insights]
+verify_jwt = true
+
 [functions.kai-chat]
 verify_jwt = true
 
