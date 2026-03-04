@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
   RefreshCw, Eye, TrendingUp, Shield, Heart, Compass,
-  Sparkles, Brain, Lightbulb, Activity, Calendar, X, Check
+  Sparkles, Brain, Lightbulb, Activity, Calendar, Check, BarChart3
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -40,6 +40,14 @@ interface CycleInfo {
   cycleLength: number;
 }
 
+interface RhythmPoint {
+  day: number;
+  energy: number;
+  mood: number;
+  physical: number;
+  samples: number;
+}
+
 interface CycleData {
   cycleInfo: CycleInfo;
   phaseDescription: string;
@@ -49,6 +57,7 @@ interface CycleData {
   needsCycleData?: boolean;
   message?: string;
   logCount?: number;
+  rhythmMap?: RhythmPoint[];
 }
 
 const phaseConfig: Record<string, { label: string; icon: typeof Shield; gradient: string; color: string }> = {
@@ -144,6 +153,115 @@ function MiniGraph({ data, label }: { data: PatternGraph; label: string }) {
         </span>
       </div>
     </div>
+  );
+}
+
+function EmotionalRhythmMap({ rhythmMap, cycleInfo }: { rhythmMap: RhythmPoint[]; cycleInfo: CycleInfo }) {
+  const validPoints = rhythmMap.filter(p => p.samples > 0);
+  if (validPoints.length < 5) return null;
+
+  const w = 320, h = 120, pad = 24;
+  const maxVal = 10;
+  const cycleLength = rhythmMap.length;
+
+  const toPath = (getValue: (p: RhythmPoint) => number, smooth = true) => {
+    const points = rhythmMap.map((p, i) => {
+      const x = pad + (i / (cycleLength - 1)) * (w - pad * 2);
+      const val = p.samples > 0 ? getValue(p) : -1;
+      const y = val >= 0 ? h - pad - (val / maxVal) * (h - pad * 2) : -1;
+      return { x, y, valid: val >= 0 };
+    });
+
+    let d = "";
+    let started = false;
+    for (const pt of points) {
+      if (!pt.valid) { started = false; continue; }
+      d += started ? ` L ${pt.x} ${pt.y}` : `M ${pt.x} ${pt.y}`;
+      started = true;
+    }
+    return d;
+  };
+
+  // Phase boundaries
+  const menstrualEnd = Math.min(5, cycleLength);
+  const follicularEnd = Math.round(cycleLength * 0.45);
+  const ovulationEnd = Math.round(cycleLength * 0.55);
+
+  const phaseZones = [
+    { start: 0, end: menstrualEnd, color: "hsl(var(--destructive) / 0.06)" },
+    { start: menstrualEnd, end: follicularEnd, color: "hsl(var(--primary) / 0.04)" },
+    { start: follicularEnd, end: ovulationEnd, color: "hsl(var(--primary) / 0.08)" },
+    { start: ovulationEnd, end: cycleLength, color: "hsl(var(--muted-foreground) / 0.05)" },
+  ];
+
+  const currentDayX = pad + ((cycleInfo.dayInCycle - 1) / (cycleLength - 1)) * (w - pad * 2);
+
+  return (
+    <Card className="rounded-2xl border-border/40 shadow-soft bg-card/80 backdrop-blur-sm overflow-hidden animate-fade-in">
+      <CardContent className="p-5 space-y-3">
+        <div className="flex items-center gap-2.5">
+          <div className="p-2 rounded-xl bg-primary/8">
+            <BarChart3 className="h-4 w-4 text-primary/60" />
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-foreground">Your Emotional Rhythm</h3>
+            <p className="text-[11px] text-muted-foreground">Patterns across your cycle days</p>
+          </div>
+        </div>
+
+        <svg viewBox={`0 0 ${w} ${h}`} className="w-full rounded-xl bg-muted/20" style={{ height: 140 }}>
+          {/* Phase background zones */}
+          {phaseZones.map((zone, i) => {
+            const x1 = pad + (zone.start / (cycleLength - 1)) * (w - pad * 2);
+            const x2 = pad + (Math.min(zone.end, cycleLength - 1) / (cycleLength - 1)) * (w - pad * 2);
+            return <rect key={i} x={x1} y={pad - 8} width={x2 - x1} height={h - pad * 2 + 16} fill={zone.color} rx="4" />;
+          })}
+
+          {/* Grid lines */}
+          {[0, 2.5, 5, 7.5, 10].map(v => {
+            const y = h - pad - (v / maxVal) * (h - pad * 2);
+            return <line key={v} x1={pad} x2={w - pad} y1={y} y2={y} stroke="hsl(var(--border) / 0.3)" strokeWidth="0.5" />;
+          })}
+
+          {/* Current day marker */}
+          <line x1={currentDayX} x2={currentDayX} y1={pad - 8} y2={h - pad + 8}
+            stroke="hsl(var(--primary) / 0.3)" strokeWidth="1.5" strokeDasharray="3 2" />
+          <circle cx={currentDayX} cy={pad - 4} r="3" fill="hsl(var(--primary))" />
+
+          {/* Energy line */}
+          <path d={toPath(p => p.energy)} fill="none" stroke="hsl(142 71% 45%)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.8" />
+          {/* Mood line */}
+          <path d={toPath(p => p.mood)} fill="none" stroke="hsl(262 83% 58%)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.8" />
+          {/* Physical discomfort line */}
+          <path d={toPath(p => p.physical)} fill="none" stroke="hsl(0 84% 60%)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.5" strokeDasharray="4 2" />
+        </svg>
+
+        {/* Legend */}
+        <div className="flex items-center justify-center gap-4 flex-wrap">
+          <span className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+            <span className="w-3 h-0.5 rounded bg-emerald-500 inline-block" /> Energy
+          </span>
+          <span className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+            <span className="w-3 h-0.5 rounded bg-violet-500 inline-block" /> Mood
+          </span>
+          <span className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+            <span className="w-3 h-px bg-rose-400 inline-block" style={{ borderTop: "1.5px dashed" }} /> Discomfort
+          </span>
+          <span className="flex items-center gap-1.5 text-[10px] text-primary/60">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" /> Today
+          </span>
+        </div>
+
+        {/* Phase labels */}
+        <div className="flex justify-between text-[9px] text-muted-foreground/50 px-1">
+          <span>Menstrual</span><span>Follicular</span><span>Ovulation</span><span>Luteal</span>
+        </div>
+
+        <p className="text-[10px] text-muted-foreground/50 text-center">
+          Based on {validPoints.length} days of logged behavior across your cycles
+        </p>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -550,6 +668,7 @@ export function CycleMirror({ userId }: CycleMirrorProps) {
         return;
       }
       setCycleData(data);
+      if (data.logCount !== undefined) setLogCount(data.logCount);
     } catch (error: any) {
       console.error('Error:', error);
       toast({ title: "Something went wrong", description: "Please try again in a moment", variant: "destructive" });
@@ -600,6 +719,11 @@ export function CycleMirror({ userId }: CycleMirrorProps) {
 
       {/* Log Count Progress */}
       <LogCountBanner count={logCount} />
+
+      {/* Emotional Rhythm Map */}
+      {cycleData?.rhythmMap && displayCycleInfo && (
+        <EmotionalRhythmMap rhythmMap={cycleData.rhythmMap} cycleInfo={displayCycleInfo} />
+      )}
 
       {/* AI Insight Cards */}
       {cycleData?.insights && cycleData.insights.length > 0 ? (
