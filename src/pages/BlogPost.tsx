@@ -21,6 +21,158 @@ interface BlogPost {
 // Blog posts data - shared with Blog.tsx
 export const blogPosts: BlogPost[] = [
   {
+    id: "why-peace-feels-unfamiliar",
+    title: "Why Peace Feels Unfamiliar at First 🌿",
+    excerpt: "For many, feeling peaceful isn't exactly a walk in the park. Instead of feeling relieved, you might feel restless, uneasy, or like something's wrong. It all comes down to how your brain gets used to stress.",
+    content: `For many, feeling peaceful isn't exactly a walk in the park.
+
+Actually, things can get kind of **weird** when life slows down.
+
+Instead of feeling relieved, you might feel:
+- 😟 Restless
+- 😶 Uneasy
+- ❓ Like something's wrong
+- 😐 Just blah
+
+You might even start **inventing problems** where they don't exist.
+
+It's confusing, right? I mean, isn't peace what we're all after?
+
+Well, it all comes down to how your **brain and body** get used to being stressed out all the time.
+
+---
+
+## 🌿 When Stress is Just How Things Are
+
+Your body's meant to get used to what's around you.
+
+So, if you're dealing with stuff like:
+- 💥 Fights
+- 🔄 Things changing all the time
+- 🎭 People being all over the place emotionally
+- ⚡ Always being under pressure
+- 📋 Having tons of responsibility
+
+Your body gets used to being **on high alert**.
+
+That's what people mean by **chronic stress**.
+
+When you're like that, your body starts to **expect problems**.
+
+After a while, a calm place can feel weird just because it's so different from what your body is used to.
+
+---
+
+## 🧠 What Your Body Does
+
+Your body has **two main modes**:
+
+- **Sympathetic**: This is your fight-or-flight response. It's all about being alert and ready for anything.
+- **Parasympathetic**: This helps you calm down, recover, and feel balanced.
+
+If you're stressed out for a long time, your body gets good at staying in that **first mode**.
+
+So, when things slow down, your brain might think something's off because it's **not getting the signals it's used to**.
+
+It's not that you're in danger, it just **feels weird**.
+
+---
+
+## 🌊 Why Calm Can Feel... Not Great
+
+There are a few reasons why this happens.
+
+### 1️⃣ Your brain expects trouble
+
+We're kind of wired to look for bad stuff. It's a **survival thing**.
+
+If you've been through a lot of stressful situations, your brain might keep looking for problems even when everything's fine.
+
+### 2️⃣ Quiet lets your mind wander
+
+When things are calm, you have more time to think.
+
+Thoughts and feelings that you've been **ignoring** might pop up.
+
+This can make calm feel kind of **intense** at first.
+
+### 3️⃣ You might think of yourself as a problem-solver
+
+A lot of people see themselves as:
+- 💪 Strong
+- 🛡️ Tough
+- 🔧 Always dealing with stuff
+
+When things are calm, it can feel strange **not to be fixing something**.
+
+Peace can mess with your sense of who you are if you're used to just **surviving**.
+
+### 4️⃣ Your body needs time to adjust
+
+Things like your **stress hormones**, sleep, and how you process emotions might take a while to get back to normal after a long period of stress.
+
+Your body has to **learn to handle calm again**.
+
+---
+
+## ⚖️ Peace Takes Practice
+
+Just like your muscles get used to working out, your body gets used to how you feel.
+
+If you're stressed all the time, your body gets good at **handling stress**.
+
+But the same is true for **calm**.
+
+If you're in a safe and stable place, your brain can start **practicing being calm** again.
+
+Eventually, peace will feel **normal** instead of weird.
+
+---
+
+## 🌱 Getting Used to Calm
+
+If peace feels uncomfortable at first, **don't try to force yourself to relax**.
+
+Instead, try to get used to calm **little by little**.
+
+Some things that can help:
+- 🌅 Gentle routines every day
+- 🌬️ Slow breathing exercises
+- 🛏️ Going to bed and waking up at the same time
+- 🤝 Spending time with people you trust
+- 🌳 Being in calm places like nature
+
+These things tell your body that **you're safe**.
+
+---
+
+## 💛 It's Okay to Take Your Time
+
+If peace feels weird to you, it doesn't mean you like chaos.
+
+It just means your body has been in **survival mode** for a while.
+
+Learning to live without constant stress **takes time**.
+
+---
+
+## 🌿 Just Remember
+
+Peace doesn't always feel great right away.
+
+Sometimes it shows up quietly, and your mind **doesn't quite trust it yet**.
+
+But with patience, your body will start to realize that **you're safe**.
+
+And slowly, what felt strange will become the place where you feel **most at home**. 🌿`,
+    author: "RantFree Team",
+    date: "2026-03-05",
+    readTime: "7 min",
+    category: "Self Improvement",
+    tags: ["peace", "stress", "nervous system", "healing", "self-care", "calm"],
+    featured: true,
+  },
+  {
     id: "identity-crisis-20s-30s",
     title: "The Identity Crisis Nobody Talks About in Your 20s/30s 🌿",
     excerpt: "A lot of people go through a weird stage in their 20s and 30s, but no one really talks about it. It's not failing — it's your sense of self changing.",

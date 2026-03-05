@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "why-peace-feels-unfamiliar",
+    title: "Why Peace Feels Unfamiliar at First 🌿",
+    excerpt: "For many, feeling peaceful isn't exactly a walk in the park. Instead of feeling relieved, you might feel restless, uneasy, or like something's wrong.",
+    date: "2026-03-05",
+    readTime: "7 min",
+    category: "Self Improvement",
+  },
+  {
     id: "identity-crisis-20s-30s",
     title: "The Identity Crisis Nobody Talks About in Your 20s/30s 🌿",
     excerpt: "A lot of people go through a weird stage in their 20s and 30s, but no one really talks about it. It's not failing — it's your sense of self changing.",
