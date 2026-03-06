@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "stress-shows-up-in-body",
+    title: "How Stress Shows Up in the Body (And Small Ways to Release It) 🌿",
+    excerpt: "We often think of stress as something that just happens in our heads. But really, stress is a reaction that involves your whole body — from your muscles to your digestion.",
+    date: "2026-03-06",
+    readTime: "10 min",
+    category: "Mental Health",
+  },
+  {
     id: "why-peace-feels-unfamiliar",
     title: "Why Peace Feels Unfamiliar at First 🌿",
     excerpt: "For many, feeling peaceful isn't exactly a walk in the park. Instead of feeling relieved, you might feel restless, uneasy, or like something's wrong.",
