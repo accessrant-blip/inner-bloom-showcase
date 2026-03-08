@@ -8815,6 +8815,193 @@ Sometimes things get clear once you **give yourself room to notice**. 💫`,
     tags: ["mental health", "self-awareness", "stress", "emotions", "wellness"],
     featured: false,
   },
+  {
+    id: "why-some-people-drain-your-energy",
+    title: "Why Some People Drain Your Energy 🔋",
+    excerpt: "Have you ever hung out with someone and then felt totally wiped out afterward? No fights. No drama. But still, you end up feeling mentally drained and emotionally weighed down.",
+    content: `Have you ever hung out with someone and then felt **totally wiped out** afterward?
+
+It's not like anything crazy happened.
+
+No fights.
+
+No drama.
+
+But still, you end up feeling:
+
+- **Mentally drained**
+- **Emotionally weighed down**
+- **Annoyed or just plain stressed**
+
+But then you're around other people, and you **feel good**.
+
+This isn't in your head.
+
+It usually comes down to how certain people mess with your **head and your emotions**.
+
+## 🌿 Your Emotional Tank is Real
+
+Every time you talk to someone, you're using **mental and emotional power**.
+
+Your brain's always trying to figure stuff out like:
+
+- How they're saying things
+- What their face is doing
+- What they're **really** feeling
+- What they expect from you
+
+If things are cool and even, you feel good.
+
+But if talking to someone feels like a **chore**, it can really take it out of you.
+
+## 🧠 Sharing the Emotional Load
+
+In good relationships, you **share the emotional work**.
+
+Both people:
+
+- **Listen up**
+- **Think before they talk**
+- **Respect each other's space**
+- **Are okay with different views**
+
+But when one person always needs the other to handle their feelings, things get **off balance**.
+
+One person becomes the trash can for all the feels.
+
+And that can **wear someone out**.
+
+## 🌊 Why Some People Suck Your Energy
+
+### 1. Nonstop Whining 😩
+
+Some people just can't stop complaining about everything.
+
+It's okay to vent sometimes, but if someone's **always negative**, you end up having to soak up all their bad vibes.
+
+And that leaves you **empty**.
+
+### 2. Dumping Emotions 💧
+
+This is when someone throws all their feelings at you **without thinking** about whether you can handle it.
+
+You might feel like you need to fix them or just take on their problems.
+
+That gets old fast.
+
+### 3. No Personal Space 🚧
+
+Some people want your attention **all the time**.
+
+If you don't have clear personal rules, you can feel swamped because you don't have time for yourself.
+
+### 4. Overreacting 💥
+
+People who blow up over little stuff can make you feel like you have to **watch every word and move**.
+
+That's just exhausting.
+
+### 5. One-Way Street 🛤️
+
+Good relationships go **both ways**.
+
+If it's always about one person, the other can feel **ignored and used up**.
+
+You need balance to keep things going.
+
+## 🧠 Your Nerves Play a Part
+
+Your body **reacts** to the people around you.
+
+If someone's:
+
+- **Nervous**
+- **Mad**
+- **Unpredictable**
+- **Really emotional**
+
+your body might get tense **without you even knowing it**.
+
+That's because you're **mirroring them**.
+
+If someone's always a mess, your body has to work harder to stay calm.
+
+And that feels like being **tired all the time**.
+
+## ⚖️ Feeling Drained Doesn't Make Someone a Bad Person
+
+People who drain you aren't necessarily trying to be jerks.
+
+Sometimes they're just:
+
+- **Stressed**
+- **Going through stuff**
+- **Not aware of their own feelings**
+- **Dealing with problems**
+
+But it's still important to know **how they affect you**.
+
+## 🌱 Protecting Your Good Vibes
+
+You don't have to ditch people completely. Just make a few changes to stay balanced.
+
+**Notice how you feel** 👀
+
+See how you feel **before, during, and after** seeing certain people.
+
+Your feelings tell you a lot.
+
+**Set some rules** 📋
+
+That could mean:
+
+- Not talking too long
+- Changing the subject if they're being negative
+- Taking time to recharge after seeing them
+
+Good rules help everyone.
+
+**Keep things balanced** ⚖️
+
+Spend time with people who:
+
+- **Support you**
+- **Are calm**
+- **Give as much as they take**
+- **Make you feel good**
+
+These people **fill you up**.
+
+**Take time to recover** 🧘
+
+After being around draining people, let your mind rest. Do something quiet, move around, or just chill.
+
+## 💛 One Last Thought
+
+It's not just about personality.
+
+It's about **give and take**.
+
+Some people make you feel good.
+
+Others take a lot of work.
+
+Knowing the difference helps you build relationships that are good for your **head and your heart**.
+
+## 🌿 One Last Thing
+
+If certain people leave you feeling drained, it doesn't mean you're **too sensitive**.
+
+It just means your body's telling you that you need **better boundaries**, more **balance**, and people who **support you**.
+
+And listening to that is key to **taking care of yourself**. 💚`,
+    author: "RantFree Team",
+    date: "2026-03-08",
+    readTime: "6 min read",
+    category: "Community",
+    tags: ["community", "relationships", "boundaries", "energy", "self-care"],
+    featured: false,
+  },
 ];
 
 // Markdown-like content renderer
