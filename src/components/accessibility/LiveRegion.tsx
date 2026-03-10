@@ -18,7 +18,7 @@ export function LiveRegion({
   clearAfter = 5000 
 }: LiveRegionProps) {
   const [announcement, setAnnouncement] = useState('');
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (message) {

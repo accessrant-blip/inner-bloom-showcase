@@ -99,7 +99,7 @@ const InnerChild = () => {
   };
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (isHolding && holdProgress < 100) {
       interval = setInterval(() => {
         setHoldProgress(prev => {
