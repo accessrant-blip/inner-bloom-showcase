@@ -9479,6 +9479,134 @@ That's **neuroplasticity at work**, little by little.`,
     tags: ["neuroplasticity", "brain science", "habits", "personal growth", "self-improvement"],
     featured: false,
   },
+  {
+    id: "psychologist-vs-psychiatrist",
+    title: "Psychologist vs Psychiatrist: What's the Difference? 🧠",
+    excerpt: "People often mix up psychologists and psychiatrists, but they're not the same thing. Both help with mental health, but they train differently and treat problems in different ways.",
+    content: `People often mix up psychologists and psychiatrists, but they're not the same thing.
+
+Both help people with their mental health, like dealing with **emotions**, **actions**, and **how they think**. But they train differently, treat problems in different ways, and have different roles.
+
+Knowing the difference can help you **pick the right kind of help** for you.
+
+---
+
+## 🧠 What's a Psychologist?
+
+A psychologist studies how people **act**, **feel**, and **think**.
+
+They usually have a high-level degree in psychology, like a **Master's** or a **Doctorate** (PhD or PsyD).
+
+They try to figure out **why** people think, feel, and act the way they do.
+
+**What psychologists usually do:**
+
+Psychologists give therapies and tests, such as:
+
+- **Talk therapy**
+- **Changing how you think and act**
+- **Checking your emotions and actions**
+- **Testing your personality**
+- **Giving advice** for stress, worry, bad experiences, or relationship problems
+
+They help people understand why they think and act certain ways and **learn better ways to cope**.
+
+Psychologists usually **can't give you medicine**.
+
+---
+
+## 🧠 What's a Psychiatrist?
+
+A psychiatrist is a **doctor** who specializes in mental health.
+
+Psychiatrists go to:
+
+- **Medical school** (MBBS or something similar)
+- Then get **special training** in mental health
+
+Since they're doctors, they get mental health and **how it affects your body**.
+
+**What psychiatrists usually do:**
+
+Psychiatrists can:
+
+- **Find out** what mental health problem you have
+- **Give you medicine** for mental health issues
+- **Take care of serious** mental health problems
+- **Check** how mental health problems affect your body and brain
+- Sometimes **give therapy**
+
+They often work with problems where **medicine might be needed**.
+
+---
+
+## ⚖️ Main Differences
+
+- **Psychologist:** Studies psychology and actions. Focuses on **therapy and changing actions**. Usually can't give medicine. Gives advice and therapy.
+- **Psychiatrist:** Medical doctor who specializes in mental health. Focuses on **finding problems and giving medicine**. Can give medicine. Treats mental problems with medicine and therapy.
+
+---
+
+## 🌿 When to See a Psychologist
+
+People often see psychologists for:
+
+- **Worry or stress**
+- **Relationship problems**
+- **Controlling emotions**
+- **Recovering from bad experiences**
+- **Problem actions**
+- **Growing as a person** and understanding yourself
+
+Psychologists mainly focus on **therapy and learning skills**.
+
+---
+
+## 🌿 When to See a Psychiatrist
+
+You might see a psychiatrist when your problems are **very bad** or need **medical help**.
+
+For example:
+
+- **Very bad depression**
+- **Bipolar problem**
+- **Schizophrenia**
+- **Very bad worry problems**
+- **Problems that need medicine**
+
+Psychiatrists and psychologists **often work together**.
+
+---
+
+## 💛 Working Together
+
+It's often best when different mental health pros **work together**.
+
+Like:
+
+- A **psychiatrist** might give you medicine
+- A **psychologist** might give you therapy over time
+
+Together, they help with your **body and mind**.
+
+---
+
+## 🌱 Final Thoughts
+
+Psychologists and psychiatrists both help with mental health.
+
+The main thing is that **psychologists mostly do therapy** and deal with actions, while **psychiatrists are doctors** who can give medicine and treat mental problems medically.
+
+If you're not sure where to start, many people begin with therapy and get medical help if they need more treatment.
+
+**The most important thing is to ask for help when you need it.** 💛`,
+    author: "RantFree Team",
+    date: "2025-07-12",
+    readTime: "5 min read",
+    category: "Community",
+    tags: ["psychologist", "psychiatrist", "mental health", "therapy", "community"],
+    featured: false,
+  },
 ];
 
 // Markdown-like content renderer
