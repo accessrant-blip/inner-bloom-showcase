@@ -9607,6 +9607,170 @@ If you're not sure where to start, many people begin with therapy and get medica
     tags: ["psychologist", "psychiatrist", "mental health", "therapy", "community"],
     featured: false,
   },
+  {
+    id: "online-bullying",
+    title: "Online Bullying: Forms, Effects, and Why It Matters 🌐",
+    excerpt: "The internet's great for connecting with folks, sharing ideas, and building communities. But it's also opened doors for some not-so-great behavior, like cyberbullying.",
+    content: `The internet's great for connecting with folks, sharing ideas, and building communities. But it's also opened doors for some not-so-great behavior.
+
+One big worry is **online bullying**, or **cyberbullying** as it's often called.
+
+Unlike old-school bullying, this one can happen **any time, any place**, and its effects can stick with you even after things calm down.
+
+Knowing what it looks like and how it hits people is a key step in making the online world safer.
+
+---
+
+## 🌐 What's Online Bullying?
+
+It's basically using **digital platforms** to harass, scare, or hurt someone.
+
+It can pop up on:
+
+- **Social media**
+- **Messaging apps**
+- **Gaming spots**
+- **Emails**
+- **Online forums**
+
+Since digital stuff can spread fast and hang around, the impact can be **super strong**.
+
+---
+
+## 🌿 Usual Forms of Online Bullying
+
+### 1. Harassment
+
+This means sending **nasty or threatening messages** over and over.
+
+Think:
+
+- **Mean comments**
+- **Aggressive messages**
+- **Constant negative replies**
+
+This can make someone feel **targeted**.
+
+### 2. Public Shaming
+
+This is when someone gets slammed **in front of a big online crowd**.
+
+Like:
+
+- **Posting embarrassing stuff** about someone
+- **Getting others to make fun of them**
+- **Spreading rumors** out in the open
+
+Since social media makes things so visible, this can **blow up fast**.
+
+### 3. Exclusion
+
+This is when people are **intentionally kept out** of online groups or talks.
+
+For example:
+
+- **Group chats** where someone's left out on purpose
+- **Online groups** that ignore someone
+- **Planned social rejection**
+
+Even if it seems small, it can **really mess with someone**.
+
+### 4. Impersonation
+
+This is acting like someone else online to **trash their name**.
+
+Things like:
+
+- **Making fake accounts**
+- **Posting messages** as someone else
+- **Spreading lies** using someone's identity
+
+This can cause confusion and **harm someone's reputation**.
+
+### 5. Doxxing or Privacy Breaches
+
+Doxxing is sharing someone's **private info** online without their okay.
+
+This could be:
+
+- **Phone numbers**
+- **Addresses**
+- **Private pics or messages**
+
+This can put someone's **safety and privacy** at risk.
+
+---
+
+## 🧠 How Online Bullying Messes With Your Head
+
+It can hit your **mental health** hard.
+
+Research shows it's linked to higher levels of:
+
+- **Anxiety**
+- **Depression**
+- **Loneliness**
+- **Low self-esteem**
+- **General emotional pain**
+
+Since so many people can see online stuff, it can feel **overwhelming**.
+
+---
+
+## 🌊 What Makes Online Bullying So Bad?
+
+A few things make it extra harmful:
+
+- **It's 24/7** — Digital lets bullying go on beyond school or work.
+- **Big Audience** — Tons of people can see mean stuff fast.
+- **Anonymity** — People are bolder when they think they're hidden.
+- **Sticks Around** — Online posts can stay visible for a long time.
+
+---
+
+## 🌱 What to Do If You're Getting Cyberbullied
+
+A few steps can help:
+
+- **Don't fire back right away.** Responding when you're angry can make it worse.
+- **Save everything.** Screenshots or saved messages can help if you need to report it.
+- **Block or mute.** Most platforms let you cut off contact with bullies.
+- **Report it.** Social media and online spots often have ways to report harassment.
+- **Get support.** Talk to friends, family, or a therapist for emotional backup.
+
+---
+
+## 💛 Making the Online World Nicer
+
+Cutting down on online bullying takes **all of us**.
+
+You can help by:
+
+- **Not sharing mean stuff**
+- **Supporting people** who are being targeted
+- **Reporting bad behavior**
+- **Being respectful online**
+
+Healthy online communities need **everyone to pitch in**.
+
+---
+
+## 🌿 Last Words
+
+Online spots can be great for **connecting, creating, and learning**.
+
+But they should also be **safe**.
+
+Knowing about online bullying helps you **spot it** and take steps to protect yourself and others.
+
+**Digital should bring people together, not hurt them.** 💛`,
+    author: "RantFree Team",
+    date: "2025-07-13",
+    readTime: "6 min read",
+    category: "Mental Health",
+    tags: ["cyberbullying", "online safety", "mental health", "digital wellness", "awareness"],
+    featured: false,
+  },
 ];
 
 // Markdown-like content renderer
