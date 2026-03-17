@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "if-you-feel-drained",
+    title: "If You Feel Drained, Read This 💛",
+    excerpt: "There's a kind of tiredness that sleep can't touch. You wake up, move through your day, ticking off the tasks, but some invisible weight lingers. It's not physical exhaustion—more like feeling completely drained.",
+    date: "2026-03-17",
+    readTime: "5 min",
+    category: "Wellness Tips",
+  },
+  {
     id: "stress-shows-up-in-body",
     title: "How Stress Shows Up in the Body (And Small Ways to Release It) 🌿",
     excerpt: "We often think of stress as something that just happens in our heads. But really, stress is a reaction that involves your whole body — from your muscles to your digestion.",
