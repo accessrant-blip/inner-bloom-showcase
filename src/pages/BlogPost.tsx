@@ -21,6 +21,70 @@ interface BlogPost {
 // Blog posts data - shared with Blog.tsx
 export const blogPosts: BlogPost[] = [
   {
+    id: "if-you-feel-drained",
+    title: "If You Feel Drained, Read This 💛",
+    excerpt: "There's a kind of tiredness that sleep can't touch. You wake up, move through your day, ticking off the tasks, but some invisible weight lingers. It's not physical exhaustion—more like feeling completely drained.",
+    content: `There's a kind of tiredness that **sleep can't touch**. You wake up, move through your day, ticking off the tasks, but some invisible weight lingers. It's not physical exhaustion—more like feeling **completely drained**, with no obvious reason why.
+
+We tend to think tiredness must come from doing too much, like a mechanical byproduct of activity. But **emotional and mental exhaustion** don't always wear a visible badge. Overthinking, bottling up feelings, always being "on" for others, forcing yourself to stay strong when you're not okay, quietly carrying stress—all of these quietly sap your energy. They aren't the kind of work you see, but they **count just the same**. 🧠
+
+Your brain often works overtime even when your body isn't moving much. It keeps:
+- 🔄 **Replaying interactions**
+- ⚠️ **Bracing for problems**
+- 🎭 **Managing emotions**
+- ✏️ **Editing what you say**
+- 🎯 **Trying to maintain control**
+
+This unseen hustle drains energy **slowly but steadily**.
+
+---
+
+## 🚩 Signs Your Emotional Tank Is Running Low
+
+Signs that your emotional tank is running low don't always shout. It might look like:
+
+- 😶 **A lack of motivation** — things that used to excite you feel flat
+- 🏠 **Wanting solitude more than usual** — social interactions feel like work
+- 😐 **Feeling numb or disconnected** — going through motions without really feeling
+- 😤 **Being easily irritated** — small things set you off
+- 🧩 **Struggling to focus** — your mind feels foggy
+- 😰 **Getting overwhelmed by minor things** — everyday tasks feel like mountains
+
+Sometimes you even **blame yourself** for feeling this way—but it's **not laziness**. It's exhaustion.
+
+Because emotional fatigue **creeps up** rather than slams down, you might not notice it until one day your mind and body simply **demand a break**. Without a clear reason, that moment can feel confusing or unfair.
+
+---
+
+## 🌿 What to Do When You're Drained
+
+When you're drained, the gut reaction may be to push harder or fix things fast. But healing doesn't come from force. It's about **letting yourself breathe**:
+
+- 🛑 **Give yourself permission to pause without guilt.** Rest isn't something to earn after burnout—it's what you need *before* it.
+- 📵 **Step back from noise** — social media, constant notifications, endless conversations. Your mind needs space to clear.
+- 🚶 **Move gently** — you don't have to run or push. Even a brief walk or stretch can ease tension.
+- 💬 **Find ways to release what you hold inside** — talk to someone, write it down, get those feelings out. Holding emotions costs energy.
+- 🎯 **Ease off expectations.** Not every day has to be productive. Some days are meant for **recovery**.
+
+---
+
+## 💛 A Gentle Reminder
+
+Remember, you **don't owe anyone an explanation** for your exhaustion. Just because what you carry isn't visible doesn't mean it's not real. **Your experience matters.**
+
+Feeling drained doesn't mean you're **broken**. It might just mean you've been carrying more than feels manageable for a while.
+
+You don't have to fix everything all at once or always be strong.
+
+Sometimes, the best thing you can do is **rest, reset, and gently find your way back to yourself**. 🌸`,
+    author: "RantFree Team",
+    date: "2026-03-17",
+    readTime: "5 min",
+    category: "Wellness Tips",
+    tags: ["emotional exhaustion", "self-care", "rest", "mental health", "wellness"],
+    featured: true,
+  },
+  {
     id: "stress-shows-up-in-body",
     title: "How Stress Shows Up in the Body (And Small Ways to Release It) 🌿",
     excerpt: "We often think of stress as something that just happens in our heads. But really, stress is a reaction that involves your whole body — from your muscles to your digestion.",
