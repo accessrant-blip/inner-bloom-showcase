@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "this-might-be-what-youre-missing",
+    title: "This Might Be What You're Missing 💛",
+    excerpt: "Sometimes, you go through your days without anything glaringly wrong. You keep up with what's expected, manage your routine, keep things moving. Yet, there's this vague sense that something's a bit off.",
+    date: "2026-03-18",
+    readTime: "6 min",
+    category: "Wellness Tips",
+  },
+  {
     id: "if-you-feel-drained",
     title: "If You Feel Drained, Read This 💛",
     excerpt: "There's a kind of tiredness that sleep can't touch. You wake up, move through your day, ticking off the tasks, but some invisible weight lingers. It's not physical exhaustion—more like feeling completely drained.",
