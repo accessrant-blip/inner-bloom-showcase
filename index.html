@@ -91,7 +91,15 @@
   </head>
 
   <body class="h-full">
-    <div id="root" class="h-full"></div>
+    <div id="root" class="h-full">
+      <!-- Inline placeholder for faster FCP - replaced when React mounts -->
+      <div id="initial-loader" style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--background,#fff);font-family:system-ui,sans-serif">
+        <div style="text-align:center">
+          <div style="font-size:1.5rem;font-weight:700;color:var(--foreground,#1a1a1a)">RantFree</div>
+          <div style="margin-top:0.5rem;font-size:0.875rem;color:var(--muted-foreground,#666)">Loading your wellness space…</div>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

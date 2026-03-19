@@ -37,7 +37,7 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center space-x-2.5 mb-5 h-6">
-              <img src={rantfreeLogo} alt="RantFree logo" className="h-8 w-auto rounded-lg object-contain" />
+              <img src={rantfreeLogo} alt="RantFree logo" className="h-8 w-auto rounded-lg object-contain" width="32" height="32" />
               <span className="font-semibold text-foreground">RantFree</span>
             </div>
             <ul className="space-y-2 text-sm">
