@@ -16,6 +16,14 @@ interface BlogPreview {
 // Blog previews
 const blogPreviews: BlogPreview[] = [
   {
+    id: "why-you-ignore-red-flags",
+    title: "Why You Ignore Red Flags You Clearly See 🚩",
+    excerpt: "Most people don't actually miss red flags. They pick up on them. That small, nagging discomfort? It's there. Something feels off, even if they can't quite put their finger on it.",
+    date: "2026-03-19",
+    readTime: "8 min",
+    category: "Community",
+  },
+  {
     id: "this-might-be-what-youre-missing",
     title: "This Might Be What You're Missing 💛",
     excerpt: "Sometimes, you go through your days without anything glaringly wrong. You keep up with what's expected, manage your routine, keep things moving. Yet, there's this vague sense that something's a bit off.",
