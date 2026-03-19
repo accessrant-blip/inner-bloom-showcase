@@ -21,6 +21,122 @@ interface BlogPost {
 // Blog posts data - shared with Blog.tsx
 export const blogPosts: BlogPost[] = [
   {
+    id: "why-you-ignore-red-flags",
+    title: "Why You Ignore Red Flags You Clearly See 🚩",
+    excerpt: "Most people don't actually miss red flags. They pick up on them. That small, nagging discomfort? It's there. Something feels off, even if they can't quite put their finger on it.",
+    content: `Most people don't actually miss red flags. They **pick up on them**. That small, nagging discomfort? It's there. Something feels off, even if they can't quite put their finger on it.
+
+Still, they stick around. They make excuses, tell themselves to give it more time, convince themselves it's nothing serious. 🤷
+
+So the real question isn't *"Why didn't you see it?"* It's **"Why did you choose to ignore what you already sensed?"**
+
+---
+
+## 🧠 Awareness Usually Isn't the Issue
+
+Often, that uneasy feeling pops up **immediately** because our brains are wired to notice when something is inconsistent or emotionally off. That unease? It's **awareness in action**.
+
+But actually doing something about it—that's a different story. That's where **psychology** steps in.
+
+---
+
+## 💡 Why We Override Our Own Instincts
+
+### 1. **The Need for Connection Overrides Logic** 🤝
+
+We're wired to belong; it's a **core human need**. When someone offers attention, validation, or emotional closeness, your brain might prioritize that connection instead of caution—even if something feels wrong.
+
+- 💔 The fear of losing that connection often keeps people **staying longer than they should**
+
+### 2. **Familiarity Feels Safer Than the Unknown** 🔄
+
+People are often drawn to what they already know, even if it isn't healthy. If your past relationships were marked by inconsistency or emotional unavailability, those patterns end up feeling **normal** to you.
+
+- 🧠 Your brain doesn't sound an alarm when it happens again—it just registers **"familiar"**
+- 🏠 "Familiar" somehow feels safer than facing the **unknown**
+
+### 3. **Cognitive Dissonance Creates Mental Tug-of-War** ⚖️
+
+That's the mental tug-of-war when two conflicting thoughts exist simultaneously:
+- ✅ *"This person seems good"*
+- ❌ *"This behavior doesn't feel right"*
+
+To ease that discomfort, your brain might:
+- 🙈 **Downplay** red flags
+- 🤔 **Justify** bad behavior
+- ✨ **Focus only** on the good parts
+
+This helps keep you emotionally steady—**for now**—but it also **delays tough decisions**.
+
+### 4. **The Sunk Cost Effect Keeps You Hanging On** 💸
+
+Once you've invested time or emotion, you naturally want to stay the course. Thoughts like:
+- *"I've put so much in already"*
+- *"Maybe things will get better"*
+
+…keep you hanging on, **even when signs are clear**.
+
+### 5. **Hope Can Blind You** 🌈
+
+Hope is powerful. It pushes us to see potential, believe in change, and give second chances. But sometimes hope blinds us:
+- 🔮 We start focusing on **who someone could be**
+- 👤 Instead of **who they actually are**
+
+### 6. **Low Self-Trust Makes You Second-Guess** 🤐
+
+We second-guess ourselves:
+- *"Am I overreacting?"*
+- *"Maybe I'm being too sensitive"*
+- *"What if I'm wrong?"*
+
+When you **doubt your own judgment**, you tend to give more weight to what others do or say than to your own intuition.
+
+---
+
+## 🚩 So What Are Red Flags, Really?
+
+They're **not about perfection**. They're warning signs—patterns that suggest:
+- 🚫 **Disrespect**
+- 🔀 **Inconsistency**
+- 🧊 **Emotional distance**
+- 🔇 **Poor communication**
+- 🚧 **Boundary crossing**
+
+Early indicators that **deserve attention**, not ignored.
+
+---
+
+## 🛠️ How to Stop Brushing Off Red Flags
+
+If you want to stop brushing off those flags, here's where to start:
+
+- 💛 **Trust your first feeling** — That discomfort isn't an overreaction; it's **valuable information**
+- 👀 **Pay attention to patterns, not promises** — Actions over time speak louder than words
+- ⏳ **Don't rush to clarity** — Give things time to show their true colors
+- 💪 **Strengthen your self-trust** — The more you listen to yourself, the easier decisions become
+- 🚪 **It's okay to walk away** — Without a big excuse, if something just doesn't feel right
+
+---
+
+## 💛 The Takeaway
+
+At the end of the day, ignoring red flags isn't about **blind spots**. It's about:
+- 🤝 Wanting **connection**
+- 🌈 Holding on to **hope**
+- 🤔 **Doubting yourself**
+- 😰 Fearing **loss**
+
+Understanding that **takes away the shame**. Once you recognize what's going on, you can start to shift how you respond.
+
+Sometimes, the hardest but simplest step is to **believe that discomfort from the start**—the very first time it shows up. 🌿`,
+    author: "RantFree Team",
+    date: "2026-03-19",
+    readTime: "8 min",
+    category: "Community",
+    tags: ["red flags", "self-trust", "relationships", "psychology", "boundaries"],
+    featured: false,
+  },
+  {
     id: "if-you-feel-drained",
     title: "If You Feel Drained, Read This 💛",
     excerpt: "There's a kind of tiredness that sleep can't touch. You wake up, move through your day, ticking off the tasks, but some invisible weight lingers. It's not physical exhaustion—more like feeling completely drained.",
