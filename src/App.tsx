@@ -8,7 +8,8 @@ import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { AccessibilityProvider } from "@/components/accessibility/AccessibilityProvider";
 import { SkipLink } from "@/components/accessibility/SkipLink";
 import { FloatingAccessibilityButton } from "@/components/accessibility/FloatingAccessibilityButton";
-import AppLayout from "./components/layout/AppLayout";
+// Lazy load AppLayout so non-home shell code is not in the initial bundle
+const AppLayout = lazy(() => import("./components/layout/AppLayout"));
 import { Loader2 } from "lucide-react";
 
 // Eagerly load the landing page for best LCP
