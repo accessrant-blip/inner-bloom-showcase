@@ -88,6 +88,33 @@
     <meta name="theme-color" content="#3E8E7E" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
     <meta name="msapplication-TileColor" content="#3E8E7E" />
+
+    <!-- Critical inline CSS for above-the-fold content (prevents render-blocking) -->
+    <style>
+      :root{--background:150 25% 98%;--foreground:150 15% 20%;--primary:150 40% 32%;--primary-foreground:0 0% 100%;--muted-foreground:150 12% 35%;--card:0 0% 100%;--border:150 15% 90%;--radius:0.75rem}
+      .dark{--background:200 15% 10%;--foreground:150 10% 92%;--primary:150 35% 50%;--muted-foreground:150 10% 65%;--card:200 12% 14%;--border:200 10% 20%}
+      *,::after,::before{box-sizing:border-box;border:0 solid}
+      html{line-height:1.5;-webkit-text-size-adjust:100%;font-family:ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji"}
+      body{margin:0;line-height:inherit;background-color:hsl(var(--background));color:hsl(var(--foreground))}
+      .h-full{height:100%}
+    </style>
+
+    <!-- Async-load main stylesheet injected by Vite -->
+    <script>
+      (function(){
+        var defined = false;
+        new MutationObserver(function(mutations, obs){
+          if(defined) return;
+          var links = document.querySelectorAll('link[rel="stylesheet"][href*="/assets/"]');
+          links.forEach(function(link){
+            defined = true;
+            link.media = 'print';
+            link.onload = function(){ link.media = 'all'; };
+          });
+          if(defined) obs.disconnect();
+        }).observe(document.head, {childList: true});
+      })();
+    </script>
   </head>
 
   <body class="h-full">
